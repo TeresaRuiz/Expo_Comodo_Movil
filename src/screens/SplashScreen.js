@@ -1,68 +1,30 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, Text, View, Image, Animated, Easing } from 'react-native';
+import { Image, StyleSheet, View } from "react-native";
+import Icon from "../img/splash.png";
 
-export default function SplashScreen() {
-    
-  const [counter, setCounter] = useState(3);
-  const rotateValue = useRef(new Animated.Value(0)).current;
+export default function SplashScreen(){
+    return(
+        <View style={styles.container}>
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCounter(prevCounter => prevCounter - 1);
-    }, 1000);
+            <View>
 
-    // Configura la animación de rotación
-    Animated.loop(
-      Animated.timing(rotateValue, {
-        toValue: 1,
-        duration: 2000,
-        easing: Easing.linear,
-        useNativeDriver: true,
-      })
-    ).start();
+                <Image source={Icon} style={styles.image}/>
 
-    return () => clearInterval(timer);
-  }, []);
+            </View>
 
-  // Interpolación para convertir el valor de la animación en grados
-  const rotate = rotateValue.interpolate({
-    inputRange: [0, 1],
-    outputRange: ['0deg', '360deg'],
-  });
-
-  return (
-    <View  style={styles.container}>
-      <Text style={styles.title}>
-        Bienvenidos
-      </Text>
-      <Animated.Image
-        source={require('../../assets/pokemon-carga-128.png')}
-        style={{ transform: [{ rotate }] }}
-      />
-    </View>
-  );
-
+        </View>
+    )
 }
 
-
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#ffde00',
-    padding: 8,
-  },
-  title: {
-    margin: 24,
-    fontSize: 38,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    color: '#FFF',
-  },
-  paragraph: {
-    fontSize: 18,
-    textAlign: 'center',
-    color: '#FFF',
-  },
+    container: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor:"#fffdff",
+    },
+    image: {
+        width:100,
+        height:100,
+        resizeMode:"cover"
+    },
 });

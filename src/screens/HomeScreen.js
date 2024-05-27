@@ -1,46 +1,91 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, ScrollView, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 
+const RegisterScreen = () => {
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
-const HomeScreen = () => {
-    return ( 
-        <View style={styles.container}>
-        <Text style={styles.title}>
-            Consumo de apis externas
-        </Text>
-        <Text style={styles.descripcion}>
-            Ejemplo de consumo de API externa utilizando la función <Text style={styles.negrita}>FETCH</Text> nativa de JavaScript y <Text style={styles.negrita}>AXIOS</Text> que es una biblioteca de JavaScript utilizada para hacer solicitudes HTTP
-        </Text>
-        </View>
-     );
-}
- 
-export default HomeScreen;
+  const handleRegister = () => {
+    // Aquí puedes agregar la lógica para enviar los datos de registro al servidor
+    console.log('Usuario:', username);
+    console.log('Correo electrónico:', email);
+    console.log('Contraseña:', password);
+    console.log('Confirmar contraseña:', confirmPassword);
 
+    // Aquí puedes agregar la lógica para validar los datos de registro antes de enviarlos al servidor
+  };
 
-// Estilos para los componentes.
+  return (
+    <ScrollView contentContainerStyle={styles.container}>
+      <Text style={styles.title}>Registro</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Nombre de usuario"
+        onChangeText={text => setUsername(text)}
+        value={username}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Correo electrónico"
+        onChangeText={text => setEmail(text)}
+        value={email}
+        keyboardType="email-address"
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Contraseña"
+        onChangeText={text => setPassword(text)}
+        value={password}
+        secureTextEntry={true}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Confirmar contraseña"
+        onChangeText={text => setConfirmPassword(text)}
+        value={confirmPassword}
+        secureTextEntry={true}
+      />
+      <TouchableOpacity style={styles.button} onPress={handleRegister}>
+        <Text style={styles.buttonText}>Registrarse</Text>
+      </TouchableOpacity>
+    </ScrollView>
+  );
+};
+
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#fff',
-      paddingTop: 20,
-      paddingHorizontal:15
-    },
-    title: {
-      fontSize: 20,
-      fontWeight: 'bold',
-      textAlign: 'center',
-      marginTop: 10,
-      textTransform: 'uppercase',
-    },
-    descripcion: {
-        fontSize: 16,
-        fontWeight: '400',
-        textAlign: 'justify',
-        marginTop: 10,
-      },
-      negrita:{
-        fontWeight:'bold'
-      }
-  });
-  
+  container: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    paddingVertical: 20,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  input: {
+    width: '80%',
+    backgroundColor: '#f0f0f0',
+    height: 50,
+    borderRadius: 10,
+    paddingHorizontal: 15,
+    marginBottom: 15,
+  },
+  button: {
+    backgroundColor: '#007bff',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 10,
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+});
+
+export default RegisterScreen;

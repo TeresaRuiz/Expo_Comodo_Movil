@@ -1,48 +1,54 @@
-// Hooks de React
+import 'react-native-gesture-handler';
+import SplashScreen from './src/screens/SplashScreen';
+import HomeScreen from './src/screens/HomeScreen';
+import SecondScreen from './src/screens/SecondScreen';
 import { useEffect, useState } from 'react';
-// Utilidades de React Navigation
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Ionicons } from '@expo/vector-icons';
 
-import BottomTab from './src/navegation/BottonTab';
-import NavStack from './src/navegation/NavStack';
 
-//Componente principal
+
 export default function App() {
+  const Tab = createBottomTabNavigator();
 
-  // appIsReady: Variable para indicar si la aplicación ya está lista
-  // setAppIsReady: Función para actualizar la variable appIsReady
-  const [appIsReady, setAppIsReady] = useState(false);
-
-  // useEffect: Hook que, de forma predeterminada, se ejecuta después del primer renderizado 
-  // y después de cada actualización
-  useEffect(() => {
-    // Función asíncrona que simula la inicialización de la aplicación
-    async function inicia() {
-      try {
-        // Retrasar el lanzamiento de la aplicación por 4 segundos
-        await new Promise((resolve) => setTimeout(resolve, 4000));
-      } catch (e) {
-        // Mostrar error en caso de existir
-        console.warn(e);
-      } finally {
-        setAppIsReady(true); 
-      }
-    }
-
-    // Llamar a la función inicia
-    inicia();
-  }, []); // El segundo argumento vacío [] asegura que el efecto se ejecute solo una vez después del primer renderizado
-
-  // Retorna el contenedor de navegación
+  const [isShowSplash, setIsShowSplash] = useState(true);
+  
+  useEffect(() =>{
+    setTimeout(() =>{
+      setIsShowSplash(false);
+    }, 3000);
+    
+  });
+  
   return (
-    <NavigationContainer>
-      {appIsReady ?
-        // Si la aplicación está lista, muestra el componente BottomTab
-        <BottomTab />
-        :
-        // Si la aplicación no está lista, muestra el componente NavStack
-        <NavStack />
-      }
+    <>
+    {isShowSplash ? (
+      <SplashScreen/>
+    ): (
+      <NavigationContainer>
+      <Tab.Navigator  screenOptions={{
+          headerShown: false
+        }}>
+        <Tab.Screen name="Home" component={HomeScreen} options={{
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="home-outline" size={size} color={color} />
+            ),
+          }}/>
+        <Tab.Screen name="Comidas" component={SecondScreen} options={{
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="person-outline" size={size} color={color} />
+            ),
+          }}/>
+      </Tab.Navigator>
     </NavigationContainer>
+    )}
+    </>
+
   );
+
 }
+
+

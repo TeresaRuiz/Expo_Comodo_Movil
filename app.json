@@ -1,15 +1,15 @@
 {
   "expo": {
-    "name": "conexion-api",
-    "slug": "conexion-api",
+    "name": "Perfil_3Parejas-app",
+    "slug": "Perfil_3Parejas-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/Enroll.png",
+      "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#3b4cca"
+      "backgroundColor": "#ffffff"
     },
     "ios": {
       "supportsTablet": true
