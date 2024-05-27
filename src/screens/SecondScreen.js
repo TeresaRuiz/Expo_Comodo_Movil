@@ -1,22 +1,25 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 
-const LoginScreen = () => {
+const RegisterScreen = () => {
   const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
-  const handleLogin = () => {
-    // Aquí puedes agregar la lógica para validar las credenciales ingresadas
-    // Por ahora, solo mostraremos las credenciales en la consola para demostración
-    console.log('Nombre de usuario:', username);
+  const handleRegister = () => {
+    // Aquí puedes agregar la lógica para enviar los datos de registro al servidor
+    console.log('Usuario:', username);
+    console.log('Correo electrónico:', email);
     console.log('Contraseña:', password);
+    console.log('Confirmar contraseña:', confirmPassword);
 
-    // Aquí podrías agregar la lógica para iniciar sesión con las credenciales proporcionadas
+    // Aquí puedes agregar la lógica para validar los datos de registro antes de enviarlos al servidor
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Inicio de sesión</Text>
+    <ScrollView contentContainerStyle={styles.container}>
+      <Text style={styles.title}>Registro</Text>
       <TextInput
         style={styles.input}
         placeholder="Nombre de usuario"
@@ -25,25 +28,39 @@ const LoginScreen = () => {
       />
       <TextInput
         style={styles.input}
+        placeholder="Correo electrónico"
+        onChangeText={text => setEmail(text)}
+        value={email}
+        keyboardType="email-address"
+      />
+      <TextInput
+        style={styles.input}
         placeholder="Contraseña"
         onChangeText={text => setPassword(text)}
         value={password}
         secureTextEntry={true}
       />
-      <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Iniciar sesión</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Confirmar contraseña"
+        onChangeText={text => setConfirmPassword(text)}
+        value={confirmPassword}
+        secureTextEntry={true}
+      />
+      <TouchableOpacity style={styles.button} onPress={handleRegister}>
+        <Text style={styles.buttonText}>Registrarse</Text>
       </TouchableOpacity>
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#fff',
-    paddingHorizontal: 20,
+    paddingVertical: 20,
   },
   title: {
     fontSize: 24,
@@ -71,4 +88,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginScreen;
+export default RegisterScreen;
