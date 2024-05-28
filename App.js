@@ -11,6 +11,7 @@ import RegisterScreen from './src/screens/RegisterScreen';
 import PasswordRecoveryScreen from './src/screens/RecuperacionScreen';
 import DashboardScreen from './src/screens/DashboardScreen';
 import CategoriaScreen from './src/screens/CategoriaScreen'; // Importa la pantalla de categorías
+import MiPerfilScreen from './src/screens/MiPerfilScreen';
 
 // Crear los navegadores
 const Stack = createStackNavigator();
@@ -32,6 +33,15 @@ const DashboardTabNavigator = () => {
       <Tab.Screen
         name="Categories"
         component={CategoriaScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="list-outline" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Mi Perfil"
+        component={MiPerfilScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="list-outline" size={size} color={color} />
