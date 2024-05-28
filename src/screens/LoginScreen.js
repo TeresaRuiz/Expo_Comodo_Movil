@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 
-const LoginScreen = () => {
+const LoginScreen = ({ navigation }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -12,6 +12,19 @@ const LoginScreen = () => {
     console.log('Contraseña:', password);
 
     // Aquí podrías agregar la lógica para iniciar sesión con las credenciales proporcionadas
+
+    // Si las credenciales son correctas, navega al Dashboard
+    navigation.navigate('DashboardTabs');
+  };
+
+  const handleRegisterRedirect = () => {
+    // Navegar a la pantalla de registro
+    navigation.navigate('Register');
+  };
+
+  const handleForgotPasswordRedirect = () => {
+    // Navegar a la pantalla de recuperación de contraseña
+    navigation.navigate('PasswordRecovery');
   };
 
   return (
@@ -32,6 +45,12 @@ const LoginScreen = () => {
       />
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.buttonText}>Iniciar sesión</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={handleRegisterRedirect}>
+        <Text style={styles.registerLink}>¿No tienes cuenta? Crea una</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={handleForgotPasswordRedirect}>
+        <Text style={styles.forgotPasswordText}>¿Olvidaste tu contraseña?</Text>
       </TouchableOpacity>
     </View>
   );
@@ -68,6 +87,17 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  registerLink: {
+    marginTop: 10,
+    color: '#007bff',
+    fontSize: 16,
+  },
+  forgotPasswordText: {
+    color: '#007bff',
+    fontSize: 16,
+    marginTop: 10,
+    textDecorationLine: 'underline',
   },
 });
 

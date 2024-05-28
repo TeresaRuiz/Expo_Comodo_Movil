@@ -1,20 +1,21 @@
 import React, { useState } from 'react';
 import { View, Text, ScrollView, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const RegisterScreen = () => {
   const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [password2, setPassword2] = useState('');
+
+  const navigation = useNavigation();
 
   const handleRegister = () => {
-    // Aquí puedes agregar la lógica para enviar los datos de registro al servidor
     console.log('Usuario:', username);
-    console.log('Correo electrónico:', email);
     console.log('Contraseña:', password);
-    console.log('Confirmar contraseña:', confirmPassword);
+  };
 
-    // Aquí puedes agregar la lógica para validar los datos de registro antes de enviarlos al servidor
+  const handleLoginRedirect = () => {
+    navigation.navigate('Login');
   };
 
   return (
@@ -28,13 +29,6 @@ const RegisterScreen = () => {
       />
       <TextInput
         style={styles.input}
-        placeholder="Correo electrónico"
-        onChangeText={text => setEmail(text)}
-        value={email}
-        keyboardType="email-address"
-      />
-      <TextInput
-        style={styles.input}
         placeholder="Contraseña"
         onChangeText={text => setPassword(text)}
         value={password}
@@ -42,13 +36,16 @@ const RegisterScreen = () => {
       />
       <TextInput
         style={styles.input}
-        placeholder="Confirmar contraseña"
-        onChangeText={text => setConfirmPassword(text)}
-        value={confirmPassword}
+        placeholder="Escriba de nuevo la contraseña"
+        onChangeText={text => setPassword2(text)}
+        value={password2}
         secureTextEntry={true}
       />
       <TouchableOpacity style={styles.button} onPress={handleRegister}>
         <Text style={styles.buttonText}>Registrarse</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={handleLoginRedirect}>
+        <Text style={styles.loginRedirectText}>¿Ya tienes cuenta? Inicia sesión</Text>
       </TouchableOpacity>
     </ScrollView>
   );
@@ -85,6 +82,12 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  loginRedirectText: {
+    color: '#007bff',
+    fontSize: 16,
+    marginTop: 20,
+    textDecorationLine: 'underline',
   },
 });
 
