@@ -49,6 +49,7 @@ const LoginScreen = ({ navigation }) => {
       <TouchableOpacity onPress={handleRegisterRedirect}>
         <Text style={styles.registerLink}>¿No tienes cuenta? Crea una</Text>
       </TouchableOpacity>
+      {/* Agregar el enlace para ir a la pantalla de recuperación de contraseña */}
       <TouchableOpacity onPress={handleForgotPasswordRedirect}>
         <Text style={styles.forgotPasswordText}>¿Olvidaste tu contraseña?</Text>
       </TouchableOpacity>

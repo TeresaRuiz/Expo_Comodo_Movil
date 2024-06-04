@@ -1,7 +1,15 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
-const DashboardScreen = () => {
+const DashboardScreen = ({ navigation }) => {
+  const handleLogout = () => {
+    // Aquí puedes agregar la lógica para cerrar la sesión del usuario
+    // Por ejemplo, puedes borrar el token de autenticación o limpiar el estado de la sesión
+    // Luego, navega de vuelta a la pantalla de inicio de sesión
+    navigation.navigate('Login');
+  };
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Dashboard</Text>
@@ -14,6 +22,10 @@ const DashboardScreen = () => {
         <Text style={styles.cardContent}>Content of Card 2</Text>
       </View>
       {/* Agrega más tarjetas o componentes del dashboard aquí */}
+      {/* Botón de cerrar sesión */}
+      <TouchableOpacity style={[styles.logoutButton, { top: 40 }]} onPress={handleLogout}>
+  <Ionicons name="lock-closed" size={24} color="black" />
+</TouchableOpacity>
     </ScrollView>
   );
 };
@@ -50,6 +62,11 @@ const styles = StyleSheet.create({
   },
   cardContent: {
     fontSize: 16,
+  },
+  logoutButton: {
+    position: 'absolute',
+    top: 20,
+    right: 20,
   },
 });
 
