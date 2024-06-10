@@ -1,6 +1,6 @@
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import React, { useRef } from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Animated, TouchableWithoutFeedback } from 'react-native';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 const DashboardScreen = ({ navigation }) => {
   const handleLogout = () => {
@@ -8,24 +8,51 @@ const DashboardScreen = ({ navigation }) => {
   };
 
   const categories = [
-    { title: 'Bars & Hotels', places: 42, icon: 'beer-outline' },
-    { title: 'Fine Dining', places: 15, icon: 'restaurant-outline' },
-    { title: 'Cafes', places: 28, icon: 'cafe-outline' },
-    { title: 'Nearby', places: 34, icon: 'location-outline', highlighted: true },
-    { title: 'Fast Foods', places: 29, icon: 'fast-food-outline' },
-    { title: 'Featured Foods', places: 21, icon: 'pizza-outline' },
+    { title: 'Categorias', icon: 'grid-outline' },
+    { title: 'Productos', icon: 'pricetag-outline' },
+    { title: 'Descuentos', icon: 'pricetags-outline' }
   ];
+
+  const animatedValues = categories.map(() => useRef(new Animated.Value(0)).current);
+
+  const handlePressIn = (index) => {
+    Animated.timing(animatedValues[index], {
+      toValue: 1,
+      duration: 200,
+      useNativeDriver: false,
+    }).start();
+  };
+
+  const handlePressOut = (index) => {
+    Animated.timing(animatedValues[index], {
+      toValue: 0,
+      duration: 200,
+      useNativeDriver: false,
+    }).start();
+  };
+
+  const cardBackgroundColor = (index) => {
+    return animatedValues[index].interpolate({
+      inputRange: [0, 1],
+      outputRange: ['#fff', '#ffd700'], // from white to bright yellow
+    });
+  };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>Discovery</Text>
+      <Text style={styles.title}>Comodo$</Text>
       <View style={styles.grid}>
         {categories.map((category, index) => (
-          <View key={index} style={[styles.card, category.highlighted && styles.highlightedCard]}>
-            <Ionicons name={category.icon} size={40} color={category.highlighted ? '#fff' : '#000'} />
-            <Text style={[styles.cardTitle, category.highlighted && styles.highlightedCardTitle]}>{category.title}</Text>
-            <Text style={[styles.cardContent, category.highlighted && styles.highlightedCardContent]}>{category.places} Places</Text>
-          </View>
+          <TouchableWithoutFeedback
+            key={index}
+            onPressIn={() => handlePressIn(index)}
+            onPressOut={() => handlePressOut(index)}
+          >
+            <Animated.View style={[styles.card, { backgroundColor: cardBackgroundColor(index) }]}>
+              <Ionicons name={category.icon} size={40} color="#000" />
+              <Text style={styles.cardTitle}>{category.title}</Text>
+            </Animated.View>
+          </TouchableWithoutFeedback>
         ))}
       </View>
       <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
@@ -69,27 +96,12 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
     elevation: 5,
   },
-  highlightedCard: {
-    backgroundColor: '#ff9800', // bright orange color for highlighted card
-  },
   cardTitle: {
     fontSize: 18,
     fontWeight: 'bold',
     marginTop: 10,
     textAlign: 'center',
     color: '#333', // dark grey color for card titles
-  },
-  highlightedCardTitle: {
-    color: '#fff', // white color for highlighted card titles
-  },
-  cardContent: {
-    fontSize: 14,
-    marginTop: 5,
-    textAlign: 'center',
-    color: '#666', // medium grey color for card content
-  },
-  highlightedCardContent: {
-    color: '#fff', // white color for highlighted card content
   },
   logoutButton: {
     position: 'absolute',
