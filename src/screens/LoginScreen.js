@@ -1,9 +1,32 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Animated, Easing } from 'react-native';
 
 const LoginScreen = ({ navigation }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const animatedValue = new Animated.Value(0);
+
+  useEffect(() => {
+    const animation = Animated.loop(
+      Animated.timing(animatedValue, {
+        toValue: 1,
+        duration: 2000,
+        easing: Easing.inOut(Easing.ease),
+        useNativeDriver: true,
+      })
+    );
+
+    animation.start();
+
+    return () => {
+      animation.stop();
+    };
+  }, []);
+
+  const translateY = animatedValue.interpolate({
+    inputRange: [0, 0.5, 1],
+    outputRange: [0, 20, 0],
+  });
 
   const handleLogin = () => {
     console.log('Nombre de usuario:', username);
@@ -21,9 +44,9 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Image
-        source={{ uri: '' }} // Reemplaza con la URL de tu imagen o el recurso local
-        style={styles.logo}
+      <Animated.Image
+        source={require('../img/calentamiento.png')}
+        style={[styles.logo, { transform: [{ translateY }] }]}
       />
       <Text style={styles.title}>Inicio de sesión</Text>
       <TextInput
@@ -59,10 +82,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#fff',
     paddingHorizontal: 20,
+    paddingTop: 20, // Ajustar el espacio en la parte superior
   },
   logo: {
-    width: 100, // Ajusta el tamaño según tus necesidades
-    height: 100,
+    width: 150,
+    height: 150,
     marginBottom: 20,
   },
   title: {

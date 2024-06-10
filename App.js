@@ -12,8 +12,7 @@ import PasswordRecoveryScreen from './src/screens/RecuperacionScreen';
 import DashboardScreen from './src/screens/DashboardScreen';
 import CategoriaScreen from './src/screens/CategoriaScreen'; // Importa la pantalla de categorías
 import MiPerfilScreen from './src/screens/MiPerfilScreen';
-import ReferidosComponent from './src/screens/prueba';
-import Dashboard from './src/screens/prueba2';
+
 
 // Crear los navegadores
 const Stack = createStackNavigator();
@@ -44,24 +43,6 @@ const DashboardTabNavigator = () => {
       <Tab.Screen
         name="Mi Perfil"
         component={MiPerfilScreen}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="list-outline" size={size} color={color} />
-          ),
-        }}
-      />
-       <Tab.Screen
-        name="Pruebareact"
-        component={ReferidosComponent}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="list-outline" size={size} color={color} />
-          ),
-        }}
-      />
-       <Tab.Screen
-        name="Pruebareactt"
-        component={Dashboard}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="list-outline" size={size} color={color} />
