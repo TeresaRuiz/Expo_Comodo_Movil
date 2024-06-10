@@ -1,34 +1,30 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
 
 const LoginScreen = ({ navigation }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
-    // Aquí puedes agregar la lógica para validar las credenciales ingresadas
-    // Por ahora, solo mostraremos las credenciales en la consola para demostración
     console.log('Nombre de usuario:', username);
     console.log('Contraseña:', password);
-
-    // Aquí podrías agregar la lógica para iniciar sesión con las credenciales proporcionadas
-
-    // Si las credenciales son correctas, navega al Dashboard
     navigation.navigate('DashboardTabs');
   };
 
   const handleRegisterRedirect = () => {
-    // Navegar a la pantalla de registro
     navigation.navigate('Register');
   };
 
   const handleForgotPasswordRedirect = () => {
-    // Navegar a la pantalla de recuperación de contraseña
     navigation.navigate('PasswordRecovery');
   };
 
   return (
     <View style={styles.container}>
+      <Image
+        source={{ uri: '' }} // Reemplaza con la URL de tu imagen o el recurso local
+        style={styles.logo}
+      />
       <Text style={styles.title}>Inicio de sesión</Text>
       <TextInput
         style={styles.input}
@@ -49,7 +45,6 @@ const LoginScreen = ({ navigation }) => {
       <TouchableOpacity onPress={handleRegisterRedirect}>
         <Text style={styles.registerLink}>¿No tienes cuenta? Crea una</Text>
       </TouchableOpacity>
-      {/* Agregar el enlace para ir a la pantalla de recuperación de contraseña */}
       <TouchableOpacity onPress={handleForgotPasswordRedirect}>
         <Text style={styles.forgotPasswordText}>¿Olvidaste tu contraseña?</Text>
       </TouchableOpacity>
@@ -64,6 +59,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#fff',
     paddingHorizontal: 20,
+  },
+  logo: {
+    width: 100, // Ajusta el tamaño según tus necesidades
+    height: 100,
+    marginBottom: 20,
   },
   title: {
     fontSize: 24,
