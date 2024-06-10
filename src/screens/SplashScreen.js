@@ -1,30 +1,44 @@
-import { Image, StyleSheet, View } from "react-native";
-import Icon from "../img/splash.png";
+import React, { useEffect, useRef } from 'react';
+import { View, Animated, StyleSheet, Easing, Image } from 'react-native'; // Asegúrate de importar Image de react-native
+import Icon from '../img/calentamiento.png'; // Ruta de la imagen de splash screen
 
-export default function SplashScreen(){
-    return(
-        <View style={styles.container}>
+export default function SplashScreen() {
+  const scaleValue = useRef(new Animated.Value(1)).current;
 
-            <View>
+  useEffect(() => {
+    Animated.timing(scaleValue, {
+      toValue: 2, // Escala de zoom del 100% al 200%
+      duration: 1000, // Duración de la animación en milisegundos
+      easing: Easing.linear,
+      useNativeDriver: true,
+    }).start();
+  }, [scaleValue]);
 
-                <Image source={Icon} style={styles.image}/>
-
-            </View>
-
-        </View>
-    )
+  return (
+    <View style={styles.container}>
+      <Animated.View style={[styles.imageContainer, { transform: [{ scale: scaleValue }] }]}>
+        <Image source={Icon} style={styles.image} />
+      </Animated.View>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor:"#fffdff",
-    },
-    image: {
-        width:100,
-        height:100,
-        resizeMode:"cover"
-    },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fffdff',
+  },
+  imageContainer: {
+    width: 100,
+    height: 100,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  image: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
+  },
 });

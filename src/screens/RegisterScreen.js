@@ -3,15 +3,25 @@ import { View, Text, ScrollView, StyleSheet, TextInput, TouchableOpacity } from 
 import { useNavigation } from '@react-navigation/native';
 
 const RegisterScreen = () => {
+  const [name, setName] = useState('');
   const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [password2, setPassword2] = useState('');
+  const [phone, setPhone] = useState('');
+  const [dui, setDui] = useState('');
+  const [address, setAddress] = useState('');
 
   const navigation = useNavigation();
 
   const handleRegister = () => {
+    console.log('Nombre:', name);
     console.log('Usuario:', username);
+    console.log('Correo:', email);
     console.log('Contraseña:', password);
+    console.log('Telefono:', phone);
+    console.log('DUI:', dui);
+    console.log('Dirección:', address);
   };
 
   const handleLoginRedirect = () => {
@@ -23,9 +33,22 @@ const RegisterScreen = () => {
       <Text style={styles.title}>Registro</Text>
       <TextInput
         style={styles.input}
-        placeholder="Nombre de usuario"
+        placeholder="Nombre"
+        onChangeText={text => setName(text)}
+        value={name}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Usuario"
         onChangeText={text => setUsername(text)}
         value={username}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Correo"
+        onChangeText={text => setEmail(text)}
+        value={email}
+        keyboardType="email-address"
       />
       <TextInput
         style={styles.input}
@@ -36,10 +59,29 @@ const RegisterScreen = () => {
       />
       <TextInput
         style={styles.input}
-        placeholder="Escriba de nuevo la contraseña"
+        placeholder="Repetir contraseña"
         onChangeText={text => setPassword2(text)}
         value={password2}
         secureTextEntry={true}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Teléfono"
+        onChangeText={text => setPhone(text)}
+        value={phone}
+        keyboardType="phone-pad"
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="DUI"
+        onChangeText={text => setDui(text)}
+        value={dui}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Dirección"
+        onChangeText={text => setAddress(text)}
+        value={address}
       />
       <TouchableOpacity style={styles.button} onPress={handleRegister}>
         <Text style={styles.buttonText}>Registrarse</Text>
