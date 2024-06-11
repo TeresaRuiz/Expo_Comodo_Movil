@@ -1,14 +1,19 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, Linking } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { FontAwesome } from '@expo/vector-icons';
 
-const DashboardScreen = ({ navigation }) => {
+const PerfilScreen = ({ navigation }) => {
+
+  const abrirFacebook = () => {
+    Linking.openURL('https://www.facebook.com/Comodos.sv');
+  };
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.profileContainer}>
         <Image
-          source={{ uri: 'https://i.pinimg.com/564x/c7/f9/fe/c7f9fe2e978b08473031c87f6fe657c2.jpg' }} // Replace with your image source
+          source={{ uri: 'https://i.pinimg.com/564x/c7/f9/fe/c7f9fe2e978b08473031c87f6fe657c2.jpg' }}
           style={styles.profileImage}
         />
         <Text style={styles.profileName}>Dickie</Text>
@@ -23,7 +28,7 @@ const DashboardScreen = ({ navigation }) => {
       <View style={styles.socialContainer}>
         <Text style={styles.socialTitle}>Nuestras redes sociales</Text>
         <View style={styles.socialIcons}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={abrirFacebook}>
             <FontAwesome name="facebook" size={30} color="#000000" />
           </TouchableOpacity>
           <TouchableOpacity>
@@ -115,4 +120,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DashboardScreen;
+export default PerfilScreen;

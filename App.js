@@ -22,7 +22,7 @@ const DashboardTabNavigator = () => {
   return (
     <Tab.Navigator screenOptions={{ headerShown: false }}>
       <Tab.Screen
-        name="DashboardMain"
+        name="Dashboard"
         component={DashboardScreen}
         options={{
           tabBarIcon: ({ color, size }) => (

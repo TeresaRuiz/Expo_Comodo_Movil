@@ -1,57 +1,126 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import React, { useState, useRef } from 'react';
+import { View, Text, TextInput, StyleSheet, Image, TouchableOpacity, Alert } from 'react-native';
 
 const MiPerfilScreen = () => {
   const [selectedGender, setSelectedGender] = useState('Male');
+  const [nombre, setNombre] = useState('');
+  const [username, setUsername] = useState('');
+  const [correo, setCorreo] = useState('');
+  const [telefono, setTelefono] = useState('');
+  const nombreRef = useRef(null);
+  const usernameRef = useRef(null);
+  const correoRef = useRef(null);
+  const telefonoRef = useRef(null);
+
+  const handleUpdate = () => {
+    // Lógica para actualizar
+  };
+
+  const handleDelete = () => {
+    setNombre('');
+    setUsername('');
+    setCorreo('');
+    setTelefono('');
+    nombreRef.current.clear();
+    usernameRef.current.clear();
+    correoRef.current.clear();
+    telefonoRef.current.clear();
+  };
+
+  const handleNombreChange = (text) => {
+    // Expresión regular para aceptar solo letras, espacios y tildes
+    const regex = /^[a-zA-ZáéíóúÁÉÍÓÚ\s]*$/;
+    if (regex.test(text) || text === '') {
+      // Actualizar el estado solo si la entrada es válida
+      setNombre(text);
+    }
+  };
+
+  const handleUsernameChange = (text) => {
+    setUsername(text);
+  };
+
+  const handleCorreoChange = (text) => {
+    // Expresión regular para validar el formato del correo electrónico
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (regex.test(text) || text === '') {
+      setCorreo(text);
+    }
+  };
+
+  const handleTelefonoChange = (text) => {
+    // Actualizar el estado del teléfono
+    setTelefono(text);
+  };
+
+  const handleUpdatePress = () => {
+    // Verificar si se han completado todos los campos obligatorios
+    if (!nombre || !correo || !telefono || !username) {
+      Alert.alert('Falta información', 'Por favor completa todos los campos obligatorios.');
+      return;
+    }
+    // Lógica para actualizar
+  };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Personal Data</Text>
+      <Text style={styles.title}>Datos Personales</Text>
       <View style={styles.profileImageContainer}>
         <Image
-          source={{ uri: 'https://example.com/profile.jpg' }} // Replace with the actual image URL or local image path
+          source={{ uri: 'https://i.pinimg.com/236x/2f/97/f0/2f97f05b32547f54ef1bdf99cd207c90.jpg' }}
           style={styles.profileImage}
         />
-        <TouchableOpacity style={styles.cameraIconContainer}>
-          <Image
-            source={{ uri: 'https://example.com/camera-icon.png' }} // Replace with the actual camera icon URL or local image path
-            style={styles.cameraIcon}
-          />
-        </TouchableOpacity>
       </View>
       <View style={styles.inputContainer}>
         <Text style={styles.label}>Nombre</Text>
-        <TextInput style={styles.input} placeholder="Dickey" />
+        <TextInput
+          ref={nombreRef}
+          style={styles.input}
+          placeholder="Dickey"
+          keyboardType="default"
+          onChangeText={handleNombreChange}
+          value={nombre}
+        />
       </View>
       <View style={styles.inputContainer}>
         <Text style={styles.label}>Usuario</Text>
-        <TextInput style={styles.input} placeholder="DK123" />
+        <TextInput
+          ref={usernameRef}
+          style={styles.input}
+          placeholder="DK123"
+          keyboardType="email-address"
+          onChangeText={handleUsernameChange}
+          value={username}
+        />
       </View>
       <View style={styles.inputContainer}>
         <Text style={styles.label}>Correo</Text>
-        <TextInput style={styles.input} placeholder="DK123@gmail.com" />
+        <TextInput
+          ref={correoRef}
+          style={styles.input}
+          placeholder="DK123@gmail.com"
+          keyboardType="email-address"
+          onChangeText={handleCorreoChange}
+          value={correo}
+        />
       </View>
       <View style={styles.inputContainer}>
         <Text style={styles.label}>Teléfono</Text>
-        <TextInput style={styles.input} placeholder="2250-5555" />
+        <TextInput
+          ref={telefonoRef}
+          style={styles.input}
+          placeholder="2250-5555"
+          keyboardType="phone-pad"
+          onChangeText={handleTelefonoChange}
+          value={telefono}
+        />
       </View>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button}>
-          <LinearGradient
-            colors={['#ff5f6d', '#ffc371']}
-            style={styles.gradient}
-          >
-            <Text style={styles.buttonText}>Cancelar</Text>
-          </LinearGradient>
+        <TouchableOpacity style={[styles.button, styles.updateButton]} onPress={handleUpdatePress}>
+          <Text style={styles.buttonText}>Actualizar</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
-          <LinearGradient
-            colors={['#42e695', '#3bb2b8']}
-            style={styles.gradient}
-          >
-            <Text style={styles.buttonText}>Actualizar</Text>
-          </LinearGradient>
+        <TouchableOpacity style={[styles.button, styles.deleteButton]} onPress={handleDelete}>
+          <Text style={styles.buttonText}>Eliminar</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -66,6 +135,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f9f9f9',
     paddingHorizontal: 20,
     paddingTop: 40,
+    paddingBottom: 20,
   },
   title: {
     fontSize: 24,
@@ -83,19 +153,6 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     borderWidth: 1,
     borderColor: '#ddd',
-  },
-  cameraIconContainer: {
-    position: 'absolute',
-    bottom: 0,
-    right: 0,
-    backgroundColor: '#fff',
-    borderRadius: 50,
-    padding: 5,
-    elevation: 5,
-  },
-  cameraIcon: {
-    width: 20,
-    height: 20,
   },
   inputContainer: {
     width: '100%',
@@ -124,29 +181,25 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '100%',
-    marginTop: 20,
   },
   button: {
-    flex: 1,
-    marginHorizontal: 5,
-    borderRadius: 12,
-    overflow: 'hidden',
-    elevation: 4,
-    justifyContent: 'center', // Añadido para centrar el texto verticalmente
-  },
-  gradient: {
-    flex: 1,
-    justifyContent: 'center',
+    width: '48%',
+    borderRadius: 25,
+    paddingVertical: 15,
     alignItems: 'center',
-    paddingVertical: 20, // Reducido para dejar espacio para el texto
-    borderRadius: 12,
+    justifyContent: 'center',
   },
   buttonText: {
-    color: '#ffffff',
-    fontSize: 16,
+    color: '#fff',
+    fontSize: 18,
     fontWeight: 'bold',
+  },
+  updateButton: {
+    backgroundColor: '#4CAF50',
+  },
+  deleteButton: {
+    backgroundColor: '#F44336',
   },
 });
 
 export default MiPerfilScreen;
-
