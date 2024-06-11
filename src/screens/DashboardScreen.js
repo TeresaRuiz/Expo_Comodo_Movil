@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#f5f5f5',
-    paddingVertical: 20,
+    paddingVertical: 10,
   },
   searchContainer: {
     flexDirection: 'row',
