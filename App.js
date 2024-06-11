@@ -5,15 +5,13 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 
-
 import SplashScreen from './src/screens/SplashScreen';
 import LoginScreen from './src/screens/LoginScreen';
 import RegisterScreen from './src/screens/RegisterScreen';
 import PasswordRecoveryScreen from './src/screens/RecuperacionScreen';
 import DashboardScreen from './src/screens/DashboardScreen';
 import CategoriaScreen from './src/screens/CategoriaScreen'; // Importa la pantalla de categorías
-import MiPerfilScreen from './src/screens/MiPerfilScreen';
-
+import PerfilScreen from './src/screens/PerfilScreen';
 
 // Crear los navegadores
 const Stack = createStackNavigator();
@@ -24,7 +22,7 @@ const DashboardTabNavigator = () => {
   return (
     <Tab.Navigator screenOptions={{ headerShown: false }}>
       <Tab.Screen
-        name="Dashboard"
+        name="DashboardMain"
         component={DashboardScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
@@ -43,7 +41,7 @@ const DashboardTabNavigator = () => {
       />
       <Tab.Screen
         name="Mi Perfil"
-        component={MiPerfilScreen}
+        component={PerfilScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="list-outline" size={size} color={color} />
