@@ -7,26 +7,22 @@ const ProductoScreen = ({ navigation }) => {
     {
       title: 'Tenis NIKE',
       description: 'Zapatos cómodos y deportivos',
-      sizes: ['14', '20', '32'],
-      image: 'https://via.placeholder.com/150',
+      image: 'https://originalselsalvador.com/wp-content/uploads/2024/01/calzado-blazer-mid-77-vintage-nw30B2-min.png',
     },
     {
       title: 'Tenis NIKE',
       description: 'Zapatos cómodos y deportivos',
-      sizes: ['14', '20', '32'],
-      image: 'https://via.placeholder.com/150',
+      image: 'https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/4f37fca8-6bce-43e7-ad07-f57ae3c13142/calzado-air-force-1-07-jBrhbr.png',
     },
     {
       title: 'Tenis NIKE',
       description: 'Zapatos cómodos y deportivos',
-      sizes: ['14', '20', '32'],
-      image: 'https://via.placeholder.com/150',
+      image: 'https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/022c7053-5c55-4bc4-8cdc-72c6e8f95a5e/tenis-air-jordan-1-retro-high-og-latte-Dw2wdP.png',
     },
     {
       title: 'Tenis NIKE',
       description: 'Zapatos cómodos y deportivos',
-      sizes: ['14', '20', '32'],
-      image: 'https://via.placeholder.com/150',
+      image: 'https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/c20afd60-b230-4815-bfd2-6768c875f6cd/calzado-air-force-1-07-J7xw5P.png',
     },
   ];
 
@@ -44,11 +40,6 @@ const ProductoScreen = ({ navigation }) => {
         {products.map((product, index) => (
           <View key={index} style={styles.card}>
             <Image source={{ uri: product.image }} style={styles.cardImage} />
-            <View style={styles.sizeContainer}>
-              {product.sizes.map((size, index) => (
-                <Text key={index} style={styles.sizeBadge}>{size}</Text>
-              ))}
-            </View>
             <Text style={styles.cardTitle}>{product.title}</Text>
             <Text style={styles.cardDescription}>{product.description}</Text>
             <TouchableOpacity style={styles.button}>
@@ -64,89 +55,84 @@ const ProductoScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#F8F9FB',
     paddingVertical: 20,
-    paddingHorizontal: 10,
+    paddingHorizontal: 15,
   },
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#f5f5f5',
-    borderRadius: 25,
-    paddingHorizontal: 15,
-    marginBottom: 20,
+    backgroundColor: '#fff',
+    borderRadius: 30,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    marginBottom: 25,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 3 },
+    shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
-    shadowRadius: 5,
-    elevation: 5,
+    shadowRadius: 6,
+    elevation: 8,
   },
   searchIcon: {
-    marginRight: 10,
+    marginRight: 15,
   },
   searchInput: {
     flex: 1,
     height: 40,
-    fontSize: 16,
+    fontSize: 18,
+    color: '#333',
   },
   grid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
   },
   card: {
-    width: '45%',
+    width: '48%',
     backgroundColor: '#fff',
-    borderRadius: 15,
-    padding: 15,
-    marginBottom: 20,
+    borderRadius: 20,
+    padding: 20,
+    marginBottom: 25,
     alignItems: 'center',
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 5 },
+    shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.1,
     shadowRadius: 10,
-    elevation: 5,
+    elevation: 10,
   },
   cardImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 15,
-    marginBottom: 10,
-  },
-  sizeContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '100%',
-    marginBottom: 10,
-  },
-  sizeBadge: {
-    backgroundColor: '#e0e0e0',
-    borderRadius: 10,
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-    fontSize: 12,
+    width: 120,
+    height: 120,
+    borderRadius: 20,
+    marginBottom: 15,
   },
   cardTitle: {
-    fontSize: 16,
+    fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'center',
-    marginBottom: 5,
+    marginBottom: 8,
+    color: '#333',
   },
   cardDescription: {
-    fontSize: 14,
-    color: '#777',
+    fontSize: 16,
+    color: '#555',
     textAlign: 'center',
-    marginBottom: 10,
+    marginBottom: 15,
   },
   button: {
-    backgroundColor: '#007BFF',
-    borderRadius: 10,
+    backgroundColor: '#FF5722',
+    borderRadius: 15,
     paddingVertical: 10,
-    paddingHorizontal: 20,
+    paddingHorizontal: 25,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+    elevation: 8,
   },
   buttonText: {
     color: '#fff',
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'center',
   },
