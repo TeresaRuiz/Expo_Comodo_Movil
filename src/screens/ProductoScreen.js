@@ -64,12 +64,12 @@ const ProductoScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flexGrow: 1,
-    backgroundColor: '#F8F9FB',
-    paddingVertical: 20,
-    paddingHorizontal: 15,
-  },
+    container: {
+        flexGrow: 1,
+        backgroundColor: '#F8F9FB',
+        paddingVertical: 60, // Reducido el espacio vertical
+        paddingHorizontal: 15,
+      },
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     paddingHorizontal: 20,
     paddingVertical: 10,
-    marginBottom: 25,
+    marginBottom: 50,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
