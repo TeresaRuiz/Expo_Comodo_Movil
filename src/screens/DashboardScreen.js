@@ -1,58 +1,74 @@
-import React, { useRef } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Animated, TouchableWithoutFeedback } from 'react-native';
-import Ionicons from '@expo/vector-icons/Ionicons';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Image } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
 const DashboardScreen = ({ navigation }) => {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setCurrentImageIndex(prevIndex => (prevIndex + 1) % images.length);
+    }, 5000);
+
+    return () => clearInterval(intervalId);
+  }, []);
+
   const handleLogout = () => {
     navigation.navigate('Login');
   };
 
   const categories = [
-    { title: 'Categorias', icon: 'grid-outline' },
+    { title: 'Categorías', icon: 'grid-outline' },
     { title: 'Productos', icon: 'pricetag-outline' },
     { title: 'Descuentos', icon: 'pricetags-outline' }
   ];
 
-  const animatedValues = categories.map(() => useRef(new Animated.Value(0)).current);
+  const images = [
+  'https://image.shutterstock.com/z/stock-photo-banner-600w-1673295406.jpg',
+'https://image.shutterstock.com/z/stock-photo-abstract-geometric-background-with-connected-lines-and-dots-molecule-and-communication-background-1120877741.jpg',
+  'https://image.shutterstock.com/z/stock-photo-colorful-autumn-landscape-1270654792.jpg',
+  'https://image.shutterstock.com/z/stock-photo-abstract-geometric-background-with-connected-lines-and-dots-molecule-and-communication-background-680546503.jpg',    
+  // Añade más URLs de imágenes aquí
+];
 
-  const handlePressIn = (index) => {
-    Animated.timing(animatedValues[index], {
-      toValue: 1,
-      duration: 200,
-      useNativeDriver: false,
-    }).start();
-  };
-
-  const handlePressOut = (index) => {
-    Animated.timing(animatedValues[index], {
-      toValue: 0,
-      duration: 200,
-      useNativeDriver: false,
-    }).start();
-  };
-
-  const cardBackgroundColor = (index) => {
-    return animatedValues[index].interpolate({
-      inputRange: [0, 1],
-      outputRange: ['#fff', '#ffd700'], // from white to bright yellow
-    });
-  };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>Comodo$</Text>
+      <View style={styles.searchContainer}>
+        <Ionicons name="search" size={20} color="#000" style={styles.searchIcon} />
+        <TextInput
+          style={styles.searchInput}
+          placeholder="Buscar..."
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+        />
+      </View>
+      
+      <Image
+        source={{ uri: images[currentImageIndex] }}
+        style={styles.banner}
+      />
+
+      <Text style={styles.title}>Dashboard</Text>
       <View style={styles.grid}>
         {categories.map((category, index) => (
-          <TouchableWithoutFeedback
+          <TouchableOpacity
             key={index}
-            onPressIn={() => handlePressIn(index)}
-            onPressOut={() => handlePressOut(index)}
+            style={styles.card}
+            onPress={() => {
+              if (category.title === 'Categorías') {
+                navigation.navigate('Categories');
+              } else if (category.title === 'Productos') {
+                navigation.navigate('Dashboard');
+              } else if (category.title === 'Descuentos') {
+                navigation.navigate('Mi Perfil');
+              }
+            }}
           >
-            <Animated.View style={[styles.card, { backgroundColor: cardBackgroundColor(index) }]}>
-              <Ionicons name={category.icon} size={40} color="#000" />
-              <Text style={styles.cardTitle}>{category.title}</Text>
-            </Animated.View>
-          </TouchableWithoutFeedback>
+            <Ionicons name={category.icon} size={40} color="#000" />
+            <Text style={styles.cardTitle}>{category.title}</Text>
+          </TouchableOpacity>
         ))}
       </View>
       <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
@@ -67,14 +83,47 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#f5f5f5', // light grey background color for a modern look
+    backgroundColor: '#f5f5f5',
     paddingVertical: 20,
+  },
+  searchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderRadius: 15,
+    padding: 10,
+    marginBottom: 20,
+    width: '90%',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+    elevation: 5,
+  },
+  searchIcon: {
+    marginRight: 10,
+  },
+  searchInput: {
+    flex: 1,
+    fontSize: 18,
+    color: '#333',
+  },
+  banner: {
+    width: '90%',
+    height: 150, // Ajusta la altura según tus necesidades
+    borderRadius: 15,
+    marginBottom: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+    elevation: 5,
   },
   title: {
     fontSize: 26,
     fontWeight: 'bold',
     marginBottom: 20,
-    color: '#333', // dark grey color for the title
+    color: '#333',
   },
   grid: {
     width: '100%',
@@ -101,7 +150,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginTop: 10,
     textAlign: 'center',
-    color: '#333', // dark grey color for card titles
+    color: '#333',
   },
   logoutButton: {
     position: 'absolute',
