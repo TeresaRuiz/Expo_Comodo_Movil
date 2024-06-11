@@ -15,6 +15,10 @@ const PerfilScreen = () => {
     navigation.navigate('MiPerfil');
   };
 
+  const handleTerminosCondicionesPress = () => {
+    navigation.navigate('TerminosyCondiciones'); // Asegúrate de que el nombre coincida
+  };
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.profileContainer}>
@@ -30,7 +34,9 @@ const PerfilScreen = () => {
           <MenuItem title="Mi perfil" icon="person-outline" />
         </TouchableOpacity>
         <MenuItem title="Historial" icon="settings-outline" />
-        <MenuItem title="Terminos y condiciones" icon="document-text-outline" />
+        <TouchableOpacity onPress={handleTerminosCondicionesPress}>
+          <MenuItem title="Terminos y condiciones" icon="document-text-outline" />
+        </TouchableOpacity>
       </View>
 
       <View style={styles.socialContainer}>

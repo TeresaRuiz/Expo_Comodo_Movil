@@ -1,8 +1,11 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, TextInput } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { useNavigation } from '@react-navigation/native';
 
-const ProductoScreen = ({ navigation }) => {
+const ProductoScreen = () => {
+  const navigation = useNavigation();
+
   const products = [
     {
       title: 'Tenis NIKE',
@@ -26,6 +29,10 @@ const ProductoScreen = ({ navigation }) => {
     },
   ];
 
+  const handleVerMas = (producto) => {
+    navigation.navigate('DetallesProducto', { producto });
+  };
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.searchContainer}>
@@ -42,9 +49,13 @@ const ProductoScreen = ({ navigation }) => {
             <Image source={{ uri: product.image }} style={styles.cardImage} />
             <Text style={styles.cardTitle}>{product.title}</Text>
             <Text style={styles.cardDescription}>{product.description}</Text>
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => navigation.navigate('DetallesProducto', { producto: product })}
+            >
               <Text style={styles.buttonText}>Ver más</Text>
             </TouchableOpacity>
+
           </View>
         ))}
       </View>
@@ -114,7 +125,8 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   cardDescription: {
-    fontSize: 16,
+    fontSize:
+      16,
     color: '#555',
     textAlign: 'center',
     marginBottom: 15,

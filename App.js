@@ -10,16 +10,16 @@ import LoginScreen from './src/screens/LoginScreen';
 import RegisterScreen from './src/screens/RegisterScreen';
 import PasswordRecoveryScreen from './src/screens/RecuperacionScreen';
 import DashboardScreen from './src/screens/DashboardScreen';
-import CategoriaScreen from './src/screens/CategoriaScreen'; // Importa la pantalla de categorías
+import CategoriaScreen from './src/screens/CategoriaScreen';
 import PerfilScreen from './src/screens/PerfilScreen';
-import MiPerfilScreen from './src/screens/MiPerfilScreen'; // Importa la pantalla de MiPerfilScreen
+import MiPerfilScreen from './src/screens/MiPerfilScreen';
 import ProductoScreen from './src/screens/ProductoScreen';
+import TerminosCondicionesScreen from './src/screens/Terminos&Condiciones'; // Asegúrate de que la ruta sea correcta
+import DetallesProductoScreen from './src/screens/DetallesProductoScreen';
 
-// Crear los navegadores
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
-// Definir el Tab Navigator para el Dashboard
 const DashboardTabNavigator = () => {
   return (
     <Tab.Navigator screenOptions={{ headerShown: false }}>
@@ -50,7 +50,6 @@ const DashboardTabNavigator = () => {
           ),
         }}
       />
-      {/* Aquí puedes añadir más pantallas del Dashboard si es necesario */}
     </Tab.Navigator>
   );
 };
@@ -77,8 +76,9 @@ export default function App() {
             <Stack.Screen name="DashboardTabs" component={DashboardTabNavigator} />
             <Stack.Screen name="Perfil" component={PerfilScreen} />
             <Stack.Screen name="MiPerfil" component={MiPerfilScreen} />
-            {/* Agregamos directamente la pantalla ProductoScreen */}
             <Stack.Screen name="Producto" component={ProductoScreen} />
+            <Stack.Screen name="TerminosyCondiciones" component={TerminosCondicionesScreen} />
+            <Stack.Screen name="DetallesProducto" component={DetallesProductoScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       )}
