@@ -2,34 +2,34 @@ import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, TextInput } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-const ProductoScreen = ({ navigation }) => [
-  {
-    title: 'Tenis NIKE',
-    description: 'Zapatos cómodos y deportivos',
-    sizes: ['14', '20', '32'],
-    image: 'https://via.placeholder.com/150',
-  },
-  {
-    title: 'Tenis NIKE',
-    description: 'Zapatos cómodos y deportivos',
-    sizes: ['14', '20', '32'],
-    image: 'https://via.placeholder.com/150',
-  },
-  {
-    title: 'Tenis NIKE',
-    description: 'Zapatos cómodos y deportivos',
-    sizes: ['14', '20', '32'],
-    image: 'https://via.placeholder.com/150',
-  },
-  {
-    title: 'Tenis NIKE',
-    description: 'Zapatos cómodos y deportivos',
-    sizes: ['14', '20', '32'],
-    image: 'https://via.placeholder.com/150',
-  },
-];
+const ProductoScreen = ({ navigation }) => {
+  const products = [
+    {
+      title: 'Tenis NIKE',
+      description: 'Zapatos cómodos y deportivos',
+      sizes: ['14', '20', '32'],
+      image: 'https://via.placeholder.com/150',
+    },
+    {
+      title: 'Tenis NIKE',
+      description: 'Zapatos cómodos y deportivos',
+      sizes: ['14', '20', '32'],
+      image: 'https://via.placeholder.com/150',
+    },
+    {
+      title: 'Tenis NIKE',
+      description: 'Zapatos cómodos y deportivos',
+      sizes: ['14', '20', '32'],
+      image: 'https://via.placeholder.com/150',
+    },
+    {
+      title: 'Tenis NIKE',
+      description: 'Zapatos cómodos y deportivos',
+      sizes: ['14', '20', '32'],
+      image: 'https://via.placeholder.com/150',
+    },
+  ];
 
-const DashboardScreen = ({ navigation }) => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.searchContainer}>
@@ -153,4 +153,3 @@ const styles = StyleSheet.create({
 });
 
 export default ProductoScreen;
-

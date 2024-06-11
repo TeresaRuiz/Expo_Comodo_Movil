@@ -2,11 +2,17 @@ import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, Linking } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { FontAwesome } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
-const PerfilScreen = ({ navigation }) => {
+const PerfilScreen = () => {
+  const navigation = useNavigation();
 
   const abrirFacebook = () => {
     Linking.openURL('https://www.facebook.com/Comodos.sv');
+  };
+
+  const handleMiPerfilPress = () => {
+    navigation.navigate('MiPerfil');
   };
 
   return (
@@ -20,7 +26,9 @@ const PerfilScreen = ({ navigation }) => {
       </View>
 
       <View style={styles.menuContainer}>
-        <MenuItem title="Mi perfil" icon="person-outline" />
+        <TouchableOpacity onPress={handleMiPerfilPress}>
+          <MenuItem title="Mi perfil" icon="person-outline" />
+        </TouchableOpacity>
         <MenuItem title="Historial" icon="settings-outline" />
         <MenuItem title="Terminos y condiciones" icon="document-text-outline" />
       </View>
@@ -44,10 +52,10 @@ const PerfilScreen = ({ navigation }) => {
 };
 
 const MenuItem = ({ title, icon }) => (
-  <TouchableOpacity style={styles.menuItem}>
+  <View style={styles.menuItem}>
     <Ionicons name={icon} size={24} color="#000" />
     <Text style={styles.menuItemText}>{title}</Text>
-  </TouchableOpacity>
+  </View>
 );
 
 const styles = StyleSheet.create({

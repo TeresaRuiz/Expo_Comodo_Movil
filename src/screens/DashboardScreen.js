@@ -28,7 +28,7 @@ const DashboardScreen = ({ navigation }) => {
     'https://image.shutterstock.com/z/stock-photo-banner-600w-1673295406.jpg',
     'https://image.shutterstock.com/z/stock-photo-abstract-geometric-background-with-connected-lines-and-dots-molecule-and-communication-background-1120877741.jpg',
     'https://image.shutterstock.com/z/stock-photo-colorful-autumn-landscape-1270654792.jpg',
-    'https://image.shutterstock.com/z/stock-photo-abstract-geometric-background-with-connected-lines-and-dots-molecule-and-communication-background-680546503.jpg',    
+    'https://image.shutterstock.com/z/stock-photo-abstract-geometric-background-with-connected-lines-and-dots-molecule-and-communication-background-680546503.jpg',
   ];
 
   return (
@@ -42,7 +42,7 @@ const DashboardScreen = ({ navigation }) => {
           onChangeText={setSearchQuery}
         />
       </View>
-      
+
       <Image
         source={{ uri: images[currentImageIndex] }}
         style={styles.banner}
@@ -58,7 +58,7 @@ const DashboardScreen = ({ navigation }) => {
               if (category.title === 'Categorías') {
                 navigation.navigate('Categories');
               } else if (category.title === 'Productos') {
-                navigation.navigate('Productos');
+                navigation.navigate('Producto');
               } else if (category.title === 'Ofertas') {
                 navigation.navigate('Ofertas');
               }

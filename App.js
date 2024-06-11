@@ -12,6 +12,7 @@ import PasswordRecoveryScreen from './src/screens/RecuperacionScreen';
 import DashboardScreen from './src/screens/DashboardScreen';
 import CategoriaScreen from './src/screens/CategoriaScreen'; // Importa la pantalla de categorías
 import PerfilScreen from './src/screens/PerfilScreen';
+import MiPerfilScreen from './src/screens/MiPerfilScreen'; // Importa la pantalla de MiPerfilScreen
 import ProductoScreen from './src/screens/ProductoScreen';
 
 // Crear los navegadores
@@ -74,6 +75,10 @@ export default function App() {
             <Stack.Screen name="Register" component={RegisterScreen} />
             <Stack.Screen name="PasswordRecovery" component={PasswordRecoveryScreen} />
             <Stack.Screen name="DashboardTabs" component={DashboardTabNavigator} />
+            <Stack.Screen name="Perfil" component={PerfilScreen} />
+            <Stack.Screen name="MiPerfil" component={MiPerfilScreen} />
+            {/* Agregamos directamente la pantalla ProductoScreen */}
+            <Stack.Screen name="Producto" component={ProductoScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       )}

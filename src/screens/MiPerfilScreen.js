@@ -1,8 +1,7 @@
 import React, { useState, useRef } from 'react';
-import { View, Text, TextInput, StyleSheet, Image, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Image, TouchableOpacity } from 'react-native';
 
 const MiPerfilScreen = () => {
-  const [selectedGender, setSelectedGender] = useState('Male');
   const [nombre, setNombre] = useState('');
   const [username, setUsername] = useState('');
   const [correo, setCorreo] = useState('');
@@ -27,41 +26,6 @@ const MiPerfilScreen = () => {
     telefonoRef.current.clear();
   };
 
-  const handleNombreChange = (text) => {
-    // Expresión regular para aceptar solo letras, espacios y tildes
-    const regex = /^[a-zA-ZáéíóúÁÉÍÓÚ\s]*$/;
-    if (regex.test(text) || text === '') {
-      // Actualizar el estado solo si la entrada es válida
-      setNombre(text);
-    }
-  };
-
-  const handleUsernameChange = (text) => {
-    setUsername(text);
-  };
-
-  const handleCorreoChange = (text) => {
-    // Expresión regular para validar el formato del correo electrónico
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (regex.test(text) || text === '') {
-      setCorreo(text);
-    }
-  };
-
-  const handleTelefonoChange = (text) => {
-    // Actualizar el estado del teléfono
-    setTelefono(text);
-  };
-
-  const handleUpdatePress = () => {
-    // Verificar si se han completado todos los campos obligatorios
-    if (!nombre || !correo || !telefono || !username) {
-      Alert.alert('Falta información', 'Por favor completa todos los campos obligatorios.');
-      return;
-    }
-    // Lógica para actualizar
-  };
-
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Datos Personales</Text>
@@ -78,7 +42,7 @@ const MiPerfilScreen = () => {
           style={styles.input}
           placeholder="Dickey"
           keyboardType="default"
-          onChangeText={handleNombreChange}
+          onChangeText={setNombre}
           value={nombre}
         />
       </View>
@@ -89,7 +53,7 @@ const MiPerfilScreen = () => {
           style={styles.input}
           placeholder="DK123"
           keyboardType="email-address"
-          onChangeText={handleUsernameChange}
+          onChangeText={setUsername}
           value={username}
         />
       </View>
@@ -100,7 +64,7 @@ const MiPerfilScreen = () => {
           style={styles.input}
           placeholder="DK123@gmail.com"
           keyboardType="email-address"
-          onChangeText={handleCorreoChange}
+          onChangeText={setCorreo}
           value={correo}
         />
       </View>
@@ -111,16 +75,16 @@ const MiPerfilScreen = () => {
           style={styles.input}
           placeholder="2250-5555"
           keyboardType="phone-pad"
-          onChangeText={handleTelefonoChange}
+          onChangeText={setTelefono}
           value={telefono}
         />
       </View>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={[styles.button, styles.updateButton]} onPress={handleUpdatePress}>
+        <TouchableOpacity style={[styles.button, styles.updateButton]} onPress={handleUpdate}>
           <Text style={styles.buttonText}>Actualizar</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[styles.button, styles.deleteButton]} onPress={handleDelete}>
-          <Text style={styles.buttonText}>Eliminar</Text>
+          <Text style={styles.buttonText}>Cancelar</Text>
         </TouchableOpacity>
       </View>
     </View>

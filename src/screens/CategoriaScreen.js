@@ -11,10 +11,10 @@ const DashboardScreen = ({ navigation }) => {
     { title: 'Bags', icon: 'bag-outline', bgColor: '#FFCC00' },
     { title: 'Clothes', icon: 'shirt-outline', bgColor: '#FF6699' },
     { title: 'T-Shirts', icon: 'shirt-outline', bgColor: '#33CCFF' },
-    { title: 'Lorem ipsum', icon: 'glasses-outline', bgColor: '#33CCFF' },
-    { title: 'Deep sit', icon: 'footsteps-outline', bgColor: '#33CCFF' },
-    { title: 'Lorem ipsum', icon: 'leaf-outline', bgColor: '#33CCFF' },
-    { title: 'Sit amet', icon: 'flask-outline', bgColor: '#33CCFF' },
+    { title: '', icon: 'glasses-outline', bgColor: '#33CCFF' },
+    { title: '', icon: 'footsteps-outline', bgColor: '#33CCFF' },
+    { title: '', icon: 'leaf-outline', bgColor: '#33CCFF' },
+    { title: '', icon: 'flask-outline', bgColor: '#33CCFF' },
   ];
 
   const animatedValues = categories.map(() => useRef(new Animated.Value(0)).current);
