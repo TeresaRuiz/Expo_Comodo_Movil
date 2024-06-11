@@ -21,17 +21,15 @@ const DashboardScreen = ({ navigation }) => {
   const categories = [
     { title: 'Categorías', icon: 'grid-outline' },
     { title: 'Productos', icon: 'pricetag-outline' },
-    { title: 'Descuentos', icon: 'pricetags-outline' }
+    { title: 'Ofertas', icon: 'pricetags-outline' },
   ];
 
   const images = [
-  'https://image.shutterstock.com/z/stock-photo-banner-600w-1673295406.jpg',
-'https://image.shutterstock.com/z/stock-photo-abstract-geometric-background-with-connected-lines-and-dots-molecule-and-communication-background-1120877741.jpg',
-  'https://image.shutterstock.com/z/stock-photo-colorful-autumn-landscape-1270654792.jpg',
-  'https://image.shutterstock.com/z/stock-photo-abstract-geometric-background-with-connected-lines-and-dots-molecule-and-communication-background-680546503.jpg',    
-  // Añade más URLs de imágenes aquí
-];
-
+    'https://image.shutterstock.com/z/stock-photo-banner-600w-1673295406.jpg',
+    'https://image.shutterstock.com/z/stock-photo-abstract-geometric-background-with-connected-lines-and-dots-molecule-and-communication-background-1120877741.jpg',
+    'https://image.shutterstock.com/z/stock-photo-colorful-autumn-landscape-1270654792.jpg',
+    'https://image.shutterstock.com/z/stock-photo-abstract-geometric-background-with-connected-lines-and-dots-molecule-and-communication-background-680546503.jpg',    
+  ];
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -60,9 +58,9 @@ const DashboardScreen = ({ navigation }) => {
               if (category.title === 'Categorías') {
                 navigation.navigate('Categories');
               } else if (category.title === 'Productos') {
-                navigation.navigate('Dashboard');
-              } else if (category.title === 'Descuentos') {
-                navigation.navigate('Mi Perfil');
+                navigation.navigate('Productos');
+              } else if (category.title === 'Ofertas') {
+                navigation.navigate('Ofertas');
               }
             }}
           >
@@ -110,7 +108,7 @@ const styles = StyleSheet.create({
   },
   banner: {
     width: '90%',
-    height: 150, // Ajusta la altura según tus necesidades
+    height: 150,
     borderRadius: 15,
     marginBottom: 20,
     shadowColor: '#000',

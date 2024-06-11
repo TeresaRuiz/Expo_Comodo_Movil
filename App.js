@@ -12,6 +12,7 @@ import PasswordRecoveryScreen from './src/screens/RecuperacionScreen';
 import DashboardScreen from './src/screens/DashboardScreen';
 import CategoriaScreen from './src/screens/CategoriaScreen'; // Importa la pantalla de categorías
 import PerfilScreen from './src/screens/PerfilScreen';
+import ProductoScreen from './src/screens/ProductoScreen';
 
 // Crear los navegadores
 const Stack = createStackNavigator();
