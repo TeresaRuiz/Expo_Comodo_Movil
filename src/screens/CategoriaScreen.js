@@ -46,21 +46,6 @@ const DashboardScreen = ({ navigation }) => {
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Categorías</Text>
       <View style={styles.grid}>
-        {categories.slice(0, 3).map((category, index) => (
-          <TouchableWithoutFeedback
-            key={index}
-            onPressIn={() => handlePressIn(index)}
-            onPressOut={() => handlePressOut(index)}
-          >
-            <Animated.View style={[styles.card, { backgroundColor: cardBackgroundColor(index, category.bgColor) }]}>
-              <Ionicons name={category.icon} size={40} color="#000" />
-              <Text style={styles.cardTitle}>{category.title}</Text>
-            </Animated.View>
-          </TouchableWithoutFeedback>
-        ))}
-      </View>
-      <Text style={styles.sectionTitle}>Lorem ipsum</Text>
-      <View style={styles.grid}>
         {categories.slice(3).map((category, index) => (
           <TouchableWithoutFeedback
             key={index + 3}
@@ -74,6 +59,8 @@ const DashboardScreen = ({ navigation }) => {
           </TouchableWithoutFeedback>
         ))}
       </View>
+      
+      
       <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
         <Ionicons name="lock-closed" size={24} color="black" />
       </TouchableOpacity>
