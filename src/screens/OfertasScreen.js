@@ -8,7 +8,7 @@ const OfertasScreen = ({ navigation }) => {
       id: '1',
       title: 'Zapatillas Deportivas Nike',
       description: 'Zapatillas ideales para correr, disponibles en varios colores.',
-      image: 'https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/bf5af5bb-ae08-48af-a022-b765d1e1bb33/revolution-7-zapatillas-de-running-asfalto-WjdXFH.png',
+      image: 'https://i.pinimg.com/736x/2a/cf/5f/2acf5f8b73e26f38bc018e0bafb70875.jpg',
       price: 49.95,
       discount: 30,
     },
@@ -16,11 +16,10 @@ const OfertasScreen = ({ navigation }) => {
       id: '2',
       title: 'Sandalias Verano Adidas',
       description: 'Sandalias cómodas y resistentes para el verano.',
-      image: 'https://example.com/adidas-sandals.jpg',
+      image: 'https://i.pinimg.com/564x/dc/16/1b/dc161b4d8cb4a0df94f6c15b613aaf3d.jpg',
       price: 29.99,
       discount: 20,
     },
-    // Agrega más ofertas según sea necesario
   ];
 
   const renderOfertaItem = ({ item }) => (
