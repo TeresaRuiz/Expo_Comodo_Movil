@@ -2,6 +2,9 @@ import React from 'react';
 import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
+// Importa la imagen de "Promo"
+import PromoImage from '../img/promo.png'; // Ajusta la ruta según donde hayas guardado la imagen
+
 const OfertasScreen = ({ navigation }) => {
   const ofertas = [
     {
@@ -45,6 +48,9 @@ const OfertasScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      {/* Imagen de "Promo" */}
+      <Image source={PromoImage} style={styles.promoImage} />
+
       <FlatList
         data={ofertas}
         renderItem={renderOfertaItem}
@@ -63,6 +69,12 @@ const styles = StyleSheet.create({
   listContainer: {
     paddingVertical: 20,
     paddingHorizontal: 10,
+  },
+  promoImage: {
+    width: '100%', 
+    height: 250, 
+    resizeMode: 'cover',
+    marginBottom: 20,
   },
   ofertaCard: {
     flexDirection: 'row',
