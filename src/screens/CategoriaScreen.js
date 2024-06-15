@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Animated, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Animated, TouchableWithoutFeedback, Image } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 const DashboardScreen = ({ navigation }) => {
@@ -8,13 +8,12 @@ const DashboardScreen = ({ navigation }) => {
   };
 
   const categories = [
-    { title: 'Bags', icon: 'bag-outline', bgColor: '#FFCC00' },
-    { title: 'Clothes', icon: 'shirt-outline', bgColor: '#FF6699' },
-    { title: 'T-Shirts', icon: 'shirt-outline', bgColor: '#33CCFF' },
-    { title: '', icon: 'glasses-outline', bgColor: '#33CCFF' },
-    { title: '', icon: 'footsteps-outline', bgColor: '#33CCFF' },
-    { title: '', icon: 'leaf-outline', bgColor: '#33CCFF' },
-    { title: '', icon: 'flask-outline', bgColor: '#33CCFF' },
+    { title: 'Calzado playero', image: require('../img/playa.png'), bgColor: '#FFCC00' },
+    { title: 'Calzado casual', image: require('../img/casuales.png'), bgColor: '#FF6699' },
+    { title: 'Calzado deportivo', image: require('../img/deportivo.png'), bgColor: '#33CCFF' },
+    { title: 'Botines', image: require('../img/botines.png'), bgColor: '#33CCFF' },
+    { title: 'Sandalias', image: require('../img/sandalias.png'), bgColor: '#33CCFF' },
+    { title: 'Calzado para niño', image: require('../img/niños.png'), bgColor: '#33CCFF' }
   ];
 
   const animatedValues = categories.map(() => useRef(new Animated.Value(0)).current);
@@ -46,20 +45,19 @@ const DashboardScreen = ({ navigation }) => {
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Categorías</Text>
       <View style={styles.grid}>
-        {categories.slice(3).map((category, index) => (
+        {categories.map((category, index) => (
           <TouchableWithoutFeedback
-            key={index + 3}
-            onPressIn={() => handlePressIn(index + 3)}
-            onPressOut={() => handlePressOut(index + 3)}
+            key={index}
+            onPressIn={() => handlePressIn(index)}
+            onPressOut={() => handlePressOut(index)}
           >
-            <Animated.View style={[styles.card, { backgroundColor: cardBackgroundColor(index + 3, category.bgColor) }]}>
-              <Ionicons name={category.icon} size={40} color="#000" />
+            <Animated.View style={[styles.card, { backgroundColor: cardBackgroundColor(index, category.bgColor) }]}>
+              <Image source={category.image} style={styles.image} />
               <Text style={styles.cardTitle}>{category.title}</Text>
             </Animated.View>
           </TouchableWithoutFeedback>
         ))}
       </View>
-      
       
       <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
         <Ionicons name="lock-closed" size={24} color="black" />
@@ -109,12 +107,16 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
     elevation: 5,
   },
+  image: {
+    width: 40,
+    height: 40,
+  },
   cardTitle: {
     fontSize: 18,
     fontWeight: 'bold',
     marginTop: 10,
     textAlign: 'center',
-    color: '#333', // dark grey color for card titles
+    color: '#333',
   },
   logoutButton: {
     position: 'absolute',
