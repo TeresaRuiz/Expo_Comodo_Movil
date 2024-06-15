@@ -16,6 +16,7 @@ import MiPerfilScreen from './src/screens/MiPerfilScreen';
 import ProductoScreen from './src/screens/ProductoScreen';
 import TerminosCondicionesScreen from './src/screens/Terminos&Condiciones'; // Asegúrate de que la ruta sea correcta
 import DetallesProductoScreen from './src/screens/DetallesProductoScreen';
+import OfertasScreen from './src/screens/OfertasScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -77,6 +78,7 @@ export default function App() {
             <Stack.Screen name="Perfil" component={PerfilScreen} />
             <Stack.Screen name="MiPerfil" component={MiPerfilScreen} />
             <Stack.Screen name="Producto" component={ProductoScreen} />
+            <Stack.Screen name="Ofertas" component={OfertasScreen} />
             <Stack.Screen name="TerminosyCondiciones" component={TerminosCondicionesScreen} />
             <Stack.Screen name="DetallesProducto" component={DetallesProductoScreen} />
           </Stack.Navigator>
