@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from 'react
 import { Ionicons } from '@expo/vector-icons';
 
 // Importa la imagen de "Promo"
-import PromoImage from '../img/promo.png'; // Ajusta la ruta según donde hayas guardado la imagen
+import PromoImage from '../img/ofertas.png'; // Ajusta la ruta según donde hayas guardado la imagen
 
 const OfertasScreen = ({ navigation }) => {
   const ofertas = [
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   discountBadge: {
-    backgroundColor: '#FF6347',
+    backgroundColor: '#3046BC',
     paddingVertical: 3,
     paddingHorizontal: 8,
     borderRadius: 5,
