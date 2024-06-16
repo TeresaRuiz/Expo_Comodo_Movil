@@ -81,10 +81,10 @@ const MiPerfilScreen = () => {
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={[styles.button, styles.updateButton]} onPress={handleUpdate}>
-          <Text style={styles.buttonText}>Actualizar</Text>
+          <Text style={[styles.buttonText, styles.updateButtonText]}>Actualizar</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[styles.button, styles.deleteButton]} onPress={handleDelete}>
-          <Text style={styles.buttonText}>Cancelar</Text>
+          <Text style={[styles.buttonText, styles.deleteButtonText]}>Cancelar</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -152,17 +152,29 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#283AE2', // Color base para los botones
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+    elevation: 8,
   },
   buttonText: {
-    color: '#fff',
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: 'bold',
+    textAlign: 'center',
   },
   updateButton: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#009929', // Color verde para botón "Actualizar"
   },
   deleteButton: {
-    backgroundColor: '#F44336',
+    backgroundColor: '#ca0b0b', // Color rojo para botón "Cancelar"
+  },
+  updateButtonText: {
+    color: '#fff',
+  },
+  deleteButtonText: {
+    color: '#fff',
   },
 });
 

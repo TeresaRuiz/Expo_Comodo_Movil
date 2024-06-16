@@ -31,38 +31,43 @@ const DashboardTabNavigator = () => {
         component={DashboardScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="stats-chart-outline" size={size} color={color} />
+            <Ionicons name="home" size={size} color={color} />
           ),
+          tabBarLabel: () => null,
         }}
       />
       <Tab.Screen
-        name="Categories"
+        name="Categorias"
         component={CategoriaScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="list-outline" size={size} color={color} />
+            <Ionicons name="albums" size={size} color={color} />
           ),
+          tabBarLabel: () => null, // Esto oculta el nombre de la pestaña
         }}
       />
+
       <Tab.Screen
-        name="Mi Perfil"
-        component={PerfilScreen}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="list-outline" size={size} color={color} />
-          ),
-        }}
-        
-      />
-       <Tab.Screen
         name="Carrito"
         component={CarritoScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="list-outline" size={size} color={color} />
+            <Ionicons name="bag" size={size} color={color} />
           ),
+          tabBarLabel: () => null,
         }}
-        
+
+      />
+
+       <Tab.Screen
+        name="Mi Perfil"
+        component={PerfilScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="person" size={size} color={color} />
+          ),
+          tabBarLabel: () => null,
+        }}
       />
     </Tab.Navigator>
   );
