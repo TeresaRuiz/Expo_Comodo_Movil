@@ -24,6 +24,13 @@ const CarritoScreen = ({ navigation }) => {
         id: '3',
         title: 'Tenis NIKE',
         description: 'Subtotal',
+        image: 'https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/c20afd60-b230-4815-bfd2-6768c875f6cd/calzado-air-force-1-07-J7xw5P.png',
+        price: 29.99,
+      },
+      {
+        id: '4',
+        title: 'Tenis NIKE',
+        description: 'Subtotal',
         image: 'https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/022c7053-5c55-4bc4-8cdc-72c6e8f95a5e/tenis-air-jordan-1-retro-high-og-latte-Dw2wdP.png',
         price: 29.99,
       },
