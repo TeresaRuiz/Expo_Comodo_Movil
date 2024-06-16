@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, ScrollView, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import MapView, { Marker } from 'react-native-maps';
 
 const RegisterScreen = () => {
   const [name, setName] = useState('');
@@ -11,6 +12,12 @@ const RegisterScreen = () => {
   const [phone, setPhone] = useState('');
   const [dui, setDui] = useState('');
   const [address, setAddress] = useState('');
+  const [location, setLocation] = useState({
+    latitude: 37.78825,
+    longitude: -122.4324,
+    latitudeDelta: 0.0922,
+    longitudeDelta: 0.0421,
+  });
 
   const navigation = useNavigation();
 
@@ -26,6 +33,18 @@ const RegisterScreen = () => {
 
   const handleLoginRedirect = () => {
     navigation.navigate('Login');
+  };
+
+  const handleMapPress = (event) => {
+    const { latitude, longitude } = event.nativeEvent.coordinate;
+    setLocation({
+      ...location,
+      latitude,
+      longitude,
+    });
+
+    // Aquí puedes usar alguna API de geocodificación inversa para obtener la dirección desde la latitud y longitud
+    setAddress(`Lat: ${latitude}, Lon: ${longitude}`);
   };
 
   return (
@@ -83,6 +102,13 @@ const RegisterScreen = () => {
         onChangeText={text => setAddress(text)}
         value={address}
       />
+      <MapView
+        style={styles.map}
+        region={location}
+        onPress={handleMapPress}
+      >
+        <Marker coordinate={location} />
+      </MapView>
       <TouchableOpacity style={styles.button} onPress={handleRegister}>
         <Text style={styles.buttonText}>Registrarse</Text>
       </TouchableOpacity>
@@ -112,6 +138,11 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 10,
     paddingHorizontal: 15,
+    marginBottom: 15,
+  },
+  map: {
+    width: '80%',
+    height: 200,
     marginBottom: 15,
   },
   button: {
