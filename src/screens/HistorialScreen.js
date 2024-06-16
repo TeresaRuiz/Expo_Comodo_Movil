@@ -30,6 +30,42 @@ const HistorialScreen = ({ navigation }) => {
       price: 29.99,
       discount: 20,
     },
+    
+    {
+      id: '2',
+      title: 'Sandalias Verano Adidas',
+      description: 'Sandalias cómodas y resistentes para el verano.',
+      image: 'https://i.pinimg.com/564x/dc/16/1b/dc161b4d8cb4a0df94f6c15b613aaf3d.jpg',
+      price: 29.99,
+      discount: 20,
+    },
+    
+    {
+      id: '2',
+      title: 'Sandalias Verano Adidas',
+      description: 'Sandalias cómodas y resistentes para el verano.',
+      image: 'https://i.pinimg.com/564x/dc/16/1b/dc161b4d8cb4a0df94f6c15b613aaf3d.jpg',
+      price: 29.99,
+      discount: 20,
+    },
+    
+    {
+      id: '2',
+      title: 'Sandalias Verano Adidas',
+      description: 'Sandalias cómodas y resistentes para el verano.',
+      image: 'https://i.pinimg.com/564x/dc/16/1b/dc161b4d8cb4a0df94f6c15b613aaf3d.jpg',
+      price: 29.99,
+      discount: 20,
+    },
+    
+    {
+      id: '2',
+      title: 'Sandalias Verano Adidas',
+      description: 'Sandalias cómodas y resistentes para el verano.',
+      image: 'https://i.pinimg.com/564x/dc/16/1b/dc161b4d8cb4a0df94f6c15b613aaf3d.jpg',
+      price: 29.99,
+      discount: 20,
+    },
   ];
 
   const renderOfertaItem = ({ item }) => (
