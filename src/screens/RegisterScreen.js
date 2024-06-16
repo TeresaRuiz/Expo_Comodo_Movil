@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, StyleSheet, TextInput, TouchableOpacity, Image } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Image, TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import MapView, { Marker } from 'react-native-maps';
+import axios from 'axios';
+import DebouncedSearchInput from '../screens/DebouncedSearchInput'; // Ajusta la ruta según tu estructura de archivos
 
 const RegisterScreen = () => {
   const [name, setName] = useState('');
@@ -13,8 +15,8 @@ const RegisterScreen = () => {
   const [dui, setDui] = useState('');
   const [address, setAddress] = useState('');
   const [location, setLocation] = useState({
-    latitude: 37.78825,
-    longitude: -122.4324,
+    latitude: 13.69294,  // Latitud de San Salvador, El Salvador
+    longitude: -89.21819, // Longitud de San Salvador, El Salvador
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   });
@@ -35,7 +37,7 @@ const RegisterScreen = () => {
     navigation.navigate('Login');
   };
 
-  const handleMapPress = (event) => {
+  const handleMapPress = async (event) => {
     const { latitude, longitude } = event.nativeEvent.coordinate;
     setLocation({
       ...location,
@@ -43,8 +45,48 @@ const RegisterScreen = () => {
       longitude,
     });
 
-    // Aquí puedes usar alguna API de geocodificación inversa para obtener la dirección desde la latitud y longitud
-    setAddress(`Lat: ${latitude}, Lon: ${longitude}`);
+    try {
+      const response = await axios.get(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&addressdetails=1`);
+      if (response.data && response.data.display_name) {
+        const formattedAddress = response.data.display_name;
+        setAddress(formattedAddress);
+      } else {
+        setAddress('Dirección no disponible');
+      }
+    } catch (error) {
+      console.error('Error al obtener la dirección:', error);
+      setAddress('Error al obtener la dirección');
+    }
+  };
+
+  const handleSearchAddress = async (text) => {
+    try {
+      const response = await axios.get(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(text)}&format=json&addressdetails=1`);
+      if (response.data && response.data.length > 0) {
+        const { lat, lon } = response.data[0];
+        setLocation({
+          ...location,
+          latitude: parseFloat(lat),
+          longitude: parseFloat(lon),
+        });
+      }
+    } catch (error) {
+      console.error('Error al buscar la dirección:', error);
+    }
+  };
+
+  const handleClearAddress = () => {
+    setAddress('');
+    setLocation({
+      latitude: 13.69294,  // Latitud de San Salvador, El Salvador
+      longitude: -89.21819, // Longitud de San Salvador, El Salvador
+      latitudeDelta: 0.0922,
+      longitudeDelta: 0.0421,
+    });
+  };
+
+  const handleAddressChange = (text) => {
+    setAddress(text);
   };
 
   return (
@@ -99,12 +141,16 @@ const RegisterScreen = () => {
         onChangeText={text => setDui(text)}
         value={dui}
       />
-      <TextInput
-        style={styles.input}
-        placeholder="Dirección"
-        onChangeText={text => setAddress(text)}
-        value={address}
-      />
+      <View style={styles.addressContainer}>
+        <DebouncedSearchInput
+          onSearch={handleSearchAddress}
+          value={address}
+          onChangeText={handleAddressChange}
+        />
+        <TouchableOpacity style={styles.clearButton} onPress={handleClearAddress}>
+          <Text style={styles.clearButtonText}>Limpiar</Text>
+        </TouchableOpacity>
+      </View>
       <MapView
         style={styles.map}
         region={location}
@@ -112,7 +158,7 @@ const RegisterScreen = () => {
       >
         <Marker coordinate={location} />
       </MapView>
-      <TouchableOpacity style={styles.button} onPress={handleRegister}>
+      <TouchableOpacity style={styles.registerButton} onPress={handleRegister}>
         <Text style={styles.buttonText}>Registrarse</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={handleLoginRedirect}>
@@ -128,15 +174,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#fff',
-    paddingVertical: 20,
+    paddingVertical: 70,
   },
   titleContainer: {
     alignItems: 'center',
     marginBottom: 20,
   },
   logo: {
-    width: 250, // Ajusta el tamaño de la imagen según tus necesidades
-    height: 200, // Ajusta el tamaño de la imagen según tus necesidades
+    width: 250,
+    height: 200,
     marginBottom: 10,
   },
   title: {
@@ -151,16 +197,46 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     marginBottom: 15,
   },
+  addressContainer: {
+    width: '80%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 15,
+  },
+  addressInput: {
+    flex: 1,
+    backgroundColor: '#f0f0f0',
+    height: 50,
+    borderRadius: 10,
+    paddingHorizontal: 15,
+    marginRight: 10,
+  },
+  clearButton: {
+    backgroundColor: '#ff4d4d',
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    borderRadius: 10,
+  },
+  clearButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
   map: {
     width: '80%',
     height: 200,
     marginBottom: 15,
   },
-  button: {
+  registerButton: {
     backgroundColor: '#3046BC',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
+    width: '80%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 12,
     borderRadius: 10,
+    marginBottom: 10,
   },
   buttonText: {
     color: 'white',
@@ -170,7 +246,6 @@ const styles = StyleSheet.create({
   loginRedirectText: {
     color: '#007bff',
     fontSize: 16,
-    marginTop: 20,
     textDecorationLine: 'underline',
   },
 });
