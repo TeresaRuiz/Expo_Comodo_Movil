@@ -1,19 +1,18 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
 
 const PasswordRecoveryScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
 
   const handleRecovery = () => {
-    // Aquí puedes agregar la lógica para enviar un correo electrónico de recuperación de contraseña
-    console.log('Se enviará un correo electrónico de recuperación a:', email);
 
-    // Aquí podrías agregar la lógica para enviar el correo electrónico de recuperación
+    console.log('Se enviará un correo electrónico de recuperación a:', email);
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Recuperar contraseña</Text>
+      <Image source={require('../img/recuperarconra.png')} style={styles.logo} />
       <TextInput
         style={styles.input}
         placeholder="Correo electrónico"
@@ -24,7 +23,6 @@ const PasswordRecoveryScreen = ({ navigation }) => {
       <TouchableOpacity style={styles.button} onPress={handleRecovery}>
         <Text style={styles.buttonText}>Enviar correo de recuperación</Text>
       </TouchableOpacity>
-      {/* Agregar el enlace para ir al inicio de sesión */}
       <TouchableOpacity onPress={() => navigation.navigate('Login')}>
         <Text style={styles.link}>Volver al inicio de sesión</Text>
       </TouchableOpacity>
@@ -43,6 +41,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  logo: {
+    width: 250,
+    height: 235,
     marginBottom: 20,
   },
   input: {
@@ -54,7 +57,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   button: {
-    backgroundColor: '#007bff',
+    backgroundColor: '#3046BC',
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 10,

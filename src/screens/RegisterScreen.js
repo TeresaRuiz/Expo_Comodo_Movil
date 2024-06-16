@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, TextInput, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import MapView, { Marker } from 'react-native-maps';
 
@@ -49,7 +49,10 @@ const RegisterScreen = () => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>Registro</Text>
+      <View style={styles.titleContainer}>
+        <Image source={require('../img/registro.png')} style={styles.logo} />
+        <Text style={styles.title}>Registro</Text>
+      </View>
       <TextInput
         style={styles.input}
         placeholder="Nombre"
@@ -127,10 +130,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     paddingVertical: 20,
   },
+  titleContainer: {
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  logo: {
+    width: 250, // Ajusta el tamaño de la imagen según tus necesidades
+    height: 200, // Ajusta el tamaño de la imagen según tus necesidades
+    marginBottom: 10,
+  },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 20,
   },
   input: {
     width: '80%',
@@ -146,7 +157,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   button: {
-    backgroundColor: '#007bff',
+    backgroundColor: '#3046BC',
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 10,

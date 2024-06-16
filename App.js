@@ -13,9 +13,12 @@ import DashboardScreen from './src/screens/DashboardScreen';
 import CategoriaScreen from './src/screens/CategoriaScreen';
 import PerfilScreen from './src/screens/PerfilScreen';
 import MiPerfilScreen from './src/screens/MiPerfilScreen';
+import CarritoScreen from './src/screens/CarritoScreen';
+import HistorialScreen from './src/screens/HistorialScreen';
 import ProductoScreen from './src/screens/ProductoScreen';
 import TerminosCondicionesScreen from './src/screens/Terminos&Condiciones'; // Asegúrate de que la ruta sea correcta
 import DetallesProductoScreen from './src/screens/DetallesProductoScreen';
+import OfertasScreen from './src/screens/OfertasScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -49,6 +52,17 @@ const DashboardTabNavigator = () => {
             <Ionicons name="list-outline" size={size} color={color} />
           ),
         }}
+        
+      />
+       <Tab.Screen
+        name="Carrito"
+        component={CarritoScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="list-outline" size={size} color={color} />
+          ),
+        }}
+        
       />
     </Tab.Navigator>
   );
@@ -77,6 +91,9 @@ export default function App() {
             <Stack.Screen name="Perfil" component={PerfilScreen} />
             <Stack.Screen name="MiPerfil" component={MiPerfilScreen} />
             <Stack.Screen name="Producto" component={ProductoScreen} />
+            <Stack.Screen name="Carrito" component={CarritoScreen} />
+            <Stack.Screen name="Historial" component={HistorialScreen} />
+            <Stack.Screen name="Ofertas" component={OfertasScreen} />
             <Stack.Screen name="TerminosyCondiciones" component={TerminosCondicionesScreen} />
             <Stack.Screen name="DetallesProducto" component={DetallesProductoScreen} />
           </Stack.Navigator>

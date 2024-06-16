@@ -22,13 +22,14 @@ const DashboardScreen = ({ navigation }) => {
     { title: 'Categorías', icon: 'grid-outline' },
     { title: 'Productos', icon: 'pricetag-outline' },
     { title: 'Ofertas', icon: 'pricetags-outline' },
+    { title: 'Historial', icon: 'pricetags-outline' },
   ];
 
   const images = [
-    'https://image.shutterstock.com/z/stock-photo-banner-600w-1673295406.jpg',
-    'https://image.shutterstock.com/z/stock-photo-abstract-geometric-background-with-connected-lines-and-dots-molecule-and-communication-background-1120877741.jpg',
-    'https://image.shutterstock.com/z/stock-photo-colorful-autumn-landscape-1270654792.jpg',
-    'https://image.shutterstock.com/z/stock-photo-abstract-geometric-background-with-connected-lines-and-dots-molecule-and-communication-background-680546503.jpg',
+    'https://eldinero.com.do/wp-content/uploads/calzado-deportivo-adidas.jpg',
+    'https://media.gq.com.mx/photos/5df2c28cf428fa0008c870a5/master/w_7184,c_limit/los-10-mejores-tenis-en-amazon-para-empezar-el-2020.jpg',
+    'https://img.freepik.com/fotos-premium/par-zapatillas-deportivas-adidas-iluminan-habitacion-oscura_853645-10469.jpg',
+    'https://www.experimenta.es/wp-content/uploads/2016/12/zapatillas-biodegradables-de-fibra-de-seda-de-arana-artificial-de-adidas-800x599.jpg',
   ];
 
   return (
@@ -61,7 +62,11 @@ const DashboardScreen = ({ navigation }) => {
                 navigation.navigate('Producto');
               } else if (category.title === 'Ofertas') {
                 navigation.navigate('Ofertas');
+              }else if (category.title === 'Historial') {
+                navigation.navigate('Historial');
               }
+
+              
             }}
           >
             <Ionicons name={category.icon} size={40} color="#000" />

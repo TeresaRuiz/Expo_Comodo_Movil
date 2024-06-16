@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import CarritoScreen from './CarritoScreen'; // Importa la pantalla CarritoScreen
 
 const DetallesProductoScreen = ({ route, navigation }) => {
   const { title, description, image } = route.params.producto;
@@ -61,7 +62,8 @@ const DetallesProductoScreen = ({ route, navigation }) => {
           <Text style={styles.detailsValue}>0%</Text>
         </View>
       </View>
-      <TouchableOpacity style={styles.addButton}>
+      {/* Cambia el onPress del botón para que navegue a CarritoScreen */}
+      <TouchableOpacity style={styles.addButton} onPress={() => navigation.navigate('Carrito')}>
         <Text style={styles.addButtonText}>Añadir al carrito</Text>
       </TouchableOpacity>
     </ScrollView>
@@ -170,7 +172,7 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   addButton: {
-    backgroundColor: '#007BFF',
+    backgroundColor: '#3046BC',
     borderRadius: 10,
     paddingVertical: 15,
     paddingHorizontal: 30,
