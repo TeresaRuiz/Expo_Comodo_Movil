@@ -14,6 +14,7 @@ import CategoriaScreen from './src/screens/CategoriaScreen';
 import PerfilScreen from './src/screens/PerfilScreen';
 import MiPerfilScreen from './src/screens/MiPerfilScreen';
 import CarritoScreen from './src/screens/CarritoScreen';
+import HistorialScreen from './src/screens/HistorialScreen';
 import ProductoScreen from './src/screens/ProductoScreen';
 import TerminosCondicionesScreen from './src/screens/Terminos&Condiciones'; // Asegúrate de que la ruta sea correcta
 import DetallesProductoScreen from './src/screens/DetallesProductoScreen';
@@ -91,6 +92,7 @@ export default function App() {
             <Stack.Screen name="MiPerfil" component={MiPerfilScreen} />
             <Stack.Screen name="Producto" component={ProductoScreen} />
             <Stack.Screen name="Carrito" component={CarritoScreen} />
+            <Stack.Screen name="Historial" component={HistorialScreen} />
             <Stack.Screen name="Ofertas" component={OfertasScreen} />
             <Stack.Screen name="TerminosyCondiciones" component={TerminosCondicionesScreen} />
             <Stack.Screen name="DetallesProducto" component={DetallesProductoScreen} />
