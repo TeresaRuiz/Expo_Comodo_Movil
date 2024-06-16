@@ -22,6 +22,7 @@ const DashboardScreen = ({ navigation }) => {
     { title: 'Categorías', icon: 'grid-outline' },
     { title: 'Productos', icon: 'pricetag-outline' },
     { title: 'Ofertas', icon: 'pricetags-outline' },
+    { title: 'Historial', icon: 'ri-archive-line' },
   ];
 
   const images = [
@@ -61,7 +62,11 @@ const DashboardScreen = ({ navigation }) => {
                 navigation.navigate('Producto');
               } else if (category.title === 'Ofertas') {
                 navigation.navigate('Ofertas');
+              }else if (category.title === 'Historial') {
+                navigation.navigate('Historial');
               }
+
+              
             }}
           >
             <Ionicons name={category.icon} size={40} color="#000" />
