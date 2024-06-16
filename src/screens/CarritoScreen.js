@@ -12,6 +12,7 @@ const CarritoScreen = ({ navigation }) => {
       description: 'Subtotal',
       price: 49.95,
     },
+    
     {
       id: '2',
       title: 'Tenis NIKE',
