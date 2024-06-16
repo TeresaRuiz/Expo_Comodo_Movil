@@ -15,3 +15,27 @@ La problemática y necesidad dirigida al emprendimiento Comodo$ se debe a que no
 * Teresa Yessenia Ruiz González - 20220651
 * Verónica Alejandra Sánchez Rosales - 20220505
 * Allan Gabriel Fuentes Galdamez - 20220406
+
+## Dependencias
+
+El proyecto utiliza las siguientes dependencias:
+
+* **@expo/vector-icons** - ^14.0.2
+* **@react-navigation/bottom-tabs** - ^6.5.20
+* **@react-navigation/native** - ^6.1.17
+* **@react-navigation/stack** - ^6.3.29
+* **axios** - ^1.7.2
+* **expo** - ~51.0.14
+* **expo-av** - ^14.0.5
+* **expo-linear-gradient** - ^13.0.2
+* **expo-status-bar** - ~1.12.1
+* **react** - 18.2.0
+* **react-native** - ^0.74.2
+* **react-native-geocoding** - ^0.5.0
+* **react-native-gesture-handler** - ^2.16.2
+* **react-native-maps** - ^1.14.0
+* **react-native-paper** - ^5.12.3
+
+### Dependencias de Desarrollo
+
+* **@babel/core** - ^7.20.0
