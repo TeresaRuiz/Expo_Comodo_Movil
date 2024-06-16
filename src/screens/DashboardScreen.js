@@ -22,7 +22,7 @@ const DashboardScreen = ({ navigation }) => {
     { title: 'Categorías', icon: 'grid-outline' },
     { title: 'Productos', icon: 'pricetag-outline' },
     { title: 'Ofertas', icon: 'pricetags-outline' },
-    { title: 'Historial', icon: 'ri-archive-line' },
+    { title: 'Historial', icon: 'pricetags-outline' },
   ];
 
   const images = [
