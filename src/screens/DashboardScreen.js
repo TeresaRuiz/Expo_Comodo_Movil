@@ -19,10 +19,10 @@ const DashboardScreen = ({ navigation }) => {
   };
 
   const categories = [
-    { title: 'Categorías', icon: 'grid-outline' },
-    { title: 'Productos', icon: 'pricetag-outline' },
-    { title: 'Ofertas', icon: 'pricetags-outline' },
-    { title: 'Historial', icon: 'pricetags-outline' },
+      { title: 'Categorías', icon: 'grid-outline' },
+      { title: 'Productos', icon: 'pricetag-outline' },
+      { title: 'Ofertas', icon: 'gift-outline' },
+      { title: 'Historial', icon: 'time-outline' }
   ];
 
   const images = [
