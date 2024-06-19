@@ -1,13 +1,31 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import CarritoScreen from './CarritoScreen'; // Importa la pantalla CarritoScreen
 
 const DetallesProductoScreen = ({ route, navigation }) => {
   const { title, description, image } = route.params.producto;
+  const [mostrarAlerta, setMostrarAlerta] = useState(false);
+
+  const agregarAlCarrito = () => {
+    // Mostrar la alerta
+    setMostrarAlerta(true);
+
+    // Configurar para que la alerta desaparezca después de 2 segundos
+    setTimeout(() => {
+      setMostrarAlerta(false);
+    }, 2000);
+  };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      {/* Alerta */}
+      {mostrarAlerta && (
+        <View style={styles.alerta}>
+          <Text style={styles.alertaTexto}>Producto añadido al carrito</Text>
+        </View>
+      )}
+
       <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
         <Ionicons name="arrow-back" size={24} color="#000" />
       </TouchableOpacity>
@@ -62,8 +80,8 @@ const DetallesProductoScreen = ({ route, navigation }) => {
           <Text style={styles.detailsValue}>0%</Text>
         </View>
       </View>
-      {/* Cambia el onPress del botón para que navegue a CarritoScreen */}
-      <TouchableOpacity style={styles.addButton} onPress={() => navigation.navigate('Carrito')}>
+      {/* Cambia el onPress del botón para llamar a la función agregarAlCarrito */}
+      <TouchableOpacity style={styles.addButton} onPress={agregarAlCarrito}>
         <Text style={styles.addButtonText}>Añadir al carrito</Text>
       </TouchableOpacity>
     </ScrollView>
@@ -187,6 +205,21 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     color: '#fff',
+  },
+  alerta: {
+    backgroundColor: '#E0E0E0',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    alignSelf: 'center',
+    borderRadius: 10,
+    position: 'absolute',
+    top: 20,
+    zIndex: 1,
+  },
+  alertaTexto: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#333',
   },
 });
 

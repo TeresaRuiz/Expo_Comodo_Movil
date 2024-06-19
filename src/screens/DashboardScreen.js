@@ -57,7 +57,7 @@ const DashboardScreen = ({ navigation }) => {
             style={styles.card}
             onPress={() => {
               if (category.title === 'Categorías') {
-                navigation.navigate('Categories');
+                navigation.navigate('Categorias');
               } else if (category.title === 'Productos') {
                 navigation.navigate('Producto');
               } else if (category.title === 'Ofertas') {
