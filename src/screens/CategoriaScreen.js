@@ -1,13 +1,15 @@
 import React, { useRef } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Animated, TouchableWithoutFeedback, Image } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import styles from '../estilos/CategoriaScreenStyles'; // Importa los estilos desde el archivo externo
+import styles from '../estilos/CategoriaScreenStyles'; // Importa los estilos desde un archivo externo
 
 const DashboardScreen = ({ navigation }) => {
+  // Función para manejar la acción de cierre de sesión
   const handleLogout = () => {
     navigation.navigate('Login');
   };
 
+  // Definición de categorías con sus títulos, imágenes y colores de fondo
   const categories = [
     { title: 'Calzado playero', image: require('../img/playa.png'), bgColor: '#FFCC00' },
     { title: 'Calzado casual', image: require('../img/casuales.png'), bgColor: '#FF6699' },
@@ -17,8 +19,10 @@ const DashboardScreen = ({ navigation }) => {
     { title: 'Calzado para niño', image: require('../img/niños.png'), bgColor: '#33CCFF' }
   ];
 
+  // Crea valores animados para cada categoría
   const animatedValues = categories.map(() => useRef(new Animated.Value(0)).current);
 
+  // Función para manejar la animación cuando se presiona una categoría
   const handlePressIn = (index) => {
     Animated.timing(animatedValues[index], {
       toValue: 1,
@@ -27,6 +31,7 @@ const DashboardScreen = ({ navigation }) => {
     }).start();
   };
 
+  // Función para manejar la animación cuando se deja de presionar una categoría
   const handlePressOut = (index) => {
     Animated.timing(animatedValues[index], {
       toValue: 0,
@@ -35,10 +40,11 @@ const DashboardScreen = ({ navigation }) => {
     }).start();
   };
 
+  // Función para determinar el color de fondo animado de una categoría
   const cardBackgroundColor = (index, bgColor) => {
     return animatedValues[index].interpolate({
       inputRange: [0, 1],
-      outputRange: ['#fff', bgColor], // from white to the given background color
+      outputRange: ['#fff', bgColor], // de blanco al color de fondo dado
     });
   };
 
@@ -68,4 +74,3 @@ const DashboardScreen = ({ navigation }) => {
 };
 
 export default DashboardScreen;
-

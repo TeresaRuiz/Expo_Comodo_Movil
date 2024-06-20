@@ -1,23 +1,27 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, Linking } from 'react-native';
-import Ionicons from '@expo/vector-icons/Ionicons';
-import { FontAwesome } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
-import styles from '../estilos/PerfilScreenStyles';
+import Ionicons from '@expo/vector-icons/Ionicons'; // Importa Ionicons desde Expo
+import { FontAwesome } from '@expo/vector-icons'; // Importa FontAwesome desde Expo
+import { useNavigation } from '@react-navigation/native'; // Importa useNavigation desde react-navigation
+import styles from '../estilos/PerfilScreenStyles'; // Importa estilos desde un archivo externo
+
 
 const PerfilScreen = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation(); // Obtiene la navegación actual desde react-navigation
 
+  // Función para abrir enlace de Facebook
   const abrirFacebook = () => {
     Linking.openURL('https://www.facebook.com/Comodos.sv');
   };
 
+  // Función para navegar a la pantalla 'MiPerfil'
   const handleMiPerfilPress = () => {
     navigation.navigate('MiPerfil');
   };
 
+  // Función para navegar a la pantalla 'TerminosyCondiciones'
   const handleTerminosCondicionesPress = () => {
-    navigation.navigate('TerminosyCondiciones'); // Asegúrate de que el nombre coincida
+    navigation.navigate('TerminosyCondiciones'); // Asegúrate de que el nombre coincida con la ruta de navegación
   };
 
   return (

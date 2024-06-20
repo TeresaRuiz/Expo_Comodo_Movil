@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, FlatList, Image, TouchableOpacity, Alert } from 'react-native';
-import styles from '../estilos/CarritoScreenStyles';  // Importa los estilos desde el archivo externo
+import styles from '../estilos/CarritoScreenStyles';  // Importa los estilos desde un archivo externo
 
 const CarritoScreen = ({ navigation }) => {
+  // Estado inicial del carrito con algunos productos predefinidos
   const [carrito, setCarrito] = useState([
     {
       id: '1',
@@ -38,6 +39,7 @@ const CarritoScreen = ({ navigation }) => {
     },
   ]);
 
+  // Función para manejar el cambio de cantidad de un producto en el carrito
   const handleQuantityChange = (item, type) => {
     const updatedCarrito = carrito.map(producto => {
       if (producto.id === item.id) {
@@ -54,6 +56,7 @@ const CarritoScreen = ({ navigation }) => {
     setCarrito(updatedCarrito);
   };
 
+  // Función para manejar la acción de compra de un producto
   const handleBuy = (item) => {
     Alert.alert(
       'Compra realizada',
@@ -64,6 +67,7 @@ const CarritoScreen = ({ navigation }) => {
     );
   };
 
+  // Función para renderizar cada producto en el carrito
   const renderOfertaItem = ({ item }) => (
     <TouchableOpacity
       style={styles.ofertaCard}

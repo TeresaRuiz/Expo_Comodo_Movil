@@ -2,12 +2,16 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import CarritoScreen from './CarritoScreen'; // Importa la pantalla CarritoScreen
-import styles from '../estilos/DetallesProductosScreen';
+import styles from '../estilos/DetallesProductosScreen'; // Importa los estilos desde un archivo externo
 
 const DetallesProductoScreen = ({ route, navigation }) => {
+  // Extrae los datos del producto desde route.params
   const { title, description, image } = route.params.producto;
+
+  // Estado para controlar la visibilidad de la alerta
   const [mostrarAlerta, setMostrarAlerta] = useState(false);
 
+  // Función para agregar el producto al carrito
   const agregarAlCarrito = () => {
     // Mostrar la alerta
     setMostrarAlerta(true);
@@ -20,17 +24,22 @@ const DetallesProductoScreen = ({ route, navigation }) => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      {/* Alerta */}
+      {/* Alerta que se muestra cuando se agrega el producto al carrito */}
       {mostrarAlerta && (
         <View style={styles.alerta}>
           <Text style={styles.alertaTexto}>Producto añadido al carrito</Text>
         </View>
       )}
 
+      {/* Botón para regresar a la pantalla anterior */}
       <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
         <Ionicons name="arrow-back" size={24} color="#000" />
       </TouchableOpacity>
+
+      {/* Imagen del producto */}
       <Image source={{ uri: image }} style={styles.image} />
+
+      {/* Opciones de colores */}
       <View style={styles.colorOptions}>
         <View style={[styles.colorOption, { backgroundColor: '#FFFFFF' }]} />
         <View style={[styles.colorOption, { backgroundColor: '#F0F0F0' }]} />
@@ -38,6 +47,8 @@ const DetallesProductoScreen = ({ route, navigation }) => {
         <View style={[styles.colorOption, { backgroundColor: '#A0A0A0' }]} />
         <View style={[styles.colorOption, { backgroundColor: '#2020A0' }]} />
       </View>
+
+      {/* Opciones de tallas */}
       <View style={styles.sizeOptions}>
         {['14', '20', '24', '32', '40', '42'].map(size => (
           <TouchableOpacity key={size} style={styles.sizeOption}>
@@ -45,8 +56,12 @@ const DetallesProductoScreen = ({ route, navigation }) => {
           </TouchableOpacity>
         ))}
       </View>
+
+      {/* Título y descripción del producto */}
       <Text style={styles.title}>{title}</Text>
       <Text style={styles.description}>{description}</Text>
+
+      {/* Detalles del producto */}
       <View style={styles.detailsContainer}>
         <View style={styles.detailsRow}>
           <Text style={styles.detailsLabel}>Categoría:</Text>
@@ -81,7 +96,8 @@ const DetallesProductoScreen = ({ route, navigation }) => {
           <Text style={styles.detailsValue}>0%</Text>
         </View>
       </View>
-      {/* Cambia el onPress del botón para llamar a la función agregarAlCarrito */}
+
+      {/* Botón para agregar al carrito */}
       <TouchableOpacity style={styles.addButton} onPress={agregarAlCarrito}>
         <Text style={styles.addButtonText}>Añadir al carrito</Text>
       </TouchableOpacity>

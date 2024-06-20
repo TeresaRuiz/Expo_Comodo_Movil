@@ -1,12 +1,13 @@
 import React from 'react';
 import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import styles from '../estilos/OfertasScreenStyles';
+import styles from '../estilos/OfertasScreenStyles'; // Importa los estilos desde un archivo externo
 
-// Importa la imagen de "Promo"
+// Importa la imagen de "Promo" desde el directorio de imágenes
 import PromoImage from '../img/ofertas.png'; // Ajusta la ruta según donde hayas guardado la imagen
 
 const OfertasScreen = ({ navigation }) => {
+  // Arreglo de ofertas con objetos de ejemplo
   const ofertas = [
     {
       id: '1',
@@ -26,6 +27,7 @@ const OfertasScreen = ({ navigation }) => {
     },
   ];
 
+  // Función para renderizar cada elemento de oferta
   const renderOfertaItem = ({ item }) => (
     <TouchableOpacity
       style={styles.ofertaCard}
@@ -52,6 +54,7 @@ const OfertasScreen = ({ navigation }) => {
       {/* Imagen de "Promo" */}
       <Image source={PromoImage} style={styles.promoImage} />
 
+      {/* Lista plana de ofertas */}
       <FlatList
         data={ofertas}
         renderItem={renderOfertaItem}
@@ -61,6 +64,5 @@ const OfertasScreen = ({ navigation }) => {
     </View>
   );
 };
-
 
 export default OfertasScreen;
