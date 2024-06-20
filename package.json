@@ -29,7 +29,8 @@
     "react-native-maps": "^1.14.0",
     "react-native-paper": "^5.12.3",
     "react-native-sweet-alert": "^3.5.0",
-    "react-native-toast-message": "^2.2.0"
+    "react-native-toast-message": "^2.2.0",
+    "stacktrace-parser": "^0.1.10"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

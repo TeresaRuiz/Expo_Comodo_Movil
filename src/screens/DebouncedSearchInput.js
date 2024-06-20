@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { TextInput, StyleSheet } from 'react-native';
+import styles from '../estilos/DebouncedSearchInputStyles';
 
 const DebouncedSearchInput = ({ onSearch, value, onChangeText }) => {
   const [text, setText] = useState(value);
@@ -30,16 +31,5 @@ const DebouncedSearchInput = ({ onSearch, value, onChangeText }) => {
     />
   );
 };
-
-const styles = StyleSheet.create({
-  addressInput: {
-    flex: 1,
-    backgroundColor: '#f0f0f0',
-    height: 50,
-    borderRadius: 10,
-    paddingHorizontal: 15,
-    marginRight: 10,
-  },
-});
 
 export default DebouncedSearchInput;
