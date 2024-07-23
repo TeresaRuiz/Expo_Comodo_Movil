@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, TextInput 
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import styles from '../estilos/ProductoScreenStyles';
+import Button2 from '../../componets/Button2';
 
 const ProductoScreen = () => {
   const navigation = useNavigation();
@@ -35,10 +36,6 @@ const ProductoScreen = () => {
     product.title.toLowerCase().includes(searchText.toLowerCase())
   );
 
-  const handleVerMas = (producto) => {
-    navigation.navigate('DetallesProducto', { producto });
-  };
-
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.searchContainer}>
@@ -57,20 +54,16 @@ const ProductoScreen = () => {
             <Image source={{ uri: product.image }} style={styles.cardImage} />
             <Text style={styles.cardTitle}>{product.title}</Text>
             <Text style={styles.cardDescription}>{product.description}</Text>
-            <TouchableOpacity
-              style={styles.button}
+            <Button2
+              title="Ver más"
               onPress={() => navigation.navigate('DetallesProducto', { producto: product })}
-            >
-              <Text style={styles.buttonText}>Ver más</Text>
-            </TouchableOpacity>
-
+              style={styles.button}
+            />
           </View>
         ))}
       </View>
     </ScrollView>
   );
 };
-
-
 
 export default ProductoScreen;

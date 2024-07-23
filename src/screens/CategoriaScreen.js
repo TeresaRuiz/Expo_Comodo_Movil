@@ -1,9 +1,10 @@
 import React, { useRef } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, Animated, TouchableWithoutFeedback, Image } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, Animated, Image } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import styles from '../estilos/CategoriaScreenStyles'; // Importa los estilos desde un archivo externo
+import Button from '../../componets/Button';
 
-const DashboardScreen = ({ navigation }) => {
+const CategoriaScreen = ({ navigation }) => {
   // Función para manejar la acción de cierre de sesión
   const handleLogout = () => {
     navigation.navigate('Login');
@@ -11,12 +12,12 @@ const DashboardScreen = ({ navigation }) => {
 
   // Definición de categorías con sus títulos, imágenes y colores de fondo
   const categories = [
-    { title: 'Calzado playero', image: require('../img/playa.png'), bgColor: '#FFCC00' },
-    { title: 'Calzado casual', image: require('../img/casuales.png'), bgColor: '#FF6699' },
-    { title: 'Calzado deportivo', image: require('../img/deportivo.png'), bgColor: '#33CCFF' },
-    { title: 'Botines', image: require('../img/botines.png'), bgColor: '#33CCFF' },
-    { title: 'Sandalias', image: require('../img/sandalias.png'), bgColor: '#33CCFF' },
-    { title: 'Calzado para niño', image: require('../img/niños.png'), bgColor: '#33CCFF' }
+    { title: 'Calzado playero', image: require('../img/playa.png'), bgColor: '#FFCC00', screen: 'CalzadoPlayero' },
+    { title: 'Calzado casual', image: require('../img/casuales.png'), bgColor: '#FF6699', screen: 'CalzadoCasual' },
+    { title: 'Calzado deportivo', image: require('../img/deportivo.png'), bgColor: '#33CCFF', screen: 'CalzadoDeportivo' },
+    { title: 'Botines', image: require('../img/botines.png'), bgColor: '#33CCFF', screen: 'Botines' },
+    { title: 'Sandalias', image: require('../img/sandalias.png'), bgColor: '#33CCFF', screen: 'Sandalias' },
+    { title: 'Calzado para niño', image: require('../img/niños.png'), bgColor: '#33CCFF', screen: 'CalzadoNino' },
   ];
 
   // Crea valores animados para cada categoría
@@ -53,19 +54,19 @@ const DashboardScreen = ({ navigation }) => {
       <Text style={styles.title}>Categorías</Text>
       <View style={styles.grid}>
         {categories.map((category, index) => (
-          <TouchableWithoutFeedback
+          <Button
             key={index}
+            title={category.title}
+            onPress={() => navigation.navigate(category.screen)}
+            style={[styles.card, { backgroundColor: cardBackgroundColor(index, category.bgColor) }]}
+            textStyle={styles.cardTitle}
+            icon={<Image source={category.image} style={styles.image} />}
             onPressIn={() => handlePressIn(index)}
             onPressOut={() => handlePressOut(index)}
-          >
-            <Animated.View style={[styles.card, { backgroundColor: cardBackgroundColor(index, category.bgColor) }]}>
-              <Image source={category.image} style={styles.image} />
-              <Text style={styles.cardTitle}>{category.title}</Text>
-            </Animated.View>
-          </TouchableWithoutFeedback>
+          />
         ))}
       </View>
-      
+
       <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
         <Ionicons name="lock-closed" size={24} color="black" />
       </TouchableOpacity>
@@ -73,4 +74,4 @@ const DashboardScreen = ({ navigation }) => {
   );
 };
 
-export default DashboardScreen;
+export default CategoriaScreen;

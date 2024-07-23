@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, FlatList, Image, TouchableOpacity, Alert } from 'react-native';
 import styles from '../estilos/CarritoScreenStyles';  // Importa los estilos desde un archivo externo
+import Button2  from '../../componets/Button2'; //Aca se importa el componente del boton
 
 const CarritoScreen = ({ navigation }) => {
-  // Estado inicial del carrito con algunos productos predefinidos
   const [carrito, setCarrito] = useState([
     {
       id: '1',
@@ -39,7 +39,6 @@ const CarritoScreen = ({ navigation }) => {
     },
   ]);
 
-  // Función para manejar el cambio de cantidad de un producto en el carrito
   const handleQuantityChange = (item, type) => {
     const updatedCarrito = carrito.map(producto => {
       if (producto.id === item.id) {
@@ -56,18 +55,14 @@ const CarritoScreen = ({ navigation }) => {
     setCarrito(updatedCarrito);
   };
 
-  // Función para manejar la acción de compra de un producto
   const handleBuy = (item) => {
     Alert.alert(
       'Compra realizada',
       `Has comprado ${item.title} (Cantidad: ${item.quantity}) por $${(item.price * item.quantity).toFixed(2)}`,
-      [
-        { text: 'OK', onPress: () => console.log('Alerta cerrada') }
-      ]
+      [{ text: 'OK', onPress: () => console.log('Alerta cerrada') }]
     );
   };
 
-  // Función para renderizar cada producto en el carrito
   const renderOfertaItem = ({ item }) => (
     <TouchableOpacity
       style={styles.ofertaCard}
@@ -88,9 +83,12 @@ const CarritoScreen = ({ navigation }) => {
               <Text style={styles.quantityButtonText}>+</Text>
             </TouchableOpacity>
           </View>
-          <TouchableOpacity style={styles.boton} onPress={() => handleBuy(item)}>
-            <Text style={{ color: '#fff', fontWeight: 'bold' }}>Comprar</Text>
-          </TouchableOpacity>
+          <Button2
+            title="Comprar"
+            onPress={() => handleBuy(item)}
+            style={styles.boton}
+            textStyle={{ color: '#fff', fontWeight: 'bold' }}
+          />
         </View>
       </View>
     </TouchableOpacity>

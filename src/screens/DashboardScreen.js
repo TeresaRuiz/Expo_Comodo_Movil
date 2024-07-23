@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import styles from '../estilos/DashboardScreenStyles'; // Importa los estilos desde un archivo externo
+import LogOut from '../../componets/LogOut';
+import Button  from '../../componets/Button'; //Aca se importa el componente del boton
 
 const DashboardScreen = ({ navigation }) => {
   // Define los estados locales para la consulta de búsqueda y el índice de la imagen actual
@@ -25,10 +27,10 @@ const DashboardScreen = ({ navigation }) => {
 
   // Define las categorías con sus títulos e iconos correspondientes
   const categories = [
-    { title: 'Categorías', icon: 'grid-outline' },
-    { title: 'Productos', icon: 'pricetag-outline' },
-    { title: 'Ofertas', icon: 'gift-outline' },
-    { title: 'Historial', icon: 'time-outline' }
+    { title: 'Categorías', icon: 'grid-outline', screen: 'Categorias' },
+    { title: 'Productos', icon: 'pricetag-outline', screen: 'Producto' },
+    { title: 'Ofertas', icon: 'gift-outline', screen: 'Ofertas' },
+    { title: 'Historial', icon: 'time-outline', screen: 'Historial' }
   ];
 
   // Define las URLs de las imágenes del banner
@@ -42,15 +44,7 @@ const DashboardScreen = ({ navigation }) => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       {/* Contenedor de búsqueda */}
-      <View style={styles.searchContainer}>
-        <Ionicons name="search" size={20} color="#000" style={styles.searchIcon} />
-        <TextInput
-          style={styles.searchInput}
-          placeholder="Buscar..."
-          value={searchQuery}
-          onChangeText={setSearchQuery}
-        />
-      </View>
+     
 
       {/* Banner de imágenes */}
       <Image
@@ -64,32 +58,25 @@ const DashboardScreen = ({ navigation }) => {
       {/* Grid de categorías */}
       <View style={styles.grid}>
         {categories.map((category, index) => (
-          <TouchableOpacity
+          <Button
             key={index}
+            title={category.title}
+            onPress={() => navigation.navigate(category.screen)}
             style={styles.card}
-            onPress={() => {
-              if (category.title === 'Categorías') {
-                navigation.navigate('Categorias');
-              } else if (category.title === 'Productos') {
-                navigation.navigate('Producto');
-              } else if (category.title === 'Ofertas') {
-                navigation.navigate('Ofertas');
-              } else if (category.title === 'Historial') {
-                navigation.navigate('Historial');
-              }
-            }}
-          >
-            {/* Icono e título de la categoría */}
-            <Ionicons name={category.icon} size={40} color="#000" />
-            <Text style={styles.cardTitle}>{category.title}</Text>
-          </TouchableOpacity>
+            textStyle={styles.cardTitle}
+            icon={<Ionicons name={category.icon} size={40} color="#000" />}
+          />
         ))}
       </View>
 
       {/* Botón de cierre de sesión */}
-      <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-        <Ionicons name="lock-closed" size={24} color="black" />
-      </TouchableOpacity>
+      <LogOut
+        title="Cerrar Sesión"
+        onPress={handleLogout}
+        style={styles.logoutButton}
+        textStyle={{ color: '#7f7f7f' }}
+        icon={<Ionicons name="lock-closed" size={24} color="black" />}
+      />
     </ScrollView>
   );
 };

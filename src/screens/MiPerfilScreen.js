@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
-import { View, Text, TextInput, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, Image, StyleSheet } from 'react-native';
 import styles from '../estilos/MiPerfilScreenStyles'; // Importa los estilos desde un archivo externo
+import Button2 from '../../componets/Button2';
 
 const MiPerfilScreen = () => {
   // Estados para los datos del perfil
@@ -68,7 +69,7 @@ const MiPerfilScreen = () => {
           ref={usernameRef} // Referencia para este campo
           style={styles.input}
           placeholder="DK123"
-          keyboardType="email-address"
+          keyboardType="default"
           onChangeText={setUsername}
           value={username}
         />
@@ -103,14 +104,20 @@ const MiPerfilScreen = () => {
       {/* Contenedor para los botones de acción */}
       <View style={styles.buttonContainer}>
         {/* Botón de Actualizar */}
-        <TouchableOpacity style={[styles.button, styles.updateButton]} onPress={handleUpdate}>
-          <Text style={[styles.buttonText, styles.updateButtonText]}>Actualizar</Text>
-        </TouchableOpacity>
+        <Button2
+          title="Actualizar"
+          onPress={handleUpdate}
+          style={[styles.button, styles.updateButton]}
+          textStyle={styles.updateButtonText}
+        />
         
         {/* Botón de Cancelar */}
-        <TouchableOpacity style={[styles.button, styles.deleteButton]} onPress={handleDelete}>
-          <Text style={[styles.buttonText, styles.deleteButtonText]}>Cancelar</Text>
-        </TouchableOpacity>
+        <Button2
+          title="Cancelar"
+          onPress={handleDelete}
+          style={[styles.button, styles.deleteButton]}
+          textStyle={styles.deleteButtonText}
+        />
       </View>
     </View>
   );
