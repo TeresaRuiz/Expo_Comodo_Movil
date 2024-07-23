@@ -1,73 +1,120 @@
-import React, { useRef } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, Animated, Image } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, Text, ScrollView, TouchableOpacity, Animated, Image, ActivityIndicator, Alert, RefreshControl } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { useNavigation } from '@react-navigation/native';
 import styles from '../estilos/CategoriaScreenStyles'; // Importa los estilos desde un archivo externo
 import Button from '../../componets/Button';
+import * as Constantes from '../../utils/constantes';
 
-const CategoriaScreen = ({ navigation }) => {
-  // Función para manejar la acción de cierre de sesión
-  const handleLogout = () => {
-    navigation.navigate('Login');
-  };
+const CategoriaCard = ({ category, index, ip, navigation }) => {
+  const animatedValue = useRef(new Animated.Value(0)).current;
 
-  // Definición de categorías con sus títulos, imágenes y colores de fondo
-  const categories = [
-    { title: 'Calzado playero', image: require('../img/playa.png'), bgColor: '#FFCC00', screen: 'CalzadoPlayero' },
-    { title: 'Calzado casual', image: require('../img/casuales.png'), bgColor: '#FF6699', screen: 'CalzadoCasual' },
-    { title: 'Calzado deportivo', image: require('../img/deportivo.png'), bgColor: '#33CCFF', screen: 'CalzadoDeportivo' },
-    { title: 'Botines', image: require('../img/botines.png'), bgColor: '#33CCFF', screen: 'Botines' },
-    { title: 'Sandalias', image: require('../img/sandalias.png'), bgColor: '#33CCFF', screen: 'Sandalias' },
-    { title: 'Calzado para niño', image: require('../img/niños.png'), bgColor: '#33CCFF', screen: 'CalzadoNino' },
-  ];
-
-  // Crea valores animados para cada categoría
-  const animatedValues = categories.map(() => useRef(new Animated.Value(0)).current);
-
-  // Función para manejar la animación cuando se presiona una categoría
-  const handlePressIn = (index) => {
-    Animated.timing(animatedValues[index], {
+  const handlePressIn = () => {
+    Animated.timing(animatedValue, {
       toValue: 1,
       duration: 200,
       useNativeDriver: false,
     }).start();
   };
 
-  // Función para manejar la animación cuando se deja de presionar una categoría
-  const handlePressOut = (index) => {
-    Animated.timing(animatedValues[index], {
+  const handlePressOut = () => {
+    Animated.timing(animatedValue, {
       toValue: 0,
       duration: 200,
       useNativeDriver: false,
     }).start();
   };
 
-  // Función para determinar el color de fondo animado de una categoría
-  const cardBackgroundColor = (index, bgColor) => {
-    return animatedValues[index].interpolate({
-      inputRange: [0, 1],
-      outputRange: ['#fff', bgColor], // de blanco al color de fondo dado
-    });
+  const cardBackgroundColor = animatedValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['#fff', '#33CCFF'],
+  });
+
+  const handleVerMas = () => {
+    navigation.navigate('Producto', { idCategoria: category.id_categoria });
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <Button
+      key={index}
+      title={category.nombre_categoria}
+      onPress={handleVerMas}
+      style={[styles.card, { backgroundColor: cardBackgroundColor }]}
+      textStyle={styles.cardTitle}
+      icon={<Image source={{ uri: `${ip}/Expo_Comodo/api/images/categorias/${category.imagen}` }} style={styles.image} />}
+      onPressIn={handlePressIn}
+      onPressOut={handlePressOut}
+    />
+  );
+};
+
+const CategoriaScreen = () => {
+  const navigation = useNavigation();
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const ip = Constantes.IP;
+
+  const fetchCategories = async () => {
+    try {
+      const response = await fetch(`${ip}/Expo_Comodo/api/services/public/categoria.php?action=readAll`, {
+        method: 'GET',
+      });
+      const data = await response.json();
+      if (data.status) {
+        setCategories(data.dataset);
+      } else {
+        Alert.alert('Error', data.message);
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Ocurrió un error al obtener las categorías');
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  const handleRefresh = () => {
+    setRefreshing(true);
+    fetchCategories();
+  };
+
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
+  }
+
+  return (
+    <ScrollView
+      contentContainerStyle={styles.container}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+      }
+    >
       <Text style={styles.title}>Categorías</Text>
       <View style={styles.grid}>
         {categories.map((category, index) => (
-          <Button
+          <CategoriaCard
             key={index}
-            title={category.title}
-            onPress={() => navigation.navigate(category.screen)}
-            style={[styles.card, { backgroundColor: cardBackgroundColor(index, category.bgColor) }]}
-            textStyle={styles.cardTitle}
-            icon={<Image source={category.image} style={styles.image} />}
-            onPressIn={() => handlePressIn(index)}
-            onPressOut={() => handlePressOut(index)}
+            category={category}
+            index={index}
+            ip={ip}
+            navigation={navigation}
           />
         ))}
       </View>
 
-      
+      <TouchableOpacity style={styles.logoutButton} onPress={() => navigation.navigate('Login')}>
+        <Ionicons name="lock-closed" size={24} color="black" />
+      </TouchableOpacity>
     </ScrollView>
   );
 };
