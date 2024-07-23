@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Animated, Easing } from 'react-native';
 import styles from '../estilos/LoginScreenStyles'; // Importa los estilos desde un archivo externo
+import Button3 from '../../componets/Button3';
 
 const LoginScreen = ({ navigation }) => {
   // Estados para el nombre de usuario y la contraseña
@@ -78,9 +79,9 @@ const LoginScreen = ({ navigation }) => {
         secureTextEntry={true}
       />
       {/* Botón para iniciar sesión */}
-      <TouchableOpacity style={styles.button} onPress={handleLogin}>
+      <Button3 style={styles.button} onPress={handleLogin}>
         <Text style={styles.buttonText}>Iniciar sesión</Text>
-      </TouchableOpacity>
+      </Button3>
       {/* Enlace para redirigir a la pantalla de registro */}
       <TouchableOpacity onPress={handleRegisterRedirect}>
         <Text style={styles.registerLink}>¿No tienes cuenta? Crea una</Text>

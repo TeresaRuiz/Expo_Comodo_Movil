@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     },
     buttonText: {
       color: 'white',
-      fontSize: 18,
+      fontSize: 15,
       fontWeight: 'bold',
     },
     link: {

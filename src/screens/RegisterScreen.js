@@ -5,6 +5,7 @@ import MapView, { Marker } from 'react-native-maps';
 import axios from 'axios';
 import DebouncedSearchInput from '../screens/DebouncedSearchInput';
 import styles from '../estilos/RegisterScreenStyles'; // Ajusta la ruta según tu estructura de archivos
+import Button3 from '../../componets/Button3';
 
 const RegisterScreen = () => {
   const [name, setName] = useState('');
@@ -157,11 +158,12 @@ const RegisterScreen = () => {
         region={location}
         onPress={handleMapPress}
       >
+        
         <Marker coordinate={location} />
       </MapView>
-      <TouchableOpacity style={styles.registerButton} onPress={handleRegister}>
-        <Text style={styles.buttonText}>Registrarse</Text>
-      </TouchableOpacity>
+      <Button3 style={styles.registerButton} onPress={handleRegister}>
+          <Text style={styles.buttonText}>Registrar</Text>
+        </Button3>
       <TouchableOpacity onPress={handleLoginRedirect}>
         <Text style={styles.loginRedirectText}>¿Ya tienes cuenta? Inicia sesión</Text>
       </TouchableOpacity>

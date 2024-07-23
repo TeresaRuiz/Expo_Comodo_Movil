@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     },
     registerButton: {
       backgroundColor: '#3046BC',
-      width: '80%',
+      width: '70%',
       justifyContent: 'center',
       alignItems: 'center',
       paddingVertical: 12,

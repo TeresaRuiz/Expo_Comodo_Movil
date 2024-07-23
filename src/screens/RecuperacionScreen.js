@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import styles from '../estilos/RecuperacionScreenStyles';
+import Button3 from '../../componets/Button3';
 
 const PasswordRecoveryScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -21,9 +22,9 @@ const PasswordRecoveryScreen = ({ navigation }) => {
         value={email}
         keyboardType="email-address"
       />
-      <TouchableOpacity style={styles.button} onPress={handleRecovery}>
+      <Button3 style={styles.button} onPress={handleRecovery}>
         <Text style={styles.buttonText}>Enviar correo de recuperación</Text>
-      </TouchableOpacity>
+      </Button3>
       <TouchableOpacity onPress={() => navigation.navigate('Login')}>
         <Text style={styles.link}>Volver al inicio de sesión</Text>
       </TouchableOpacity>
