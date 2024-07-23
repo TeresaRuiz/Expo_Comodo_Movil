@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import styles from '../estilos/RecuperacionScreenStyles';
-import Button3 from '../../componets/Button3';
+import Button3 from '../componets/Button3';
 
 const PasswordRecoveryScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');

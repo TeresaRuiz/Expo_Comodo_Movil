@@ -1,4 +1,3 @@
-// Button2.js
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet, View } from 'react-native';
 
@@ -15,7 +14,7 @@ const Button2 = ({ title, onPress, style, textStyle, icon }) => {
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: '#007BFF', // Color de fondo del botón
+    backgroundColor: '#007BFF',
     padding: 10,
     borderRadius: 5,
     alignItems: 'center',
@@ -23,7 +22,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   text: {
-    color: '#FFFFFF', // Color del texto del botón
+    color: '#FFFFFF',
     fontSize: 16,
     marginLeft: 10,
   },

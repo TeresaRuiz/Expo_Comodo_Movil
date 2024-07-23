@@ -5,7 +5,7 @@ import MapView, { Marker } from 'react-native-maps';
 import axios from 'axios';
 import DebouncedSearchInput from '../screens/DebouncedSearchInput';
 import styles from '../estilos/RegisterScreenStyles'; // Ajusta la ruta según tu estructura de archivos
-import Button3 from '../../componets/Button3';
+import Button3 from '../componets/Button3';
 
 const RegisterScreen = () => {
   const [name, setName] = useState('');

@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, TextInput } from 'react-native';
+import { View, TextInput, ScrollView } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { useNavigation } from '@react-navigation/native';
+import Cards1 from '../componets/Cards1'; // Asegúrate de que la ruta aquí sea correcta
 import styles from '../estilos/ProductoScreenStyles';
-import Button2 from '../../componets/Button2';
 
 const ProductoScreen = () => {
-  const navigation = useNavigation();
   const [searchText, setSearchText] = useState('');
 
   const products = [
@@ -47,21 +45,7 @@ const ProductoScreen = () => {
           onChangeText={setSearchText}
         />
       </View>
-
-      <View style={styles.grid}>
-        {filteredProducts.map((product, index) => (
-          <View key={index} style={styles.card}>
-            <Image source={{ uri: product.image }} style={styles.cardImage} />
-            <Text style={styles.cardTitle}>{product.title}</Text>
-            <Text style={styles.cardDescription}>{product.description}</Text>
-            <Button2
-              title="Ver más"
-              onPress={() => navigation.navigate('DetallesProducto', { producto: product })}
-              style={styles.button}
-            />
-          </View>
-        ))}
-      </View>
+      <Cards1 products={filteredProducts} />
     </ScrollView>
   );
 };

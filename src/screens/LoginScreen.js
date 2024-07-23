@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Animated, Easing } from 'react-native';
 import styles from '../estilos/LoginScreenStyles'; // Importa los estilos desde un archivo externo
-import Button3 from '../../componets/Button3';
+import Button3 from '../componets/Button3';
 
 const LoginScreen = ({ navigation }) => {
   // Estados para el nombre de usuario y la contraseña

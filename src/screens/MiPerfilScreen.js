@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { View, Text, TextInput, Image, StyleSheet } from 'react-native';
 import styles from '../estilos/MiPerfilScreenStyles'; // Importa los estilos desde un archivo externo
-import Button2 from '../../componets/Button2';
+import Button2 from '../componets/Button2';
 
 const MiPerfilScreen = () => {
   // Estados para los datos del perfil

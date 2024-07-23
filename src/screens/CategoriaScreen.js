@@ -3,7 +3,7 @@ import { View, Text, ScrollView, TouchableOpacity, Animated, Image, ActivityIndi
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import styles from '../estilos/CategoriaScreenStyles'; // Importa los estilos desde un archivo externo
-import Button from '../../componets/Button';
+import Button from '../componets/Button';
 import * as Constantes from '../../utils/constantes';
 
 const CategoriaCard = ({ category, index, ip, navigation }) => {
