@@ -67,9 +67,7 @@ const CategoriaScreen = ({ navigation }) => {
         ))}
       </View>
 
-      <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-        <Ionicons name="lock-closed" size={24} color="black" />
-      </TouchableOpacity>
+      
     </ScrollView>
   );
 };
