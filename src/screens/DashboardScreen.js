@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import styles from '../estilos/DashboardScreenStyles'; // Importa los estilos desde un archivo externo
-import LogOut from '../../componets/LogOut';
-import Button  from '../../componets/Button'; //Aca se importa el componente del boton
+import LogOut from '../componets/LogOut';
+import Button from '../componets/Button'; //Aca se importa el componente del boton
 
 const DashboardScreen = ({ navigation }) => {
   // Define los estados locales para la consulta de búsqueda y el índice de la imagen actual

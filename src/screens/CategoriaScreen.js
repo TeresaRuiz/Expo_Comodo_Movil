@@ -1,52 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, Animated, Image, ActivityIndicator, Alert, RefreshControl } from 'react-native';
-import Ionicons from '@expo/vector-icons/Ionicons';
+import { View, Text, ScrollView, Animated, Image, ActivityIndicator, Alert, RefreshControl } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import styles from '../estilos/CategoriaScreenStyles'; // Importa los estilos desde un archivo externo
-import Button from '../componets/Button';
+import Cards1 from '../componets/Cards1'; // Importa el componente Cards1
 import * as Constantes from '../../utils/constantes';
-
-const CategoriaCard = ({ category, index, ip, navigation }) => {
-  const animatedValue = useRef(new Animated.Value(0)).current;
-
-  const handlePressIn = () => {
-    Animated.timing(animatedValue, {
-      toValue: 1,
-      duration: 200,
-      useNativeDriver: false,
-    }).start();
-  };
-
-  const handlePressOut = () => {
-    Animated.timing(animatedValue, {
-      toValue: 0,
-      duration: 200,
-      useNativeDriver: false,
-    }).start();
-  };
-
-  const cardBackgroundColor = animatedValue.interpolate({
-    inputRange: [0, 1],
-    outputRange: ['#fff', '#33CCFF'],
-  });
-
-  const handleVerMas = () => {
-    navigation.navigate('Producto', { idCategoria: category.id_categoria });
-  };
-
-  return (
-    <Button
-      key={index}
-      title={category.nombre_categoria}
-      onPress={handleVerMas}
-      style={[styles.card, { backgroundColor: cardBackgroundColor }]}
-      textStyle={styles.cardTitle}
-      icon={<Image source={{ uri: `${ip}/Expo_Comodo/api/images/categorias/${category.imagen}` }} style={styles.image} />}
-      onPressIn={handlePressIn}
-      onPressOut={handlePressOut}
-    />
-  );
-};
 
 const CategoriaScreen = () => {
   const navigation = useNavigation();
@@ -102,17 +59,17 @@ const CategoriaScreen = () => {
       <Text style={styles.title}>Categorías</Text>
       <View style={styles.grid}>
         {categories.map((category, index) => (
-          <CategoriaCard
+          <Cards1
             key={index}
-            category={category}
-            index={index}
-            ip={ip}
-            navigation={navigation}
+            item={{
+              title: category.nombre_categoria,
+              description: '', // Deja vacío si no es necesario
+              image: `${ip}/Expo_Comodo/api/images/categorias/${category.imagen}`
+            }}
+            onPress={() => navigation.navigate('Producto', { idCategoria: category.id_categoria })}
           />
         ))}
       </View>
-
-
     </ScrollView>
   );
 };
