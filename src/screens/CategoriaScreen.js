@@ -63,8 +63,7 @@ const CategoriaScreen = () => {
             key={index}
             item={{
               title: category.nombre_categoria,
-              description: '', // Deja vacío si no es necesario
-              image: `${ip}/Expo_Comodo/api/images/categorias/${category.imagen}`
+              image: `${ip}/Expo_Comodo/api/images/productos/${category.imagen}`
             }}
             onPress={() => navigation.navigate('Producto', { idCategoria: category.id_categoria })}
           />
