@@ -1,98 +1,205 @@
-import React, { useState } from 'react';
-import { View, Text, FlatList, Image, TouchableOpacity, Alert } from 'react-native';
-import styles from '../estilos/CarritoScreenStyles';  // Importa los estilos desde un archivo externo
-import Button2  from '../componets/Button2'; //Aca se importa el componente del boton
+import React, { useState, useEffect, useCallback } from 'react';
+import { View, Text, FlatList, TouchableOpacity, Alert, ActivityIndicator, RefreshControl, Image } from 'react-native';
+import styles from '../estilos/CarritoScreenStyles'; // Importa los estilos desde un archivo externo
+import Button2 from '../componets/Button2'; // Importa el componente del botón
+import * as Constantes from '../../utils/constantes';
 
 const CarritoScreen = ({ navigation }) => {
-  const [carrito, setCarrito] = useState([
-    {
-      id: '1',
-      title: 'Tenis NIKE',
-      image: 'https://originalselsalvador.com/wp-content/uploads/2024/01/calzado-blazer-mid-77-vintage-nw30B2-min.png',
-      description: 'Cantidad',
-      price: 49.95,
-      quantity: 1,
-    },
-    {
-      id: '2',
-      title: 'Tenis NIKE',
-      description: 'Cantidad',
-      image: 'https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/4f37fca8-6bce-43e7-ad07-f57ae3c13142/calzado-air-force-1-07-jBrhbr.png',
-      price: 69.99,
-      quantity: 1,
-    },
-    {
-      id: '3',
-      title: 'Tenis NIKE',
-      description: 'Cantidad',
-      image: 'https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/c20afd60-b230-4815-bfd2-6768c875f6cd/calzado-air-force-1-07-J7xw5P.png',
-      price: 79.99,
-      quantity: 1,
-    },
-    {
-      id: '4',
-      title: 'Tenis NIKE',
-      description: 'Cantidad',
-      image: 'https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/022c7053-5c55-4bc4-8cdc-72c6e8f95a5e/tenis-air-jordan-1-retro-high-og-latte-Dw2wdP.png',
-      price: 99.99,
-      quantity: 1,
-    },
-  ]);
+  const [carrito, setCarrito] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+  const [subtotal, setSubtotal] = useState(0);
+  const [descuento, setDescuento] = useState(0);
 
-  const handleQuantityChange = (item, type) => {
-    const updatedCarrito = carrito.map(producto => {
-      if (producto.id === item.id) {
-        let newQuantity = producto.quantity;
-        if (type === 'increase') {
-          newQuantity++;
-        } else if (type === 'decrease' && newQuantity > 1) {
-          newQuantity--;
-        }
-        return { ...producto, quantity: newQuantity };
+  const ip = Constantes.IP;
+
+  // Función para obtener los detalles del carrito desde la API
+  const fetchCarrito = useCallback(async () => {
+    try {
+      const response = await fetch(`${ip}/Expo_Comodo/api/services/public/pedido.php?action=readDetail`);
+      const data = await response.json();
+      if (data.status) {
+        setCarrito(data.dataset);
+      } else {
+        Alert.alert('Error', data.error);
       }
-      return producto;
-    });
-    setCarrito(updatedCarrito);
+    } catch (error) {
+      Alert.alert('Error', 'Ocurrió un error al obtener los datos del carrito');
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  }, [ip]);
+
+  // Función para manejar el cambio de cantidad de un producto en el carrito
+  const handleQuantityChange = async (item, type) => {
+    let newCantidad = item.cantidad;
+
+    if (type === 'increase') {
+      newCantidad++;
+    } else if (type === 'decrease') {
+      newCantidad--;
+    }
+
+    if (newCantidad < 1) return;
+
+    try {
+      const formData = new FormData();
+      formData.append('idDetalle', item.id_detalle_reserva.toString());
+      formData.append('cantidadProducto', newCantidad.toString());
+
+      const response = await fetch(`${ip}/Expo_Comodo/api/services/public/pedido.php?action=updateDetail`, {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (data.status === 1) {
+        setCarrito(prevCarrito => (
+          prevCarrito.map(producto =>
+            producto.id_detalle_reserva === item.id_detalle_reserva ? { ...producto, cantidad: newCantidad } : producto
+          )
+        ));
+        Alert.alert('Éxito', data.message);
+      } else {
+        Alert.alert('Error', data.error || 'Ocurrió un problema al actualizar la cantidad del producto');
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Ocurrió un error al actualizar la cantidad del producto');
+      console.error(error);
+    }
   };
 
-  const handleBuy = (item) => {
-    Alert.alert(
-      'Compra realizada',
-      `Has comprado ${item.title} (Cantidad: ${item.quantity}) por $${(item.price * item.quantity).toFixed(2)}`,
-      [{ text: 'OK', onPress: () => console.log('Alerta cerrada') }]
-    );
+  // Función para eliminar un producto del carrito
+  const handleDelete = async (idDetalle) => {
+    try {
+      const formData = new FormData();
+      formData.append('idDetalle', idDetalle);
+
+      const response = await fetch(`${ip}/Expo_Comodo/api/services/public/pedido.php?action=deleteDetail`, {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (data.status === 1) {
+        const updatedCarrito = carrito.filter(producto => producto.id_detalle_reserva !== idDetalle);
+        setCarrito(updatedCarrito);
+        Alert.alert('Éxito', data.message);
+
+        if (updatedCarrito.length === 0) {
+          // Acciones si el carrito está vacío
+        }
+      } else {
+        Alert.alert('Error', data.error || 'Ocurrió un problema al eliminar el producto');
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Ocurrió un error al eliminar el producto del carrito');
+      console.error(error);
+    }
   };
 
+  // Función para manejar el evento de refrescar
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    fetchCarrito();
+  }, [fetchCarrito]);
+
+  // Efecto para cargar los detalles del carrito al cargar la pantalla
+  useEffect(() => {
+    fetchCarrito();
+  }, [fetchCarrito]);
+
+  // Efecto para calcular el subtotal y aplicar descuentos cada vez que el carrito cambie
+  useEffect(() => {
+    const calcularSubtotal = () => {
+      let total = 0;
+      let descuentoTotal = 0;
+
+      carrito.forEach(item => {
+        const subtotalProducto = item.precio_unitario * item.cantidad;
+
+        if (item.valor_oferta) {
+          const subtotalConDescuento = subtotalProducto - (subtotalProducto * item.valor_oferta) / 100;
+          total += subtotalConDescuento;
+          descuentoTotal += subtotalProducto - subtotalConDescuento;
+        } else {
+          total += subtotalProducto;
+        }
+      });
+
+      setSubtotal(total);
+      setDescuento(descuentoTotal);
+    };
+
+    calcularSubtotal();
+  }, [carrito]);
+
+  // Renderizar cada elemento del carrito
   const renderOfertaItem = ({ item }) => (
-    <TouchableOpacity
-      style={styles.ofertaCard}
-      onPress={() => navigation.navigate('DetallesProducto', { producto: item })}
-    >
-      <Image source={{ uri: item.image }} style={styles.ofertaImage} />
+    <TouchableOpacity style={styles.ofertaCard}>
+      <Image source={{ uri: `${ip}/Expo_Comodo/api/images/productos/${item.imagen}` }} style={styles.ofertaImage} />
       <View style={styles.ofertaDetails}>
-        <Text style={styles.ofertaTitle}>{item.title}</Text>
-        <Text style={styles.ofertaDescription}>{item.description}</Text>
-        <View style={styles.ofertaPriceContainer}>
-          <Text style={styles.ofertaPrice}>${item.price.toFixed(2)}</Text>
-          <View style={styles.quantityContainer}>
-            <TouchableOpacity style={styles.quantityButton} onPress={() => handleQuantityChange(item, 'decrease')}>
-              <Text style={styles.quantityButtonText}>-</Text>
-            </TouchableOpacity>
-            <Text style={styles.quantity}>{item.quantity}</Text>
-            <TouchableOpacity style={styles.quantityButton} onPress={() => handleQuantityChange(item, 'increase')}>
-              <Text style={styles.quantityButtonText}>+</Text>
-            </TouchableOpacity>
-          </View>
-          <Button2
-            title="Comprar"
-            onPress={() => handleBuy(item)}
-            style={styles.boton}
-            textStyle={{ color: '#fff', fontWeight: 'bold' }}
-          />
+        <Text style={styles.ofertaTitle}>{item.nombre_producto}</Text>
+        <Text style={styles.ofertaPrice}>Precio Unitario: ${item.precio_unitario}</Text>
+        {item.valor_oferta && (
+          <Text style={styles.ofertaPrice}>Oferta: %{item.valor_oferta}</Text>
+        )}
+        <View style={styles.quantityContainer}>
+          <TouchableOpacity style={styles.quantityButton} onPress={() => handleQuantityChange(item, 'decrease')}>
+            <Text style={styles.quantityButtonText}>-</Text>
+          </TouchableOpacity>
+          <Text style={styles.quantity}>{item.cantidad}</Text>
+          <TouchableOpacity style={styles.quantityButton} onPress={() => handleQuantityChange(item, 'increase')}>
+            <Text style={styles.quantityButtonText}>+</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.deleteButton} onPress={() => handleDelete(item.id_detalle_reserva)}>
+            <Text style={{ color: '#fff', fontWeight: 'bold' }}>Eliminar</Text>
+          </TouchableOpacity>
         </View>
+        <Button2
+          title="Comprar"
+          onPress={() => handleBuy(item)}
+          style={styles.boton}
+          textStyle={{ color: '#fff', fontWeight: 'bold' }}
+        />
       </View>
     </TouchableOpacity>
   );
+
+  // Función para manejar la acción de finalizar la compra
+  const finalizarCompra = async () => {
+    try {
+      const response = await fetch(`${ip}/Expo_Comodo/api/services/public/pedido.php?action=finishOrder`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const data = await response.json();
+
+      if (data.status === 1) {
+        Alert.alert('Compra Finalizada', '¡Gracias por tu compra!');
+        setCarrito([]);
+      } else {
+        Alert.alert('Error', data.error || 'Ocurrió un problema al finalizar el pedido');
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Ocurrió un error al finalizar la compra');
+      console.error(error);
+    }
+  };
+
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -100,9 +207,27 @@ const CarritoScreen = ({ navigation }) => {
       <FlatList
         data={carrito}
         renderItem={renderOfertaItem}
-        keyExtractor={item => item.id}
+        keyExtractor={(item, index) => item?.id_detalle_reserva?.toString() ?? index.toString()}
         contentContainerStyle={styles.listContainer}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            colors={['#0000ff']}
+            tintColor="#0000ff"
+          />
+        }
       />
+      {carrito.length === 0 && (
+        <Text style={styles.emptyCarritoText}>No hay productos en el carrito.</Text>
+      )}
+      <View style={styles.subtotalContainer}>
+        <Text style={styles.subtotalText}>Subtotal: ${subtotal.toFixed(2)}</Text>
+      </View>
+      <TouchableOpacity style={styles.finalizarCompraButton} onPress={finalizarCompra}>
+        <Text style={{ color: '#fff', fontWeight: 'bold' }}>Finalizar compra</Text>
+      </TouchableOpacity>
+      <View style={{ height: 20 }} />
     </View>
   );
 };

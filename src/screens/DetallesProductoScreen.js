@@ -108,39 +108,31 @@ const DetallesProductoScreen = () => {
       </TouchableOpacity>
       <Image source={{ uri: `${ip}/Expo_Comodo/api/images/productos/${producto.imagen}` }} style={styles.image} />
       <Text style={styles.title}>{producto.nombre_producto}</Text>
-      <Text style={styles.description}>{producto.descripcion}</Text>
+      <Text style={styles.description}>{producto.descripcion_detalle}</Text>
       <View style={styles.detailsContainer}>
         <View style={styles.detailsRow}>
           <Text style={styles.detailsLabel}>Marca:</Text>
-          <Text style={styles.detailsValue}>{producto.marca}</Text>
+          <Text style={styles.detailsValue}>{producto.nombre_marca}</Text>
         </View>
         <View style={styles.detailsRow}>
-          <Text style={styles.detailsLabel}>Almacenamiento Interno:</Text>
-          <Text style={styles.detailsValue}>{producto.capacidad_memoria_interna_celular}</Text>
+          <Text style={styles.detailsLabel}>Código del zapato:</Text>
+          <Text style={styles.detailsValue}>{producto.codigo_interno}</Text>
         </View>
         <View style={styles.detailsRow}>
-          <Text style={styles.detailsLabel}>Ram:</Text>
-          <Text style={styles.detailsValue}>{producto.ram_celular}</Text>
+          <Text style={styles.detailsLabel}>Género del zapato:</Text>
+          <Text style={styles.detailsValue}>{producto.nombre_genero}</Text>
         </View>
         <View style={styles.detailsRow}>
-          <Text style={styles.detailsLabel}>Tamaño de la pantalla:</Text>
-          <Text style={styles.detailsValue}>{producto.pantalla_tamaño}</Text>
+          <Text style={styles.detailsLabel}>Material:</Text>
+          <Text style={styles.detailsValue}>{producto.nombre_material}</Text>
         </View>
         <View style={styles.detailsRow}>
-          <Text style={styles.detailsLabel}>Cámara trasera:</Text>
-          <Text style={styles.detailsValue}>{producto.camara_trasera_celular}</Text>
+          <Text style={styles.detailsLabel}>Talla:</Text>
+          <Text style={styles.detailsValue}>{producto.nombre_talla}</Text>
         </View>
         <View style={styles.detailsRow}>
-          <Text style={styles.detailsLabel}>Cámara Frontal:</Text>
-          <Text style={styles.detailsValue}>{producto.camara_frontal_celular}</Text>
-        </View>
-        <View style={styles.detailsRow}>
-          <Text style={styles.detailsLabel}>Procesador:</Text>
-          <Text style={styles.detailsValue}>{producto.procesador_celular}</Text>
-        </View>
-        <View style={styles.detailsRow}>
-          <Text style={styles.detailsLabel}>Sistema operativo:</Text>
-          <Text style={styles.detailsValue}>{producto.sistema_operativo_celular}</Text>
+          <Text style={styles.detailsLabel}>Color:</Text>
+          <Text style={styles.detailsValue}>{producto.color}</Text>
         </View>
       </View>
       <View style={styles.pricingInfoContainer}>
@@ -153,8 +145,8 @@ const DetallesProductoScreen = () => {
           <Text style={styles.pricingInfoValue}>{producto.existencias}</Text>
         </View>
         <View style={styles.pricingInfoRow}>
-          <Text style={styles.pricingInfoLabel}>Descuento:</Text>
-          <Text style={styles.pricingInfoValue}>{producto.valor_oferta}</Text>
+          <Text style={styles.pricingInfoLabel}>Descuento %:</Text>
+          <Text style={styles.pricingInfoValue}>{producto.porcentaje_descuento}</Text>
         </View>
         <View style={styles.inputContainer}>
           <Text style={styles.label}>Cantidad</Text>

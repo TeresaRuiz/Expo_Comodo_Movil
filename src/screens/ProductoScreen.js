@@ -81,7 +81,7 @@ const ProductoScreen = () => {
               key={index}
               item={{
                 title: product.nombre_producto,
-                description: product.descripcion_detalle,
+                description: product.nombre_genero,
                 image: `${ip}/Expo_Comodo/api/images/productos/${product.imagen}`,
               }}
               onPress={() => handleVerMas(product)}
