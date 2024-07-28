@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   button: {
-    backgroundColor: '#007  bff', // Color de fondo del botón
+    backgroundColor: '#007bff', // Color de fondo del botón
     paddingVertical: 15,
     paddingHorizontal: 20,
     borderRadius: 5,

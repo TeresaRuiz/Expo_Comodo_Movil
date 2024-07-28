@@ -3,6 +3,7 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 
+import Onboarding from '../screens/onboarding';
 import LoginScreen from '../screens/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen';
 import PasswordRecoveryScreen from '../screens/RecuperacionScreen';
@@ -21,7 +22,12 @@ const Stack = createStackNavigator();
 const MainStackNavigator = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Navigator
+        initialRouteName='Onboarding' // Establece 'Sesion' como la ruta inicial
+        screenOptions={{
+          headerShown: false // Oculta el header por defecto
+        }}>
+        <Stack.Screen name="Onboarding" component={Onboarding} options={{ headerShown: false }} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Register" component={RegisterScreen} />
         <Stack.Screen name="PasswordRecovery" component={PasswordRecoveryScreen} />
