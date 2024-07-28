@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, FlatList, TouchableOpacity, Alert, ActivityIndicator, RefreshControl, Image } from 'react-native';
 import styles from '../estilos/CarritoScreenStyles'; // Importa los estilos desde un archivo externo
-import Button2 from '../componets/Button2'; // Importa el componente del botón
-import * as Constantes from '../../utils/constantes';
+import Button2 from '../componets/Buttons/Button2'; // Importa el componente del botón
+import * as Constantes from '../utils/constantes';
 
 const CarritoScreen = ({ navigation }) => {
   const [carrito, setCarrito] = useState([]);

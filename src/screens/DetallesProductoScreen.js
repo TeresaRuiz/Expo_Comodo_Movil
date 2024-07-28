@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, Alert, ActivityIndicat
 import { Ionicons } from '@expo/vector-icons';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import styles from '../estilos/DetallesProductosScreen';
-import * as Constantes from '../../utils/constantes';
+import * as Constantes from '../utils/constantes';
 
 const DetallesProductoScreen = () => {
   const navigation = useNavigation();

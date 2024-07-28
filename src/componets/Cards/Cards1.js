@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
-import styles from '../estilos/CategoriaScreenStyles'; // Asegúrate de que la ruta es correcta
-import Button2 from './Button2'; // Asegúrate de que la ruta es correcta
+import styles from '../../estilos/CategoriaScreenStyles'; // Asegúrate de que la ruta es correcta
+import Button2 from '../Buttons/Button2'; // Asegúrate de que la ruta es correcta
 
 const Cards1 = ({ item, onPress }) => {
   return (

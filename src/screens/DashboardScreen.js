@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Image 
 import { Ionicons } from '@expo/vector-icons';
 import styles from '../estilos/DashboardScreenStyles'; // Importa los estilos desde un archivo externo
 import LogOut from '../componets/LogOut';
-import Button from '../componets/Button'; //Aca se importa el componente del boton
+import Button from '../componets/Buttons/Button'; //Aca se importa el componente del boton
 
 const DashboardScreen = ({ navigation }) => {
   // Define los estados locales para la consulta de búsqueda y el índice de la imagen actual

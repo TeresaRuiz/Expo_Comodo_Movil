@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, ScrollView, Animated, Image, ActivityIndicator, Alert, RefreshControl } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import styles from '../estilos/CategoriaScreenStyles'; // Importa los estilos desde un archivo externo
-import Cards1 from '../componets/Cards1'; // Importa el componente Cards1
-import * as Constantes from '../../utils/constantes';
+import Cards1 from '../componets/Cards/Cards1'; // Importa el componente Cards1
+import * as Constantes from '../utils/constantes';
 
 const CategoriaScreen = () => {
   const navigation = useNavigation();

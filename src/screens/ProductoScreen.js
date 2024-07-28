@@ -3,8 +3,8 @@ import { View, Text, ScrollView, TouchableOpacity, Image, TextInput, ActivityInd
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import styles from '../estilos/ProductoScreenStyles'; // Asegúrate de que la ruta es correcta
-import Cards1 from '../componets/Cards3'; // Asegúrate de que la ruta es correcta
-import * as Constantes from '../../utils/constantes';
+import Cards1 from '../componets/Cards/Cards3'; // Asegúrate de que la ruta es correcta
+import * as Constantes from '../utils/constantes';
 const ProductoScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
