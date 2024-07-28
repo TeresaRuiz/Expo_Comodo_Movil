@@ -13,7 +13,7 @@ const Onboarding = () => {
         {
             id: '1',
             title: 'Encuentra tus zapatos ideales',
-            description: 'Accede a una amplia variedad de zapatos y encuentra el par perfecto en comodo$',
+            description: 'Accede a una amplia variedad de zapatos y encuentra el par perfecto en "Comodo$"',
             image: require('../img/onboarding1.png'), 
         },
         {
