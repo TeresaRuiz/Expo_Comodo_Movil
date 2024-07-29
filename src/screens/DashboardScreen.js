@@ -3,11 +3,9 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Image 
 import { Ionicons } from '@expo/vector-icons';
 import styles from '../estilos/DashboardScreenStyles'; // Importa los estilos desde un archivo externo
 import LogOut from '../componets/LogOut';
-import Button from '../componets/Buttons/Button'; //Aca se importa el componente del boton
+import Button from '../componets/Buttons/Button'; // Importa el componente del botón
 
 const DashboardScreen = ({ navigation }) => {
-  // Define los estados locales para la consulta de búsqueda y el índice de la imagen actual
-  const [searchQuery, setSearchQuery] = useState('');
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   // Utiliza useEffect para cambiar automáticamente la imagen del banner cada 5 segundos
@@ -44,7 +42,6 @@ const DashboardScreen = ({ navigation }) => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       {/* Contenedor de búsqueda */}
-     
 
       {/* Banner de imágenes */}
       <Image

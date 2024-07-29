@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Animated, Easing, Alert } from 'react-native';
+import { Ionicons } from '@expo/vector-icons'; // Import Ionicons
 import styles from '../estilos/LoginScreenStyles'; // Importa los estilos desde un archivo externo
 import Button3 from '../componets/Buttons/Button3';
+import LogOut from '../componets/LogOut';
 import * as Constantes from '../utils/constantes'; // Importar constantes, asumiendo que tienes IP en un archivo de constantes
 
 const LoginScreen = ({ navigation }) => {
@@ -81,6 +83,30 @@ const LoginScreen = ({ navigation }) => {
     navigation.navigate('PasswordRecovery');
   };
 
+  // Función para manejar el cierre de sesión
+  const handleLogout = async () => {
+    try {
+      const url = `${ip}/Expo_Comodo/api/services/public/cliente.php?action=logOut`;
+      console.log('URL solicitada:', url); // Verifica la URL en la consola
+
+      const response = await fetch(url, {
+        method: 'GET',
+      });
+
+      const data = await response.json();
+
+      if (data.status) {
+        Alert.alert('Sesión cerrada exitosamente');
+        navigation.navigate('Login');
+      } else {
+        Alert.alert('Error', data.error);
+      }
+    } catch (error) {
+      console.error('Error al cerrar sesión:', error);
+      Alert.alert('Error', 'Ocurrió un error al cerrar sesión');
+    }
+  };
+
   // Mostrar alerta de error de inicio de sesión
   const showLoginErrorAlert = () => {
     Alert.alert(
@@ -136,6 +162,14 @@ const LoginScreen = ({ navigation }) => {
       <TouchableOpacity onPress={handleForgotPasswordRedirect}>
         <Text style={styles.forgotPasswordText}>¿Olvidaste tu contraseña?</Text>
       </TouchableOpacity>
+      {/* Botón de cierre de sesión */}
+      <LogOut
+        title="Cerrar Sesión"
+        onPress={handleLogout}
+        style={styles.logoutButton}
+        textStyle={{ color: '#7f7f7f' }}
+        icon={<Ionicons name="lock-closed" size={24} color="black" />}
+      />
     </View>
   );
 };
