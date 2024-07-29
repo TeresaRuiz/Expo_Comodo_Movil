@@ -39,14 +39,15 @@ const OfertasScreen = ({ navigation }) => {
   const renderOfertaItem = ({ item }) => (
     <TouchableOpacity
       style={styles.ofertaCard}
-      onPress={() => navigation.navigate('DetallesProducto', { producto: item })}
+      onPress={() => navigation.navigate('DetallesProducto', { idProducto: item.id_producto })}
     >
       <Image source={{ uri: `${ip}/Expo_Comodo/api/images/productos/${item.imagen}` }} style={styles.ofertaImage} />
       <View style={styles.ofertaDetails}>
         <Text style={styles.ofertaTitle}>{item.nombre_producto}</Text>
         <Text style={styles.ofertaDescription}>{item.nombre_genero}</Text>
         <View style={styles.ofertaPriceContainer}>
-          <Text style={styles.ofertaPrice}>${item.precio.toFixed(2)}</Text>
+          <Text style={styles.ofertaPrice}>${item.precio}</Text>
+          <Text style={styles.discountText}>-{item.descuento}%</Text>
           {item.descuento > 0 && (
             <View style={styles.discountBadge}>
               <Text style={styles.discountText}>-{item.descuento}%</Text>
