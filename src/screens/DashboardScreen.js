@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Image } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Image, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import styles from '../estilos/DashboardScreenStyles'; // Importa los estilos desde un archivo externo
 import LogOut from '../componets/LogOut';
 import Button from '../componets/Buttons/Button'; // Importa el componente del botón
+import * as Constantes from '../utils/constantes'; // Importar constantes, asumiendo que tienes IP en un archivo de constantes
 
 const DashboardScreen = ({ navigation }) => {
+  const ip = Constantes.IP; // Definir IP de la API
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   // Utiliza useEffect para cambiar automáticamente la imagen del banner cada 5 segundos
@@ -19,8 +21,27 @@ const DashboardScreen = ({ navigation }) => {
   }, []);
 
   // Función para manejar la acción de cierre de sesión
-  const handleLogout = () => {
-    navigation.navigate('Login');
+  const handleLogout = async () => {
+    try {
+      const url = `${ip}/Expo_Comodo/api/services/public/cliente.php?action=logOut`;
+      console.log('URL solicitada:', url); // Verifica la URL en la consola
+
+      const response = await fetch(url, {
+        method: 'GET',
+      });
+
+      const data = await response.json();
+
+      if (data.status) {
+        navigation.navigate('Login', { clearLoginData: true }); // Navega a Login y pasa un parámetro para limpiar los datos
+        Alert.alert('Sesión cerrada exitosamente');
+      } else {
+        Alert.alert('Error', data.error);
+      }
+    } catch (error) {
+      console.error('Error al cerrar sesión:', error);
+      Alert.alert('Error', 'Ocurrió un error al cerrar sesión');
+    }
   };
 
   // Define las categorías con sus títulos e iconos correspondientes
