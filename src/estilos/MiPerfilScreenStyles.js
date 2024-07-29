@@ -16,6 +16,17 @@ const styles = StyleSheet.create({
       marginBottom: 30,
       color: '#333',
     },
+    mapContainer: {
+      width: '100%',  // Ajusta el ancho al 100% para ocupar todo el contenedor
+      height: 300,    // Ajusta la altura según tus preferencias
+      marginTop: 20,  // Añade un margen superior si es necesario
+      marginBottom: 20, // Puedes ajustar el margen inferior según tu diseño
+      alignItems: 'center', // Centra horizontalmente el mapa
+    },
+    map: {
+      width: '100%',   // Ajusta el ancho del mapa al 100% del contenedor
+      height: '100%',  // Ajusta la altura del mapa al 100% del contenedor
+    },
     profileImageContainer: {
       position: 'relative',
       marginBottom: 30,
