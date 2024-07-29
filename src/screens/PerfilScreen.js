@@ -1,13 +1,39 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, Linking } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons'; // Importa Ionicons desde Expo
 import { FontAwesome } from '@expo/vector-icons'; // Importa FontAwesome desde Expo
 import { useNavigation } from '@react-navigation/native'; // Importa useNavigation desde react-navigation
 import styles from '../estilos/PerfilScreenStyles'; // Importa estilos desde un archivo externo
-
+import * as Constantes from '../utils/constantes'; // Importa constantes, como la URL de la API
 
 const PerfilScreen = () => {
+  const [nombre, setNombre] = useState('');
   const navigation = useNavigation(); // Obtiene la navegación actual desde react-navigation
+
+  // Función para obtener el perfil del usuario
+  const fetchProfile = async () => {
+    try {
+      const response = await fetch(`${Constantes.IP}/Expo_Comodo/api/services/public/cliente.php?action=readProfile`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include', // Incluye las cookies para la autenticación de la sesión
+      });
+      const data = await response.json();
+      if (data.status === 1 && data.dataset) {
+        setNombre(data.dataset.nombre);
+      } else {
+        console.error('Error al leer el perfil:', data.error);
+      }
+    } catch (error) {
+      console.error('Error al conectar con la API:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchProfile(); // Llama a la función para obtener el perfil del usuario cuando se monta el componente
+  }, []);
 
   // Función para abrir enlace de Facebook
   const abrirFacebook = () => {
@@ -21,7 +47,7 @@ const PerfilScreen = () => {
 
   // Función para navegar a la pantalla 'TerminosyCondiciones'
   const handleTerminosCondicionesPress = () => {
-    navigation.navigate('TerminosyCondiciones'); // Asegúrate de que el nombre coincida con la ruta de navegación
+    navigation.navigate('TerminosyCondiciones');
   };
 
   return (
@@ -31,7 +57,7 @@ const PerfilScreen = () => {
           source={{ uri: 'https://i.pinimg.com/564x/c7/f9/fe/c7f9fe2e978b08473031c87f6fe657c2.jpg' }}
           style={styles.profileImage}
         />
-        <Text style={styles.profileName}>Dickie</Text>
+        <Text style={styles.profileName}>{nombre}</Text>
       </View>
 
       <View style={styles.menuContainer}>
@@ -68,7 +94,5 @@ const MenuItem = ({ title, icon }) => (
     <Text style={styles.menuItemText}>{title}</Text>
   </View>
 );
-
-
 
 export default PerfilScreen;
