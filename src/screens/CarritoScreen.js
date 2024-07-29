@@ -4,6 +4,7 @@ import styles from '../estilos/CarritoScreenStyles'; // Importa los estilos desd
 import Button2 from '../componets/Buttons/Button2'; // Importa el componente del botón
 import * as Constantes from '../utils/constantes';
 
+
 const CarritoScreen = ({ navigation }) => {
   const [carrito, setCarrito] = useState([]);
   const [loading, setLoading] = useState(true);

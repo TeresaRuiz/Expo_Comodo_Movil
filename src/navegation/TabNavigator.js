@@ -1,4 +1,3 @@
-// src/navigation/TabNavigator.js
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
@@ -28,7 +27,7 @@ const DashboardTabNavigator = () => {
         component={CategoriaScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="albums" size={size} color={color} />
+            <Ionicons name="grid" size={size} color={color} /> 
           ),
           tabBarLabel: () => null,
         }}

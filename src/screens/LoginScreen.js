@@ -96,7 +96,6 @@ const LoginScreen = ({ navigation }) => {
       const data = await response.json();
 
       if (data.status) {
-        clearLoginData(); // Llama a la función para limpiar los datos del formulario
         Alert.alert('Sesión cerrada exitosamente');
         navigation.navigate('Login');
       } else {
@@ -106,12 +105,6 @@ const LoginScreen = ({ navigation }) => {
       console.error('Error al cerrar sesión:', error);
       Alert.alert('Error', 'Ocurrió un error al cerrar sesión');
     }
-  };
-
-  // Función para limpiar los datos del formulario de inicio de sesión
-  const clearLoginData = () => {
-    setUsername('');
-    setPassword('');
   };
 
   // Mostrar alerta de error de inicio de sesión
