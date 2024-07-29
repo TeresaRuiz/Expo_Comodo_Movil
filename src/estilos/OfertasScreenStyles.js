@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
   ofertaPrice: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#333', // Cambiado de '#000' a '#333'
+    color: '#3046BC', // Cambiado de '#000' a '#333'
   },
   discountBadge: {
     backgroundColor: '#3046BC', // Cambiado de '#ff4444' a '#3046BC'
@@ -71,16 +71,23 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   discountText: {
-    color: '#fff',
+    color: '#F0F8FF',
     fontSize: 12,
+    marginLeft: 25,
+    borderWidth: 1, // Ancho del borde
+    borderColor: '#3046BC', // Color del borde
+    borderRadius: 5, // Radio del borde (esquinas redondeadas)
+    padding: 2, // Espacio entre el texto y el borde
+    backgroundColor: '#3046BC', // Fondo del texto (opcional)
   },
   noOfertasText: {
     textAlign: 'center',
     fontSize: 18,
-    color: '#666', // Cambiado de '#555' a '#666'
+    color: '#3046BC', // Cambiado de '#555' a '#666'
     marginTop: 20,
   },
 });
 
 
 export default styles;
+
