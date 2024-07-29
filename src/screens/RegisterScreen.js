@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Image, TextInput } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, Image, TextInput, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import MapView, { Marker } from 'react-native-maps';
 import axios from 'axios';
 import DebouncedSearchInput from '../screens/DebouncedSearchInput';
-import styles from '../estilos/RegisterScreenStyles'; // Ajusta la ruta según tu estructura de archivos
+import styles from '../estilos/RegisterScreenStyles';
+import * as Constantes from '../utils/constantes';
 import Button3 from '../componets/Buttons/Button3';
 
 const RegisterScreen = () => {
@@ -13,26 +14,66 @@ const RegisterScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [password2, setPassword2] = useState('');
-  const [phone, setPhone] = useState('');
+  const [phone, setTelefono] = useState('');
   const [dui, setDui] = useState('');
   const [address, setAddress] = useState('');
   const [location, setLocation] = useState({
-    latitude: 13.69294,  // Latitud de San Salvador, El Salvador
-    longitude: -89.21819, // Longitud de San Salvador, El Salvador
+    latitude: 13.69294,
+    longitude: -89.21819,
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   });
 
   const navigation = useNavigation();
+  const ip = Constantes.IP;
 
-  const handleRegister = () => {
-    console.log('Nombre:', name);
-    console.log('Usuario:', username);
-    console.log('Correo:', email);
-    console.log('Contraseña:', password);
-    console.log('Telefono:', phone);
-    console.log('DUI:', dui);
-    console.log('Dirección:', address);
+  const handleRegister = async () => {
+    if (
+      !name.trim() ||
+      !username.trim() ||
+      !email.trim() ||
+      !password.trim() ||
+      !password2.trim() ||
+      !phone.trim() ||
+      !dui.trim() ||
+      !address.trim()
+    ) {
+      Alert.alert('Error', 'Debes llenar todos los campos');
+      return;
+    }
+
+    if (password !== password2) {
+      Alert.alert('Error', 'Las contraseñas no coinciden');
+      return;
+    }
+
+    try {
+      const formData = new FormData();
+      formData.append('nombreCliente', name);
+      formData.append('usuarioCliente', username);
+      formData.append('correoCliente', email);
+      formData.append('claveCliente', password);
+      formData.append('confirmarClave', password2);
+      formData.append('telefonoCliente', phone);
+      formData.append('duiCliente', dui);
+      formData.append('direccionCliente', address);
+
+      const response = await fetch(`${ip}/Expo_Comodo/api/services/public/cliente.php?action=signUpMovil`, {
+        method: 'POST',
+        body: formData
+      });
+
+      const data = await response.json();
+      if (data.status) {
+        Alert.alert('Éxito', 'Usuario creado correctamente', [
+          { text: 'OK', onPress: () => navigation.navigate('Login') }
+        ]);
+      } else {
+        Alert.alert('Error', `Error: ${data.error}`);
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Ocurrió un error al intentar crear el usuario');
+    }
   };
 
   const handleLoginRedirect = () => {
@@ -80,8 +121,8 @@ const RegisterScreen = () => {
   const handleClearAddress = () => {
     setAddress('');
     setLocation({
-      latitude: 13.69294,  // Latitud de San Salvador, El Salvador
-      longitude: -89.21819, // Longitud de San Salvador, El Salvador
+      latitude: 13.69294,
+      longitude: -89.21819,
       latitudeDelta: 0.0922,
       longitudeDelta: 0.0421,
     });
@@ -133,7 +174,7 @@ const RegisterScreen = () => {
       <TextInput
         style={styles.input}
         placeholder="Teléfono"
-        onChangeText={text => setPhone(text)}
+        onChangeText={text => setTelefono(text)}
         value={phone}
         keyboardType="phone-pad"
       />
@@ -158,19 +199,16 @@ const RegisterScreen = () => {
         region={location}
         onPress={handleMapPress}
       >
-        
         <Marker coordinate={location} />
       </MapView>
       <Button3 style={styles.registerButton} onPress={handleRegister}>
-          <Text style={styles.buttonText}>Registrar</Text>
-        </Button3>
+        <Text style={styles.buttonText}>Registrar</Text>
+      </Button3>
       <TouchableOpacity onPress={handleLoginRedirect}>
         <Text style={styles.loginRedirectText}>¿Ya tienes cuenta? Inicia sesión</Text>
       </TouchableOpacity>
     </ScrollView>
   );
 };
-
-
 
 export default RegisterScreen;

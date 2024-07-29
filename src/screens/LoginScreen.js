@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Animated, Easing } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Animated, Easing, Alert } from 'react-native';
 import styles from '../estilos/LoginScreenStyles'; // Importa los estilos desde un archivo externo
 import Button3 from '../componets/Buttons/Button3';
+import * as Constantes from '../utils/constantes'; // Importar constantes, asumiendo que tienes IP en un archivo de constantes
 
 const LoginScreen = ({ navigation }) => {
-  // Estados para el nombre de usuario y la contraseña
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-
-  // Estado y efecto para la animación del logo
-  const animatedValue = new Animated.Value(0);
+  const ip = Constantes.IP; // Definir IP de la API
+  const [username, setUsername] = useState(''); // Estado para el nombre de usuario
+  const [password, setPassword] = useState(''); // Estado para la contraseña
+  const animatedValue = new Animated.Value(0); // Estado para la animación del logo
 
   useEffect(() => {
     // Configuración de la animación que se repite en bucle
@@ -38,10 +37,38 @@ const LoginScreen = ({ navigation }) => {
   });
 
   // Función para manejar el inicio de sesión
-  const handleLogin = () => {
-    console.log('Nombre de usuario:', username);
-    console.log('Contraseña:', password);
-    navigation.navigate('DashboardTabs'); // Navega a la pantalla de pestañas del dashboard después del inicio de sesión
+  const handleLogin = async () => {
+    try {
+      const formData = new FormData();
+      formData.append('UsuarioCliente', username); // Añadir nombre de usuario al formulario
+      formData.append('clave', password); // Añadir contraseña al formulario
+      
+      const url = `${ip}/Expo_Comodo/api/services/public/cliente.php?action=logIn`; // URL para la solicitud
+      console.log('URL solicitada:', url); // Para verificar la URL
+
+      // Realizar la solicitud a la API
+      const response = await fetch(url, {
+        method: 'POST',
+        body: formData,
+      });
+
+      const responseText = await response.text(); // Obtener la respuesta como texto
+
+      try {
+        const data = JSON.parse(responseText); // Intenta parsear la respuesta como JSON
+        if (data.status) {
+          navigation.navigate('DashboardTabs'); // Navega a la pantalla de pestañas del dashboard
+        } else {
+          showLoginErrorAlert(); // Mostrar alerta personalizada en caso de error
+        }
+      } catch (jsonError) {
+        console.error('Error al parsear JSON:', jsonError);
+        console.error('Respuesta recibida:', responseText);
+        Alert.alert('Error', 'Ocurrió un error al procesar la respuesta del servidor');
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Ocurrió un error al iniciar sesión');
+    }
   };
 
   // Función para redirigir a la pantalla de registro
@@ -52,6 +79,25 @@ const LoginScreen = ({ navigation }) => {
   // Función para redirigir a la pantalla de recuperación de contraseña
   const handleForgotPasswordRedirect = () => {
     navigation.navigate('PasswordRecovery');
+  };
+
+  // Mostrar alerta de error de inicio de sesión
+  const showLoginErrorAlert = () => {
+    Alert.alert(
+      'Error de inicio de sesión',
+      'Usuario o contraseña incorrectos',
+      [
+        {
+          text: 'OK',
+          style: 'default',
+          onPress: () => console.log('OK Pressed'),
+        },
+      ],
+      {
+        cancelable: true,
+        onDismiss: () => console.log('Alert dismissed'),
+      }
+    );
   };
 
   return (
@@ -76,7 +122,7 @@ const LoginScreen = ({ navigation }) => {
         placeholder="Contraseña"
         onChangeText={text => setPassword(text)}
         value={password}
-        secureTextEntry={true}
+        secureTextEntry={true} // Asegurar que la contraseña sea segura
       />
       {/* Botón para iniciar sesión */}
       <Button3 style={styles.button} onPress={handleLogin}>
