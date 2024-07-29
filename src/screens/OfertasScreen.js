@@ -1,47 +1,55 @@
-import React from 'react';
-import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, ActivityIndicator, TextInput, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import styles from '../estilos/OfertasScreenStyles'; // Importa los estilos desde un archivo externo
-
-// Importa la imagen de "Promo" desde el directorio de imágenes
 import PromoImage from '../img/ofertas.png'; // Ajusta la ruta según donde hayas guardado la imagen
+import * as Constantes from '../utils/constantes';
 
 const OfertasScreen = ({ navigation }) => {
-  // Arreglo de ofertas con objetos de ejemplo
-  const ofertas = [
-    {
-      id: '1',
-      title: 'Zapatillas Deportivas Nike',
-      description: 'Zapatillas ideales para correr, disponibles en varios colores.',
-      image: 'https://i.pinimg.com/736x/2a/cf/5f/2acf5f8b73e26f38bc018e0bafb70875.jpg',
-      price: 49.95,
-      discount: 30,
-    },
-    {
-      id: '2',
-      title: 'Sandalias Verano Adidas',
-      description: 'Sandalias cómodas y resistentes para el verano.',
-      image: 'https://i.pinimg.com/564x/dc/16/1b/dc161b4d8cb4a0df94f6c15b613aaf3d.jpg',
-      price: 29.99,
-      discount: 20,
-    },
-  ];
+  const [searchText, setSearchText] = useState('');
+  const [ofertas, setOfertas] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Función para renderizar cada elemento de oferta
+  const ip = Constantes.IP;
+
+  const fetchOfertas = async () => {
+    try {
+      const response = await fetch(`${ip}/Expo_Comodo/api/services/public/producto.php?action=getProductosConDescuento`);
+      const data = await response.json();
+      if (data.status) {
+        setOfertas(data.dataset);
+      } else {
+        Alert.alert('Error', data.message);
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Ocurrió un error al obtener las ofertas');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchOfertas();
+  }, []);
+
+  const filteredOfertas = ofertas.filter(oferta =>
+    oferta.nombre_producto.toLowerCase().includes(searchText.toLowerCase())
+  );
+
   const renderOfertaItem = ({ item }) => (
     <TouchableOpacity
       style={styles.ofertaCard}
       onPress={() => navigation.navigate('DetallesProducto', { producto: item })}
     >
-      <Image source={{ uri: item.image }} style={styles.ofertaImage} />
+      <Image source={{ uri: `${ip}/Expo_Comodo/api/images/productos/${item.imagen}` }} style={styles.ofertaImage} />
       <View style={styles.ofertaDetails}>
-        <Text style={styles.ofertaTitle}>{item.title}</Text>
-        <Text style={styles.ofertaDescription}>{item.description}</Text>
+        <Text style={styles.ofertaTitle}>{item.nombre_producto}</Text>
+        <Text style={styles.ofertaDescription}>{item.nombre_genero}</Text>
         <View style={styles.ofertaPriceContainer}>
-          <Text style={styles.ofertaPrice}>${item.price.toFixed(2)}</Text>
-          {item.discount > 0 && (
+          <Text style={styles.ofertaPrice}>${item.precio.toFixed(2)}</Text>
+          {item.descuento > 0 && (
             <View style={styles.discountBadge}>
-              <Text style={styles.discountText}>-{item.discount}%</Text>
+              <Text style={styles.discountText}>-{item.descuento}%</Text>
             </View>
           )}
         </View>
@@ -51,16 +59,28 @@ const OfertasScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      {/* Imagen de "Promo" */}
       <Image source={PromoImage} style={styles.promoImage} />
-
-      {/* Lista plana de ofertas */}
-      <FlatList
-        data={ofertas}
-        renderItem={renderOfertaItem}
-        keyExtractor={item => item.id}
-        contentContainerStyle={styles.listContainer}
-      />
+      <View style={styles.searchContainer}>
+        <Ionicons name="search" size={24} color="#000" style={styles.searchIcon} />
+        <TextInput
+          placeholder="Busca tus ofertas..."
+          style={styles.searchInput}
+          value={searchText}
+          onChangeText={setSearchText}
+        />
+      </View>
+      {loading ? (
+        <ActivityIndicator size="large" color="#0000ff" />
+      ) : filteredOfertas.length === 0 ? (
+        <Text style={styles.noOfertasText}>No hay ofertas disponibles</Text>
+      ) : (
+        <FlatList
+          data={filteredOfertas}
+          renderItem={renderOfertaItem}
+          keyExtractor={item => item.id_producto.toString()}
+          contentContainerStyle={styles.listContainer}
+        />
+      )}
     </View>
   );
 };
