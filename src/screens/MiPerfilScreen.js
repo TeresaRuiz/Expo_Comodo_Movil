@@ -85,31 +85,56 @@ const MiPerfilScreen = () => {
   // Función para manejar la actualización de los datos del perfil
   const handleUpdate = async () => {
     try {
+      // Crea un objeto con los datos del perfil
       const formData = new FormData();
-      formData.append('nombreCliente', nombre);
-      formData.append('correoCliente', correo);
-      formData.append('aliaCliente', username);
-      formData.append('direccion_cliente', direccion);
+      formData.append('nombre', nombre);
+      formData.append('correo', correo);
+      formData.append('username', username);
       formData.append('telefono', telefono);
-
+      formData.append('direccion', direccion);
+  
+      // URL de la API para actualizar el perfil
       const url = `${ip}/Expo_Comodo/api/services/public/cliente.php?action=editProfile`;
-
+  
+      // Realiza la solicitud POST para actualizar el perfil
       const response = await fetch(url, {
         method: 'POST',
         body: formData,
+        headers: {
+          Accept: 'application/x-www-form-urlencoded', // Indicamos que aceptamos datos de formulario
+          'Content-Type': 'multipart/form-data',
+        },
       });
-
-      const data = await response.json();
-
-      if (data.status) {
+  
+      const responseText = await response.text(); // Obtiene la respuesta como texto
+      console.log('API Response:', responseText); // Imprime la respuesta completa
+  
+      // Aquí manejamos la respuesta como si fuera un formulario
+      // Dividimos el responseText por "&" y luego por "=" para obtener un objeto
+      const responseData = responseText.split('&').reduce((acc, part) => {
+        const [key, value] = part.split('=');
+        acc[decodeURIComponent(key)] = decodeURIComponent(value);
+        return acc;
+      }, {});
+  
+      console.log('Parsed Form Data:', responseData); // Imprime los datos de formulario analizados
+  
+      // Manejo de la respuesta
+      if (responseData.status === '1') { // Comparamos como texto
         Alert.alert('Perfil actualizado', 'Los datos del perfil han sido actualizados exitosamente');
+        setEditando(false); // Desactiva el modo de edición
       } else {
-        Alert.alert('Error', 'No se pudo actualizar el perfil');
+        // Muestra un mensaje de error si el perfil no se pudo actualizar
+        Alert.alert('Error', responseData.error || 'No se pudo actualizar el perfil');
       }
     } catch (error) {
+      // Muestra un mensaje de error en caso de que ocurra un problema
       Alert.alert('Error', 'Ocurrió un error al actualizar el perfil');
+      console.error('Error al actualizar el perfil:', error);
     }
   };
+  
+  
 
   // Función para manejar la cancelación y limpiar los campos
   const handleDelete = () => {
