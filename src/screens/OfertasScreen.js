@@ -33,7 +33,7 @@ const OfertasScreen = ({ navigation }) => {
   }, []);
 
   const filteredOfertas = ofertas.filter(oferta =>
-    oferta.nombre_producto.toLowerCase().includes(searchText.toLowerCase())
+    oferta.nombre_descuento.toLowerCase().includes(searchText.toLowerCase())
   );
 
   const renderOfertaItem = ({ item }) => (
@@ -47,7 +47,7 @@ const OfertasScreen = ({ navigation }) => {
         <Text style={styles.ofertaDescription}>{item.nombre_genero}</Text>
         <View style={styles.ofertaPriceContainer}>
           <Text style={styles.ofertaPrice}>${item.precio}</Text>
-          <Text style={styles.discountText}>-{item.descuento}%</Text>
+          <Text style={styles.discountText}>-{item.valor}%</Text>
           {item.descuento > 0 && (
             <View style={styles.discountBadge}>
               <Text style={styles.discountText}>-{item.descuento}%</Text>
@@ -87,3 +87,4 @@ const OfertasScreen = ({ navigation }) => {
 };
 
 export default OfertasScreen;
+
