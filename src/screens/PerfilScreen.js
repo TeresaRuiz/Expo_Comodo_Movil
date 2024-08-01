@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, Linking } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, Linking, RefreshControl, ActivityIndicator, Alert } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons'; // Importa Ionicons desde Expo
 import { FontAwesome } from '@expo/vector-icons'; // Importa FontAwesome desde Expo
 import { useNavigation } from '@react-navigation/native'; // Importa useNavigation desde react-navigation
@@ -8,6 +8,8 @@ import * as Constantes from '../utils/constantes'; // Importa constantes, como l
 
 const PerfilScreen = () => {
   const [nombre, setNombre] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const navigation = useNavigation(); // Obtiene la navegación actual desde react-navigation
 
   // Función para obtener el perfil del usuario
@@ -28,11 +30,19 @@ const PerfilScreen = () => {
       }
     } catch (error) {
       console.error('Error al conectar con la API:', error);
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
     }
   };
 
   useEffect(() => {
     fetchProfile(); // Llama a la función para obtener el perfil del usuario cuando se monta el componente
+    const intervalId = setInterval(() => {
+      fetchProfile(); // Actualiza el perfil automáticamente cada 10 minutos
+    }, 600000); // 600000 ms = 10 minutos
+
+    return () => clearInterval(intervalId); // Limpia el intervalo cuando el componente se desmonte
   }, []);
 
   // Función para abrir enlace de Facebook
@@ -50,8 +60,27 @@ const PerfilScreen = () => {
     navigation.navigate('TerminosyCondiciones');
   };
 
+  // Función para manejar el refresco manual
+  const handleRefresh = () => {
+    setRefreshing(true);
+    fetchProfile();
+  };
+
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
+  }
+
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView
+      contentContainerStyle={styles.container}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+      }
+    >
       <View style={styles.profileContainer}>
         <Image
           source={{ uri: 'https://i.pinimg.com/564x/c7/f9/fe/c7f9fe2e978b08473031c87f6fe657c2.jpg' }}
@@ -64,7 +93,6 @@ const PerfilScreen = () => {
         <TouchableOpacity onPress={handleMiPerfilPress}>
           <MenuItem title="Mi perfil" icon="person-outline" />
         </TouchableOpacity>
-        <MenuItem title="Historial" icon="settings-outline" />
         <TouchableOpacity onPress={handleTerminosCondicionesPress}>
           <MenuItem title="Terminos y condiciones" icon="document-text-outline" />
         </TouchableOpacity>
