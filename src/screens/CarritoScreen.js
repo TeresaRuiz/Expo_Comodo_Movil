@@ -250,8 +250,5 @@ const renderOfertaItem = ({ item }) => (
   );
 };
 
-<<<<<<< HEAD
 export default CarritoScreen;
-=======
-export default CarritoScreen;
->>>>>>> 787b8250eb0e9da18464d8a11d55cf852c6a68e2
+
