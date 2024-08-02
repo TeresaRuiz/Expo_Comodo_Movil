@@ -162,14 +162,13 @@ const LoginScreen = ({ navigation }) => {
       <TouchableOpacity onPress={handleForgotPasswordRedirect}>
         <Text style={styles.forgotPasswordText}>¿Olvidaste tu contraseña?</Text>
       </TouchableOpacity>
-      {/* Botón de cierre de sesión 
       <LogOut
         title="Cerrar Sesión"
         onPress={handleLogout}
         style={styles.logoutButton}
         textStyle={{ color: '#7f7f7f' }}
         icon={<Ionicons name="lock-closed" size={24} color="black" />}
-      />*/}
+      />
     </View>
   );
 };

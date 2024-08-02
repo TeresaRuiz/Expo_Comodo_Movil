@@ -1,29 +1,38 @@
 import { StyleSheet } from 'react-native';
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5', // Cambiado de '#fff' a '#f5f5f5'
+    backgroundColor: '#f5f5f5',
   },
   promoImage: {
     width: '100%',
     height: 200,
     resizeMode: 'cover',
+    marginBottom: 20, // Añade un margen inferior para dar espacio
   },
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    margin: 10,
+    backgroundColor: '#fff',
+    borderRadius: 30,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    marginBottom: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 6,
+    elevation: 8,
   },
   searchIcon: {
-    marginRight: 10,
+    marginRight: 15,
   },
   searchInput: {
     flex: 1,
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 5,
-    paddingHorizontal: 10,
     height: 40,
+    fontSize: 18,
+    color: '#333',
   },
   listContainer: {
     paddingBottom: 20,
@@ -33,7 +42,14 @@ const styles = StyleSheet.create({
     padding: 10,
     borderBottomWidth: 1,
     borderBottomColor: '#ddd',
-    backgroundColor: '#fff', // Añadido para mantener consistencia con el primer estilo
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    margin: 10,
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
   },
   ofertaImage: {
     width: 80,
@@ -44,15 +60,16 @@ const styles = StyleSheet.create({
   ofertaDetails: {
     flex: 1,
     justifyContent: 'center',
+    marginLeft: 10,
   },
   ofertaTitle: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#333', // Cambiado a '#333' para mantener consistencia
+    color: '#333',
   },
   ofertaDescription: {
     fontSize: 14,
-    color: '#666', // Cambiado de '#555' a '#666'
+    color: '#666',
   },
   ofertaPriceContainer: {
     flexDirection: 'row',
@@ -62,10 +79,10 @@ const styles = StyleSheet.create({
   ofertaPrice: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#3046BC', // Cambiado de '#000' a '#333'
+    color: '#3046BC',
   },
   discountBadge: {
-    backgroundColor: '#3046BC', // Cambiado de '#ff4444' a '#3046BC'
+    backgroundColor: '#3046BC',
     borderRadius: 5,
     padding: 3,
     marginLeft: 10,
@@ -74,20 +91,18 @@ const styles = StyleSheet.create({
     color: '#F0F8FF',
     fontSize: 12,
     marginLeft: 25,
-    borderWidth: 1, // Ancho del borde
-    borderColor: '#3046BC', // Color del borde
-    borderRadius: 5, // Radio del borde (esquinas redondeadas)
-    padding: 2, // Espacio entre el texto y el borde
-    backgroundColor: '#3046BC', // Fondo del texto (opcional)
+    borderWidth: 1,
+    borderColor: '#3046BC',
+    borderRadius: 5,
+    padding: 2,
+    backgroundColor: '#3046BC',
   },
   noOfertasText: {
     textAlign: 'center',
     fontSize: 18,
-    color: '#3046BC', // Cambiado de '#555' a '#666'
+    color: '#3046BC',
     marginTop: 20,
   },
 });
 
-
 export default styles;
-
