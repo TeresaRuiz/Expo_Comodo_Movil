@@ -1,7 +1,16 @@
+<<<<<<< HEAD
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, FlatList, TouchableOpacity, Alert, ActivityIndicator, RefreshControl, Image } from 'react-native';
 import styles from '../estilos/CarritoScreenStyles'; // Importa los estilos desde un archivo externo
 import * as Constantes from '../utils/constantes';
+=======
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, TextInput, FlatList, RefreshControl } from 'react-native';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { useNavigation } from '@react-navigation/native';
+import fetchData from '../utils/constantes';
+import LibroItem from '../estilos/CarritoScreenStyles';
+>>>>>>> 787b8250eb0e9da18464d8a11d55cf852c6a68e2
 
 const CarritoScreen = ({ navigation }) => {
   const [carrito, setCarrito] = useState([]);
@@ -242,4 +251,8 @@ const renderOfertaItem = ({ item }) => (
   );
 };
 
+<<<<<<< HEAD
 export default CarritoScreen;
+=======
+export default CarritoScreen;
+>>>>>>> 787b8250eb0e9da18464d8a11d55cf852c6a68e2

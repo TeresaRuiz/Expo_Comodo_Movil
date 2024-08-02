@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, ActivityIndicator, TextInput, Alert } from 'react-native';
+import { View, Text, FlatList, Image, TouchableOpacity, ActivityIndicator, TextInput, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import styles from '../estilos/OfertasScreenStyles'; // Importa los estilos desde un archivo externo
-import PromoImage from '../img/ofertas.png'; // Ajusta la ruta según donde hayas guardado la imagen
+import styles from '../estilos/OfertasScreenStyles';
+import PromoImage from '../img/ofertas.png';
 import * as Constantes from '../utils/constantes';
 
 const OfertasScreen = ({ navigation }) => {
@@ -87,4 +87,3 @@ const OfertasScreen = ({ navigation }) => {
 };
 
 export default OfertasScreen;
-
