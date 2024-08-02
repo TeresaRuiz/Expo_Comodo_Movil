@@ -16,6 +16,8 @@ import HistorialScreen from '../screens/HistorialScreen';
 import OfertasScreen from '../screens/OfertasScreen';
 import TerminosCondicionesScreen from '../screens/Terminos&Condiciones';
 import DetallesProductoScreen from '../screens/DetallesProductoScreen';
+import PinVerificationScreen from '../screens/PinVerificationScreen';
+import NewPasswordScreen from '../screens/NewPasswordScreen';
 
 const Stack = createStackNavigator();
 
@@ -31,6 +33,8 @@ const MainStackNavigator = () => {
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Register" component={RegisterScreen} />
         <Stack.Screen name="PasswordRecovery" component={PasswordRecoveryScreen} />
+        <Stack.Screen name="PinVerification" component={PinVerificationScreen} />
+        <Stack.Screen name="NewPassword" component={NewPasswordScreen} />
         <Stack.Screen name="DashboardTabs" component={DashboardTabNavigator} />
         <Stack.Screen name="Perfil" component={PerfilScreen} />
         <Stack.Screen name="MiPerfil" component={MiPerfilScreen} />
