@@ -32,9 +32,16 @@ const OfertasScreen = ({ navigation }) => {
     fetchOfertas();
   }, []);
 
-  const filteredOfertas = ofertas.filter(oferta =>
-    oferta.nombre_descuento.toLowerCase().includes(searchText.toLowerCase())
-  );
+  const filteredOfertas = ofertas
+    .filter(oferta =>
+      oferta.nombre_descuento.toLowerCase().includes(searchText.toLowerCase())
+    )
+    .reduce((unique, o) => {
+      if (!unique.some(of => of.id_producto === o.id_producto)) {
+        unique.push(o);
+      }
+      return unique;
+    }, []);
 
   const renderOfertaItem = ({ item }) => (
     <TouchableOpacity
@@ -78,7 +85,7 @@ const OfertasScreen = ({ navigation }) => {
         <FlatList
           data={filteredOfertas}
           renderItem={renderOfertaItem}
-          keyExtractor={item => item.id_producto.toString()}
+          keyExtractor={item => `${item.id_producto}_${item.nombre_producto}`} // Asegurando unicidad
           contentContainerStyle={styles.listContainer}
         />
       )}
