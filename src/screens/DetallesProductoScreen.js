@@ -65,7 +65,7 @@ const DetallesProductoScreen = () => {
           { text: 'OK', onPress: () => navigation.navigate('Carrito') }, 
         ]);
       } else {
-        Alert.alert('Error', data.message); // Asegúrate de que data.message esté definido
+        Alert.alert('Error', data.message);
       }
     } catch (error) {
       console.error(error); // Agrega esto para ver si hay errores en la consola
