@@ -92,6 +92,9 @@ const CarritoScreen = ({ navigation }) => {
         const updatedCarrito = carrito.filter(producto => producto.id !== idDetalle);
         setCarrito(updatedCarrito);
         Alert.alert('Éxito', data.message);
+        // Limpia el carrito y realiza cualquier otra acción necesaria
+        setCarrito([]); // Limpia el carrito después de finalizar la compra
+        fetchCarrito();
 
         // Verificar si el carrito está vacío y realizar acciones correspondientes
         if (updatedCarrito.length === 0) {
@@ -167,7 +170,7 @@ const renderOfertaItem = ({ item }) => (
           <Text style={styles.quantityButtonText}>+</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.deleteButton} onPress={() => handleDelete(item.id_detalle_reserva)}>
-          <Text style={{ color: '#fff', fontWeight: 'bold' }}>Eliminar</Text>
+          <Text style={{ color: '#red', fontWeight: 'bold' }}>Eliminar</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -234,8 +237,9 @@ const renderOfertaItem = ({ item }) => (
       <View style={styles.subtotalContainer}>
         <Text style={styles.subtotalText}>Subtotal: ${subtotal.toFixed(2)}</Text>
       </View>
+      
       <TouchableOpacity style={styles.finalizarCompraButton} onPress={finalizarCompra}>
-        <Text style={{ color: '#fff', fontWeight: 'bold' }}>Finalizar compra</Text>
+        <Text style={{ color: '#000000', fontWeight: 'bold' }}>Finalizar compra</Text>
       </TouchableOpacity>
       <View style={{ height: 20 }} />
     </View>

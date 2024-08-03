@@ -29,6 +29,9 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     elevation: 5,
   },
+  subtotalText:{
+    marginTop:-50,
+  },
   ofertaImage: {
     width: 100,
     height: 100,

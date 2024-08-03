@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, Alert, ActivityIndicator, RefreshControl, TextInput, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, Alert, ActivityIndicator, TextInput, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import styles from '../estilos/DetallesProductosScreen';
@@ -11,9 +11,7 @@ const DetallesProductoScreen = () => {
   const { idProducto } = route.params;
   const [producto, setProducto] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
   const [cantidadProducto, setCantidadProducto] = useState('');
-  const [mostrarAlerta, setMostrarAlerta] = useState(false);
 
   const ip = Constantes.IP;
 
@@ -35,13 +33,7 @@ const DetallesProductoScreen = () => {
       Alert.alert('Error', 'Ocurrió un error al obtener los detalles del producto');
     } finally {
       setLoading(false);
-      setRefreshing(false);
     }
-  };
-
-  const refreshScreen = () => {
-    setRefreshing(true);
-    fetchProducto();
   };
 
   useEffect(() => {
@@ -55,7 +47,6 @@ const DetallesProductoScreen = () => {
       return;
     }
 
-
     try {
       const formData = new FormData();
       formData.append('idProducto', idProducto);
@@ -67,16 +58,17 @@ const DetallesProductoScreen = () => {
       });
 
       const data = await response.json();
+      console.log(data); // Verifica la respuesta aquí
 
       if (data.status) {
-        setMostrarAlerta(true);
-        setTimeout(() => {
-          setMostrarAlerta(false);
-        }, 2000);
+        Alert.alert('Éxito', 'Producto añadido al carrito', [
+          { text: 'OK', onPress: () => navigation.navigate('Carrito') }, 
+        ]);
       } else {
-        Alert.alert('Error', data.message);
+        Alert.alert('Error', data.message); // Asegúrate de que data.message esté definido
       }
     } catch (error) {
+      console.error(error); // Agrega esto para ver si hay errores en la consola
       Alert.alert('Error', 'Ocurrió un error al agregar el producto al carrito');
     }
   };
@@ -99,11 +91,6 @@ const DetallesProductoScreen = () => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      {mostrarAlerta && (
-        <View style={styles.alerta}>
-          <Text style={styles.alertaTexto}>Producto añadido al carrito</Text>
-        </View>
-      )}
       <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
         <Ionicons name="arrow-back" size={24} color="#000" />
       </TouchableOpacity>
