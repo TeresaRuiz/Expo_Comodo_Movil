@@ -55,6 +55,7 @@ const DetallesProductoScreen = () => {
       return;
     }
 
+
     try {
       const formData = new FormData();
       formData.append('idProducto', idProducto);

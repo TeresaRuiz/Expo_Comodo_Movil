@@ -15,7 +15,7 @@ const CarritoScreen = ({ navigation }) => {
   // Función para obtener los detalles del carrito desde la API
   const fetchCarrito = useCallback(async () => {
     try {
-      const response = await fetch(`${ip}/fontechpriv/api/services/public/pedido.php?action=readDetail`);
+      const response = await fetch(`${ip}/Expo_Comodo/api/services/public/pedido.php?action=readDetail`);
       const data = await response.json();
       if (data.status) {
         setCarrito(data.dataset);
@@ -47,7 +47,7 @@ const CarritoScreen = ({ navigation }) => {
       formData.append('idDetalle', item.id_detalle_reserva.toString());
       formData.append('cantidadProducto', newCantidad.toString());
   
-      const response = await fetch(`${ip}/fontechpriv/api/services/public/pedido.php?action=updateDetail`, {
+      const response = await fetch(`${ip}/Expo_Comodo/api/services/public/pedido.php?action=updateDetail`, {
         method: 'POST',
         body: formData,
       });
@@ -80,7 +80,7 @@ const CarritoScreen = ({ navigation }) => {
       console.log(idDetalle);
       formData.append('idDetalle', idDetalle); // Asegúrate de enviarlo como número, no como cadena
 
-      const response = await fetch(`${ip}/fontechpriv/api/services/public/pedido.php?action=deleteDetail`, {
+      const response = await fetch(`${ip}/Expo_Comodo/api/services/public/pedido.php?action=deleteDetail`, {
         method: 'POST',
         body: formData,
       });
@@ -151,7 +151,7 @@ const CarritoScreen = ({ navigation }) => {
   // Renderizar cada elemento del carrito
 const renderOfertaItem = ({ item }) => (
   <TouchableOpacity style={styles.ofertaCard}>
-    <Image source={{ uri: `${ip}/fontechpriv/api/images/productos/${item.imagen}` }} style={styles.ofertaImage} />
+    <Image source={{ uri: `${ip}/Expo_Comodo/api/images/productos/${item.imagen}` }} style={styles.ofertaImage} />
     <View style={styles.ofertaDetails}>
       <Text style={styles.ofertaTitle}>{item.nombre_producto}</Text>
       <Text style={styles.ofertaPrice}>Precio Unitario: ${item.precio_unitario}</Text>
@@ -177,7 +177,7 @@ const renderOfertaItem = ({ item }) => (
   // Función para manejar la acción de finalizar la compra
   const finalizarCompra = async () => {
     try {
-      const response = await fetch(`${ip}/fontechpriv/api/services/public/pedido.php?action=finishOrder`, {
+      const response = await fetch(`${ip}/Expo_Comodo/api/services/public/pedido.php?action=finishOrder`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
