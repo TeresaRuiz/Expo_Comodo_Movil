@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, FlatList, TouchableOpacity, Alert, ActivityIndicator, RefreshControl, Image } from 'react-native';
-import styles from '../estilos/CarritoScreenStyles'; // Importa los estilos desde un archivo externo
+import { View, Text, FlatList, TouchableOpacity, Alert, ActivityIndicator, RefreshControl, Image, StyleSheet } from 'react-native';
 import * as Constantes from '../utils/constantes';
+import styles from '../estilos/CarritoScreenStyles'; 
 
 const CarritoScreen = ({ navigation }) => {
   const [carrito, setCarrito] = useState([]);
@@ -71,13 +71,11 @@ const CarritoScreen = ({ navigation }) => {
       console.error(error);
     }
   };
-  
 
   // Función para eliminar un producto del carrito
   const handleDelete = async (idDetalle) => {
     try {
       const formData = new FormData();
-      console.log(idDetalle);
       formData.append('idDetalle', idDetalle); // Asegúrate de enviarlo como número, no como cadena
 
       const response = await fetch(`${ip}/Expo_Comodo/api/services/public/pedido.php?action=deleteDetail`, {
@@ -151,34 +149,38 @@ const CarritoScreen = ({ navigation }) => {
   }, [carrito]);
 
   // Renderizar cada elemento del carrito
-  // Renderizar cada elemento del carrito
-const renderOfertaItem = ({ item }) => (
-  <TouchableOpacity style={styles.ofertaCard}>
-    <Image source={{ uri: `${ip}/Expo_Comodo/api/images/productos/${item.imagen}` }} style={styles.ofertaImage} />
-    <View style={styles.ofertaDetails}>
-      <Text style={styles.ofertaTitle}>{item.nombre_producto}</Text>
-      <Text style={styles.ofertaPrice}>Precio Unitario: ${item.precio_unitario}</Text>
-      {item.valor_oferta && (
-        <Text style={styles.ofertaPrice}>Oferta: %{item.valor_oferta}</Text>
-      )}
-      <View style={styles.quantityContainer}>
-        <TouchableOpacity style={styles.quantityButton} onPress={() => handleQuantityChange(item, 'decrease')}>
-          <Text style={styles.quantityButtonText}>-</Text>
-        </TouchableOpacity>
-        <Text style={styles.quantity}>{item.cantidad}</Text>
-        <TouchableOpacity style={styles.quantityButton} onPress={() => handleQuantityChange(item, 'increase')}>
-          <Text style={styles.quantityButtonText}>+</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.deleteButton} onPress={() => handleDelete(item.id_detalle_reserva)}>
-          <Text style={{ color: '#red', fontWeight: 'bold' }}>Eliminar</Text>
-        </TouchableOpacity>
+  const renderOfertaItem = ({ item }) => (
+    <TouchableOpacity style={styles.ofertaCard}>
+      <Image source={{ uri: `${ip}/Expo_Comodo/api/images/productos/${item.imagen}` }} style={styles.ofertaImage} />
+      <View style={styles.ofertaDetails}>
+        <Text style={styles.ofertaTitle}>{item.nombre_producto}</Text>
+        <Text style={styles.ofertaPrice}>Precio Unitario: ${item.precio_unitario}</Text>
+        {item.valor_oferta && (
+          <Text style={styles.ofertaPrice}>Oferta: %{item.valor_oferta}</Text>
+        )}
+        <View style={styles.quantityContainer}>
+          <TouchableOpacity style={styles.quantityButton} onPress={() => handleQuantityChange(item, 'decrease')}>
+            <Text style={styles.quantityButtonText}>-</Text>
+          </TouchableOpacity>
+          <Text style={styles.quantity}>{item.cantidad}</Text>
+          <TouchableOpacity style={styles.quantityButton} onPress={() => handleQuantityChange(item, 'increase')}>
+            <Text style={styles.quantityButtonText}>+</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.deleteButton} onPress={() => handleDelete(item.id_detalle_reserva)}>
+            <Text style={{ color: '#fff', fontWeight: 'bold' }}>Eliminar</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
-  </TouchableOpacity>
-);
+    </TouchableOpacity>
+  );
 
   // Función para manejar la acción de finalizar la compra
   const finalizarCompra = async () => {
+    if (carrito.length === 0) {
+      Alert.alert('Carrito Vacío', 'No hay productos seleccionados en el carrito.');
+      return; // Sale de la función si el carrito está vacío
+    }
+
     try {
       const response = await fetch(`${ip}/Expo_Comodo/api/services/public/pedido.php?action=finishOrder`, {
         method: 'POST',
@@ -202,7 +204,6 @@ const renderOfertaItem = ({ item }) => (
       console.error(error);
     }
   };
-
 
   // Pantalla de carga mientras se obtienen los datos del carrito
   if (loading) {
@@ -232,18 +233,24 @@ const renderOfertaItem = ({ item }) => (
         }
       />
       {carrito.length === 0 && (
-        <Text style={styles.emptyCarritoText}>No hay productos en el carrito.</Text>
+        <View style={styles.emptyCarritoContainer}>
+          <Image
+            source={{ uri: 'https://static.vecteezy.com/system/resources/previews/009/417/131/original/ecommerce-icon-empty-yellow-shopping-cart-3d-illustration-free-png.png' }} // Reemplaza con la URL de tu imagen
+            style={styles.emptyCartImage}
+          />
+          <Text style={styles.emptyCarritoText}>No hay productos en el carrito.</Text>
+        </View>
       )}
       <View style={styles.subtotalContainer}>
         <Text style={styles.subtotalText}>Subtotal: ${subtotal.toFixed(2)}</Text>
       </View>
-      
       <TouchableOpacity style={styles.finalizarCompraButton} onPress={finalizarCompra}>
-        <Text style={{ color: '#000000', fontWeight: 'bold' }}>Finalizar compra</Text>
+        <Text style={{ color: '#fff', fontWeight: 'bold' }}>Finalizar compra</Text>
       </TouchableOpacity>
       <View style={{ height: 20 }} />
     </View>
   );
 };
+
 
 export default CarritoScreen;
