@@ -1,50 +1,88 @@
-import React from 'react';
-import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import React, { useState, useEffect, useCallback } from 'react';
+import { View, Text, FlatList, Image, TouchableOpacity, Alert, RefreshControl } from 'react-native';
+import * as Constantes from '../utils/constantes';
 import styles from '../estilos/HistorialScreenStyles'; // Importa los estilos desde un archivo externo
 
 const HistorialScreen = ({ navigation }) => {
   
+    const [historial, setHistorial] = useState([]); // Estado para almacenar el historial
+    const [refreshing, setRefreshing] = useState(false); // Estado para controlar el estado de refrescar
+  
+    const ip = Constantes.IP; // Asegúrate de que Constantes.IP esté definido
 
-  // Función para renderizar cada elemento de la lista de ofertas
-  const renderOfertaItem = ({ item }) => (
-    <TouchableOpacity
-      style={styles.ofertaCard}
-      onPress={() => navigation.navigate('DetallesProducto', { producto: item })}
-    >
-      <Image source={{ uri: item.image }} style={styles.ofertaImage} />
-      <View style={styles.ofertaDetails}>
-        <Text style={styles.ofertaTitle}>{item.nombre_producto}</Text>
-        <Text style={styles.ofertaDescription}>Cantidad:{item.cantidad}</Text>
-        <Text style={styles.fecha}>{item.fecha_reserva}</Text>
-        <Text style={styles.subTotal}>{item.subtotal}</Text>
-        <View style={styles.ofertaPriceContainer}>
-          <Text style={styles.ofertaPrice}>${item.price.toFixed(2)}</Text>
-          {/* Renderiza un badge de descuento si el producto tiene descuento */}
-          {item.discount > 0 && (
-            <View style={styles.discountBadge}>
-              <Text style={styles.discountText}>-{item.discount}%</Text>
+    // Función para obtener los productos comprados desde la API
+    const fetchHistorial = useCallback(async () => {
+        try {
+            const response = await fetch(`${ip}/Expo_Comodo/api/services/public/pedido.php?action=readHistorials`);
+            const data = await response.json();
+            if (data.status) {
+                setHistorial(data.dataset); // Asegúrate de que 'dataset' contenga los productos comprados
+            } else {
+                Alert.alert('Error', data.error);
+            }
+        } catch (error) {
+            Alert.alert('Error', 'Ocurrió un error al obtener los datos del historial');
+        } finally {
+            setRefreshing(false); // Finaliza el estado de refrescar
+        }
+    }, [ip]);
+
+    // Función para manejar el evento de refrescar
+    const onRefresh = useCallback(() => {
+        setRefreshing(true); // Establece el estado de refrescar a verdadero
+        fetchHistorial(); // Vuelve a cargar los datos del historial desde la API
+    }, [fetchHistorial]);
+
+    // Efecto para cargar el historial al cargar la pantalla
+    useEffect(() => {
+        fetchHistorial();
+    }, [fetchHistorial]);
+
+    // Función para renderizar cada elemento del historial
+    const renderHistorialItem = ({ item }) => (
+        <TouchableOpacity
+            style={styles.ofertaCard}
+            onPress={() => navigation.navigate('DetallesProducto', { producto: item })}
+        >
+            <Image source={{ uri: item.image }} style={styles.ofertaImage} />
+            <View style={styles.ofertaDetails}>
+                <Text style={styles.ofertaTitle}>{item.nombre_producto}</Text>
+                <Text style={styles.ofertaDescription}>Cantidad: {item.cantidad}</Text>
+                <Text style={styles.fecha}>{item.fecha_reserva}</Text>
+                <Text style={styles.subTotal}>Subtotal: ${item.subtotal.toFixed(2)}</Text>
+                <View style={styles.ofertaPriceContainer}>
+                    <Text style={styles.ofertaPrice}>${item.price.toFixed(2)}</Text>
+                    {/* Renderiza un badge de descuento si el producto tiene descuento */}
+                    {item.discount > 0 && (
+                        <View style={styles.discountBadge}>
+                            <Text style={styles.discountText}>-{item.discount}%</Text>
+                        </View>
+                    )}
+                </View>
             </View>
-          )}
-        </View>
-      </View>
-    </TouchableOpacity>
-  );
+        </TouchableOpacity>
+    );
 
-  return (
-    <View style={styles.container}>
-      {/* Título de la pantalla */}
-      <Text style={styles.title}>Historial</Text>
-      
-      {/* Lista de ofertas usando FlatList */}
-      <FlatList
-        data={ofertas}
-        renderItem={renderOfertaItem} // Renderiza cada elemento de la lista utilizando la función renderOfertaItem
-        keyExtractor={item => item.id} // Utiliza el id del elemento como clave única
-        contentContainerStyle={styles.listContainer} // Aplica estilos al contenedor de la lista
-      />
-    </View>
-  );
+    return (
+        <View style={styles.container}>
+            {/* Título de la pantalla */}
+            <Text style={styles.title}>Historial</Text>
+            
+            {/* Lista de historial usando FlatList */}
+            <FlatList
+                data={historial} // Cambiado a 'historial' para mostrar los productos comprados
+                renderItem={renderHistorialItem} // Renderiza cada elemento de la lista
+                keyExtractor={item => item.id.toString()} // Asegúrate de que el id sea una cadena
+                contentContainerStyle={styles.listContainer} // Aplica estilos al contenedor de la lista
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing} // Estado de refrescar
+                        onRefresh={onRefresh} // Función para refrescar
+                    />
+                }
+            />
+        </View>
+    );
 };
 
 export default HistorialScreen;
