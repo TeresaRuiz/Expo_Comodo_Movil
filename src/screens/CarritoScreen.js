@@ -1,24 +1,28 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, FlatList, TouchableOpacity, Alert, ActivityIndicator, RefreshControl, Image, StyleSheet } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, Alert, ActivityIndicator, RefreshControl, Image } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Constantes from '../utils/constantes';
-import styles from '../estilos/CarritoScreenStyles'; 
+import styles from '../estilos/CarritoScreenStyles';
+import { useIsFocused } from '@react-navigation/native';
 
 const CarritoScreen = ({ navigation }) => {
   const [carrito, setCarrito] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false); // Estado para controlar el estado de refrescar
-  const [subtotal, setSubtotal] = useState(0); // Estado para almacenar el subtotal
-  const [descuento, setDescuento] = useState(0); // Estado para almacenar el descuento
+  const [refreshing, setRefreshing] = useState(false);
+  const [subtotal, setSubtotal] = useState(0);
+  const [descuento, setDescuento] = useState(0);
 
   const ip = Constantes.IP;
+  const isFocused = useIsFocused();
 
-  // Función para obtener los detalles del carrito desde la API
   const fetchCarrito = useCallback(async () => {
+    setLoading(true);
     try {
       const response = await fetch(`${ip}/Expo_Comodo/api/services/public/pedido.php?action=readDetail`);
       const data = await response.json();
       if (data.status) {
         setCarrito(data.dataset);
+        // Save to AsyncStorage if needed
       } else {
         Alert.alert('Error', data.error);
       }
@@ -26,36 +30,42 @@ const CarritoScreen = ({ navigation }) => {
       Alert.alert('Error', 'Ocurrió un error al obtener los datos del carrito');
     } finally {
       setLoading(false);
-      setRefreshing(false); // Finaliza el estado de refrescar
+      setRefreshing(false);
     }
   }, [ip]);
 
-  // Función para manejar el cambio de cantidad de un producto en el carrito
+  useEffect(() => {
+    if (isFocused) {
+      fetchCarrito();
+    }
+  }, [isFocused, fetchCarrito]);
+
+  // The rest of your component code remains the same
+
   const handleQuantityChange = async (item, type) => {
     let newCantidad = item.cantidad;
-  
+
     if (type === 'increase') {
       newCantidad++;
     } else if (type === 'decrease') {
       newCantidad--;
     }
-  
+
     if (newCantidad < 1) return;
-  
+
     try {
       const formData = new FormData();
       formData.append('idDetalle', item.id_detalle_reserva.toString());
       formData.append('cantidadProducto', newCantidad.toString());
-  
+
       const response = await fetch(`${ip}/Expo_Comodo/api/services/public/pedido.php?action=updateDetail`, {
         method: 'POST',
         body: formData,
       });
-  
+
       const data = await response.json();
-  
+
       if (data.status === 1) {
-        // Actualización exitosa, actualizar estado del carrito
         setCarrito(prevCarrito => (
           prevCarrito.map(producto =>
             producto.id_detalle_reserva === item.id_detalle_reserva ? { ...producto, cantidad: newCantidad } : producto
@@ -63,7 +73,6 @@ const CarritoScreen = ({ navigation }) => {
         ));
         Alert.alert('Éxito', data.message);
       } else {
-        // Manejo de errores
         Alert.alert('Error', data.error || 'Ocurrió un problema al actualizar la cantidad del producto');
       }
     } catch (error) {
@@ -72,11 +81,10 @@ const CarritoScreen = ({ navigation }) => {
     }
   };
 
-  // Función para eliminar un producto del carrito
   const handleDelete = async (idDetalle) => {
     try {
       const formData = new FormData();
-      formData.append('idDetalle', idDetalle); // Asegúrate de enviarlo como número, no como cadena
+      formData.append('idDetalle', idDetalle);
 
       const response = await fetch(`${ip}/Expo_Comodo/api/services/public/pedido.php?action=deleteDetail`, {
         method: 'POST',
@@ -86,20 +94,10 @@ const CarritoScreen = ({ navigation }) => {
       const data = await response.json();
 
       if (data.status === 1) {
-        // Eliminación exitosa, actualizar estado del carrito
-        const updatedCarrito = carrito.filter(producto => producto.id !== idDetalle);
+        const updatedCarrito = carrito.filter(producto => producto.id_detalle_reserva !== idDetalle);
         setCarrito(updatedCarrito);
         Alert.alert('Éxito', data.message);
-        // Limpia el carrito y realiza cualquier otra acción necesaria
-        setCarrito([]); // Limpia el carrito después de finalizar la compra
-        fetchCarrito();
-
-        // Verificar si el carrito está vacío y realizar acciones correspondientes
-        if (updatedCarrito.length === 0) {
-          // Puedes navegar a otra pantalla o realizar alguna acción
-        }
       } else {
-        // Manejo de errores
         Alert.alert('Error', data.error || 'Ocurrió un problema al eliminar el producto');
       }
     } catch (error) {
@@ -108,35 +106,27 @@ const CarritoScreen = ({ navigation }) => {
     }
   };
 
-  // Función para manejar el evento de refrescar
   const onRefresh = useCallback(() => {
-    setRefreshing(true); // Establece el estado de refrescar a verdadero
-    fetchCarrito(); // Vuelve a cargar los datos del carrito desde la API
+    setRefreshing(true);
+    fetchCarrito();
   }, [fetchCarrito]);
 
-  // Efecto para cargar los detalles del carrito al cargar la pantalla
   useEffect(() => {
     fetchCarrito();
   }, [fetchCarrito]);
 
-  // Efecto para calcular el subtotal y aplicar descuentos cada vez que el carrito cambie
   useEffect(() => {
     const calcularSubtotal = () => {
       let total = 0;
       let descuentoTotal = 0;
 
       carrito.forEach(item => {
-        // Calcular subtotal por producto
         const subtotalProducto = item.precio_unitario * item.cantidad;
-
-        // Verificar si el producto tiene descuento
         if (item.valor_oferta) {
-          // Calcular subtotal aplicando descuento
           const subtotalConDescuento = subtotalProducto - (subtotalProducto * item.valor_oferta) / 100;
           total += subtotalConDescuento;
-          descuentoTotal += subtotalProducto - subtotalConDescuento; // Calcular el descuento aplicado
+          descuentoTotal += subtotalProducto - subtotalConDescuento;
         } else {
-          // Si no tiene descuento, agregar al subtotal normal
           total += subtotalProducto;
         }
       });
@@ -148,7 +138,6 @@ const CarritoScreen = ({ navigation }) => {
     calcularSubtotal();
   }, [carrito]);
 
-  // Renderizar cada elemento del carrito
   const renderOfertaItem = ({ item }) => (
     <TouchableOpacity style={styles.ofertaCard}>
       <Image source={{ uri: `${ip}/Expo_Comodo/api/images/productos/${item.imagen}` }} style={styles.ofertaImage} />
@@ -174,11 +163,10 @@ const CarritoScreen = ({ navigation }) => {
     </TouchableOpacity>
   );
 
-  // Función para manejar la acción de finalizar la compra
   const finalizarCompra = async () => {
     if (carrito.length === 0) {
       Alert.alert('Carrito Vacío', 'No hay productos seleccionados en el carrito.');
-      return; // Sale de la función si el carrito está vacío
+      return;
     }
 
     try {
@@ -192,10 +180,8 @@ const CarritoScreen = ({ navigation }) => {
       const data = await response.json();
 
       if (data.status === 1) {
-        // Pedido finalizado correctamente
         Alert.alert('Compra Finalizada', '¡Gracias por tu compra!');
-        // Limpia el carrito y realiza cualquier otra acción necesaria
-        setCarrito([]); // Limpia el carrito después de finalizar la compra
+        setCarrito([]);
       } else {
         Alert.alert('Error', data.error || 'Ocurrió un problema al finalizar el pedido');
       }
@@ -205,7 +191,6 @@ const CarritoScreen = ({ navigation }) => {
     }
   };
 
-  // Pantalla de carga mientras se obtienen los datos del carrito
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
@@ -214,28 +199,27 @@ const CarritoScreen = ({ navigation }) => {
     );
   }
 
-  // Renderiza la pantalla principal del carrito
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Carrito</Text>
       <FlatList
         data={carrito}
         renderItem={renderOfertaItem}
-        keyExtractor={(item, index) => item?.id?.toString() ?? index.toString()} // Asegura que item.id esté definido antes de llamar a toString()
+        keyExtractor={(item, index) => item?.id_detalle_reserva?.toString() ?? index.toString()}
         contentContainerStyle={styles.listContainer}
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
-            colors={['#0000ff']} // Colores de la animación de refrescar en Android
-            tintColor="#0000ff" // Color de la animación de refrescar en iOS
+            colors={['#0000ff']}
+            tintColor="#0000ff"
           />
         }
       />
       {carrito.length === 0 && (
         <View style={styles.emptyCarritoContainer}>
           <Image
-            source={{ uri: 'https://static.vecteezy.com/system/resources/previews/009/417/131/original/ecommerce-icon-empty-yellow-shopping-cart-3d-illustration-free-png.png' }} // Reemplaza con la URL de tu imagen
+            source={{ uri: 'https://static.vecteezy.com/system/resources/previews/009/417/131/original/ecommerce-icon-empty-yellow-shopping-cart-3d-illustration-free-png.png' }}
             style={styles.emptyCartImage}
           />
           <Text style={styles.emptyCarritoText}>No hay productos en el carrito.</Text>
@@ -251,6 +235,5 @@ const CarritoScreen = ({ navigation }) => {
     </View>
   );
 };
-
 
 export default CarritoScreen;

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, Alert, ActivityIndicator, TextInput, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRoute, useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from '../estilos/DetallesProductosScreen';
 import * as Constantes from '../utils/constantes';
 
@@ -58,17 +59,22 @@ const DetallesProductoScreen = () => {
       });
 
       const data = await response.json();
-      console.log(data); // Verifica la respuesta aquí
 
       if (data.status) {
+        // Actualiza el carrito en AsyncStorage
+        const carritoData = await AsyncStorage.getItem('@carrito');
+        let carrito = carritoData ? JSON.parse(carritoData) : [];
+        carrito.push({ idProducto, cantidad: cantidadNumerica });
+        await AsyncStorage.setItem('@carrito', JSON.stringify(carrito));
+
         Alert.alert('Éxito', 'Producto añadido al carrito', [
-          { text: 'OK', onPress: () => navigation.navigate('Carrito') }, 
+          { text: 'OK', onPress: () => navigation.navigate('Carrito') },
         ]);
       } else {
         Alert.alert('Error', data.message);
       }
     } catch (error) {
-      console.error(error); // Agrega esto para ver si hay errores en la consola
+      console.error(error);
       Alert.alert('Error', 'Ocurrió un error al agregar el producto al carrito');
     }
   };
