@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
     listContainer: {
       paddingHorizontal: 10,
     },
-    title: {
+    nombre_producto: {
       fontSize: 26,
       fontWeight: 'bold',
       marginBottom: 20, // Reduce el margen inferior
@@ -48,6 +48,12 @@ const styles = StyleSheet.create({
       fontSize: 14,
       color: '#666',
       marginBottom: 10,
+    },
+    
+    subTotal: {
+      fontSize: 14,
+      color: '#666',
+      marginBottom: 20,
     },
     ofertaPriceContainer: {
       flexDirection: 'row',
