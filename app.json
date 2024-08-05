@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "Perfil_3Parejas-app",
-    "slug": "Perfil_3Parejas-app",
+    "name": "Comodo$_app",
+    "slug": "Comodo$_app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/logoComodos.png", 
     "splash": {
       "image": "./assets/logoComodos.png",
       "resizeMode": "contain",
@@ -15,12 +15,12 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/logoComodos.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./assets/logoComodos.png",  
+        "backgroundColor": "#ffffff"  
       }
     },
     "web": {
-      "favicon": "./assets/logoComodos.png"
+      "favicon": "./assets/logoComodos.png"  
     }
   }
 }
