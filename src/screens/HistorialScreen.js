@@ -19,9 +19,11 @@ const HistorialScreen = ({ navigation }) => {
                 setHistorial(data.dataset); // Asegúrate de que 'dataset' contenga los productos comprados
             } else {
                 Alert.alert('Error', data.error);
+                console.log(data);
             }
         } catch (error) {
             Alert.alert('Error', 'Ocurrió un error al obtener los datos del historial');
+            console.log(error);
         } finally {
             setRefreshing(false); // Finaliza el estado de refrescar
         }
@@ -72,7 +74,7 @@ const HistorialScreen = ({ navigation }) => {
             <FlatList
                 data={historial} // Cambiado a 'historial' para mostrar los productos comprados
                 renderItem={renderHistorialItem} // Renderiza cada elemento de la lista
-                keyExtractor={item => item.id.toString()} // Asegúrate de que el id sea una cadena
+                keyExtractor={item => item.id_detalle_reserva.toString()} // Asegúrate de que el id sea una cadena
                 contentContainerStyle={styles.listContainer} // Aplica estilos al contenedor de la lista
                 refreshControl={
                     <RefreshControl
