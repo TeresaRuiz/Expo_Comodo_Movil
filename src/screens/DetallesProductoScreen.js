@@ -68,7 +68,7 @@ const DetallesProductoScreen = () => {
         await AsyncStorage.setItem('@carrito', JSON.stringify(carrito));
 
         Alert.alert('Éxito', 'Producto añadido al carrito', [
-          { text: 'OK', onPress: () => navigation.navigate('Carrito') },
+          { text: 'OK', onPress: () => navigation.navigate('Carrito')},
         ]);
       } else {
         Alert.alert('Error', data.message);

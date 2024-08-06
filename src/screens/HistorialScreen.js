@@ -12,6 +12,7 @@ const HistorialScreen = ({ navigation }) => {
 
     // Función para obtener los productos comprados desde la API
     const fetchHistorial = useCallback(async () => {
+        setRefreshing(true); // Inicia el estado de refrescar
         try {
             const response = await fetch(`${ip}/Expo_Comodo/api/services/public/pedido.php?action=readHistorials`);
             const data = await response.json();
@@ -19,7 +20,6 @@ const HistorialScreen = ({ navigation }) => {
                 setHistorial(data.dataset); // Asegúrate de que 'dataset' contenga los productos comprados
             } else {
                 Alert.alert('Error', data.error);
-                console.log(data);
             }
         } catch (error) {
             Alert.alert('Error', 'Ocurrió un error al obtener los datos del historial');
@@ -31,7 +31,6 @@ const HistorialScreen = ({ navigation }) => {
 
     // Función para manejar el evento de refrescar
     const onRefresh = useCallback(() => {
-        setRefreshing(true); // Establece el estado de refrescar a verdadero
         fetchHistorial(); // Vuelve a cargar los datos del historial desde la API
     }, [fetchHistorial]);
 
@@ -46,18 +45,18 @@ const HistorialScreen = ({ navigation }) => {
             style={styles.ofertaCard}
             onPress={() => navigation.navigate('DetallesProducto', { producto: item })}
         >
-            <Image source={{ uri: item.image }} style={styles.ofertaImage} />
+            <Image source={{ uri: `${ip}/Expo_Comodo/api/images/productos/${item.imagen}` }} style={styles.ofertaImage} />
             <View style={styles.ofertaDetails}>
                 <Text style={styles.ofertaTitle}>{item.nombre_producto}</Text>
                 <Text style={styles.ofertaDescription}>Cantidad: {item.cantidad}</Text>
                 <Text style={styles.fecha}>{item.fecha_reserva}</Text>
-                <Text style={styles.subTotal}>Subtotal: ${item.subtotal.toFixed(2)}</Text>
+                <Text style={styles.subTotal}>Subtotal: ${(item.cantidad * item.precio_unitario)}</Text>
                 <View style={styles.ofertaPriceContainer}>
-                    <Text style={styles.ofertaPrice}>${item.price.toFixed(2)}</Text>
+                    <Text style={styles.ofertaPrice}>${item.precio_unitario}</Text>
                     {/* Renderiza un badge de descuento si el producto tiene descuento */}
-                    {item.discount > 0 && (
+                    {item.valor_oferta > 0 && (
                         <View style={styles.discountBadge}>
-                            <Text style={styles.discountText}>-{item.discount}%</Text>
+                            <Text style={styles.discountText}>-{item.valor_oferta}%</Text>
                         </View>
                     )}
                 </View>
