@@ -4,23 +4,21 @@
     "slug": "Comodo$_app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/logoComodos.png", 
+    "icon": "./assets/logo_transparente.png",
     "splash": {
-      "image": "./assets/logoComodos.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "image": "./assets/logo_transparente.png",
+      "resizeMode": "contain"
     },
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/logoComodos.png",  
-        "backgroundColor": "#ffffff"  
+        "foregroundImage": "./assets/Logo_pequeño.png"
       }
     },
     "web": {
-      "favicon": "./assets/logoComodos.png"  
+      "favicon": "./assets/logoComodos.png"
     }
   }
 }
