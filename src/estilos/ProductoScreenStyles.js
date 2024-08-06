@@ -7,6 +7,11 @@ const styles = StyleSheet.create({
     paddingVertical: 60, // Reducido el espacio vertical
     paddingHorizontal: 15,
   },
+  backButton: {
+    alignSelf: 'flex-start',
+    marginBottom: 20,
+    left: 10,
+  },
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',

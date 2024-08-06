@@ -8,6 +8,7 @@ const styles = StyleSheet.create({
   },
   backButton: {
     alignSelf: 'flex-start',
+    marginTop: 20,
     marginBottom: 20,
   },
   image: {

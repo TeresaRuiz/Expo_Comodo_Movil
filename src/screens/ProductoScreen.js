@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, Image, TextInput, ActivityIndicator, RefreshControl, Alert } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, TextInput, ActivityIndicator, RefreshControl, Alert } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import styles from '../estilos/ProductoScreenStyles'; // Asegúrate de que la ruta es correcta
 import Cards1 from '../componets/Cards/Cards3'; // Asegúrate de que la ruta es correcta
 import * as Constantes from '../utils/constantes';
+
 const ProductoScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
@@ -62,14 +63,19 @@ const ProductoScreen = () => {
         <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
       }
     >
-      <View style={styles.searchContainer}>
-        <Ionicons name="search" size={24} color="#000" style={styles.searchIcon} />
-        <TextInput
-          placeholder="Busca tus productos..."
-          style={styles.searchInput}
-          value={searchText}
-          onChangeText={setSearchText}
-        />
+      <View style={styles.headerContainer}>
+        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+          <Ionicons name="arrow-back" size={24} color="#000" />
+        </TouchableOpacity>
+        <View style={styles.searchContainer}>
+          <Ionicons name="search" size={24} color="#000" style={styles.searchIcon} />
+          <TextInput
+            placeholder="Busca tus productos..."
+            style={styles.searchInput}
+            value={searchText}
+            onChangeText={setSearchText}
+          />
+        </View>
       </View>
 
       {loading ? (
