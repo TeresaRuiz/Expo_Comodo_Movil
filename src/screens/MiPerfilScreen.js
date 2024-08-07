@@ -204,7 +204,7 @@ const MiPerfilScreen = () => {
       }
     >
       <View style={styles.container}>
-        <Text style={styles.title}>Datos Personales</Text>
+        <Text style={styles.title}>Datos personales</Text>
 
         {/* Contenedor para la imagen de perfil */}
         <View style={styles.profileImageContainer}>
