@@ -67,7 +67,7 @@ const HistorialScreen = ({ navigation }) => {
     return (
         <View style={styles.container}>
             {/* Título de la pantalla */}
-            <Text style={styles.title}>Historial</Text>
+            <Text style={styles.title}>Historial de pedidos</Text>
             
             {/* Lista de historial usando FlatList */}
             <FlatList
