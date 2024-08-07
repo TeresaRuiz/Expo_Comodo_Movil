@@ -10,3 +10,7 @@ Este proyecto se enfoca en desarrollar dos aplicaciones móviles:
 - **Aplicación administrativa**: Facilita la gestión de ventas y la administración de productos (agregación, eliminación y actualización).
 
 Para el correcto funcionamiento de ambas aplicaciones, es crucial un sistema de gestión de bases de datos eficiente que almacene y maneje todos los datos necesarios.
+
+## Sección
+
+**1B**
