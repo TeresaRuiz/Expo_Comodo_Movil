@@ -1,6 +1,6 @@
 # 👟 Comodos
 
-![Comodos Logo]<img src="https://github.com/dhakhax28/Expo_Comodo_Movil/blob/cb595d092a79645594134c6c8113257105f1f944/assets/logoComodos.png" alt="Comodos Logo" width="250" height="250">
+<img src="https://github.com/dhakhax28/Expo_Comodo_Movil/blob/cb595d092a79645594134c6c8113257105f1f944/assets/logoComodos.png" alt="Comodos Logo" width="250" height="250">
 
 ## 📖 Descripción del proyecto
 
