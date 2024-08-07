@@ -1,21 +1,23 @@
-# Comodos
+# 👟 Comodos
 
-## Descripción del proyecto
+![Comodos Logo](https://github.com/dhakhax28/Expo_Comodo_Movil/blob/cb595d092a79645594134c6c8113257105f1f944/assets/logoComodos.png)
+
+## 📖 Descripción del proyecto
 
 **Comodos** es una solución innovadora diseñada para satisfacer las necesidades del emprendimiento homónimo. Actualmente, Comodo$ no cuenta con un software que permita a sus clientes visualizar los zapatos en venta, realizar compras, registrarse y usar la plataforma de manera eficiente. El sistema existente solo permite inventariar productos vendidos a través de WhatsApp.
 
 Este proyecto se enfoca en desarrollar dos aplicaciones móviles:
 
-- **Aplicación para clientes**: Permite a los clientes realizar reservas y compras dentro de la app.
-- **Aplicación administrativa**: Facilita la gestión de ventas y la administración de productos (agregación, eliminación y actualización).
+- **📱 Aplicación para clientes**: Permite a los clientes realizar reservas y compras dentro de la app.
+- **🛠 Aplicación administrativa**: Facilita la gestión de ventas y la administración de productos (agregación, eliminación y actualización).
 
 Para el correcto funcionamiento de ambas aplicaciones, es crucial un sistema de gestión de bases de datos eficiente que almacene y maneje todos los datos necesarios.
 
-## Sección
+## 🏷 Sección
 
 **1B**
 
-## Integrantes
+## 👥 Integrantes
 
 - **Gerson Alexander Echeverría Hernández** - 20220175
 - **Alejandro Alberto Fernández Robles** - 20220096
@@ -23,7 +25,7 @@ Para el correcto funcionamiento de ambas aplicaciones, es crucial un sistema de 
 - **Verónica Alejandra Sánchez Rosales** - 20220505
 - **Allan Gabriel Fuentes Galdamez** - 20220406
 
- ## Dependencias
+## 📦 Dependencias
 
 El proyecto utiliza las siguientes dependencias:
 
@@ -53,4 +55,11 @@ El proyecto utiliza las siguientes dependencias:
 ### DevDependencies
 
 - **@babel/core** - ^7.20.0
+
+## 🚀 Scripts
+
+- `start`: `expo start`
+- `android`: `expo start --android`
+- `ios`: `expo start --ios`
+- `web`: `expo start --web`
 
