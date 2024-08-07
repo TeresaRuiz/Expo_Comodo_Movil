@@ -1,41 +1,12 @@
 # Comodos
 
-## Descripción del Proyecto
+## Descripción del proyecto
 
-La problemática y necesidad dirigida al emprendimiento Comodo$ se debe a que no cuentan con un software que les permita a sus clientes visualizar los zapatos que están en venta, realizar compras, registro y uso, etc. Sin embargo, sí cuentan con software que les permite solamente inventariar los productos vendidos por medio de WhatsApp. Es por ello que se necesita una aplicación móvil para clientes para realizar todos los procesos de reservas dentro de la aplicación móvil y una administrativa para realizar todos los procesos de ventas y la agregación, eliminación y actualización de productos dentro de la app. Para esto, cabe recalcar que se necesita un sistema de gestión de base de datos en el que se almacenarán los datos y así poder realizar la app de manera eficiente.
+**Comodos** es una solución innovadora diseñada para satisfacer las necesidades del emprendimiento homónimo. Actualmente, Comodo$ no cuenta con un software que permita a sus clientes visualizar los zapatos en venta, realizar compras, registrarse y usar la plataforma de manera eficiente. El sistema existente solo permite inventariar productos vendidos a través de WhatsApp.
 
-## Sección
+Este proyecto se enfoca en desarrollar dos aplicaciones móviles:
 
-1B
+- **Aplicación para clientes**: Permite a los clientes realizar reservas y compras dentro de la app.
+- **Aplicación administrativa**: Facilita la gestión de ventas y la administración de productos (agregación, eliminación y actualización).
 
-## Integrantes
-
-* Gerson Alexander Echeverría Hernández - 20220175
-* Alejandro Alberto Fernández Robles - 20220096
-* Teresa Yessenia Ruiz González - 20220651
-* Verónica Alejandra Sánchez Rosales - 20220505
-* Allan Gabriel Fuentes Galdamez - 20220406
-
-## Dependencias
-
-El proyecto utiliza las siguientes dependencias:
-
-* **@expo/vector-icons** - ^14.0.2
-* **@react-navigation/bottom-tabs** - ^6.5.20
-* **@react-navigation/native** - ^6.1.17
-* **@react-navigation/stack** - ^6.3.29
-* **axios** - ^1.7.2
-* **expo** - ~51.0.14
-* **expo-av** - ^14.0.5
-* **expo-linear-gradient** - ^13.0.2
-* **expo-status-bar** - ~1.12.1
-* **react** - 18.2.0
-* **react-native** - ^0.74.2
-* **react-native-geocoding** - ^0.5.0
-* **react-native-gesture-handler** - ^2.16.2
-* **react-native-maps** - ^1.14.0
-* **react-native-paper** - ^5.12.3
-
-### Dependencias de Desarrollo
-
-* **@babel/core** - ^7.20.0
+Para el correcto funcionamiento de ambas aplicaciones, es crucial un sistema de gestión de bases de datos eficiente que almacene y maneje todos los datos necesarios.
