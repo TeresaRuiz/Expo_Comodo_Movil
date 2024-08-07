@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, Alert, ActivityIndicator, TextInput, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, Alert, ActivityIndicator, TextInput, ScrollView, RefreshControl } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -10,9 +10,11 @@ const DetallesProductoScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const { idProducto } = route.params;
+
   const [producto, setProducto] = useState(null);
   const [loading, setLoading] = useState(true);
   const [cantidadProducto, setCantidadProducto] = useState('');
+  const [refreshing, setRefreshing] = useState(false);
 
   const ip = Constantes.IP;
 
@@ -41,6 +43,12 @@ const DetallesProductoScreen = () => {
     fetchProducto();
   }, []);
 
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await fetchProducto();
+    setRefreshing(false);
+  };
+
   const agregarAlCarrito = async () => {
     const cantidadNumerica = parseInt(cantidadProducto, 10);
     if (isNaN(cantidadNumerica) || cantidadNumerica <= 0) {
@@ -61,7 +69,6 @@ const DetallesProductoScreen = () => {
       const data = await response.json();
 
       if (data.status) {
-        // Actualiza el carrito en AsyncStorage
         const carritoData = await AsyncStorage.getItem('@carrito');
         let carrito = carritoData ? JSON.parse(carritoData) : [];
         carrito.push({ idProducto, cantidad: cantidadNumerica });
@@ -96,7 +103,10 @@ const DetallesProductoScreen = () => {
   }
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView
+      contentContainerStyle={styles.container}
+      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+    >
       <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
         <Ionicons name="arrow-back" size={24} color="#000" />
       </TouchableOpacity>
@@ -116,11 +126,18 @@ const DetallesProductoScreen = () => {
             keyboardType="numeric"
             onChangeText={setCantidadProducto}
             value={cantidadProducto.toString()}
+            editable={producto.existencias > 0}
           />
         </View>
       </View>
-      <TouchableOpacity style={styles.addButton} onPress={agregarAlCarrito}>
-        <Text style={styles.addButtonText}>Añadir al carrito</Text>
+      <TouchableOpacity
+        style={[styles.addButton, producto.existencias === 0 && styles.disabledButton]}
+        onPress={agregarAlCarrito}
+        disabled={producto.existencias === 0}
+      >
+        <Text style={styles.addButtonText}>
+          {producto.existencias === 0 ? 'Existencias 0' : 'Añadir al carrito'}
+        </Text>
       </TouchableOpacity>
     </ScrollView>
   );

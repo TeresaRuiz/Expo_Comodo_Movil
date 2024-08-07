@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, TextInput, Image, TouchableOpacity, Alert, ActivityIndicator, ScrollView, RefreshControl } from 'react-native';
+import { View, Text, Image, TouchableOpacity, Alert, ActivityIndicator, ScrollView, RefreshControl } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
-import styles from '../estilos/MiPerfilScreenStyles'; // Asegúrate de que este archivo esté correcto
+import styles from '../estilos/MiPerfilScreenStyles'; 
 import * as Constantes from '../utils/constantes';
+import InputMiPerfil from '../componets/Inputs/InputMiPerfil'; // Asegúrate de que esta ruta sea correcta
 
 const MiPerfilScreen = () => {
   const ip = Constantes.IP;
@@ -204,7 +205,7 @@ const MiPerfilScreen = () => {
       }
     >
       <View style={styles.container}>
-        <Text style={styles.title}>Datos Personales</Text>
+        <Text style={styles.title}>Datos personales</Text>
 
         {/* Contenedor para la imagen de perfil */}
         <View style={styles.profileImageContainer}>
@@ -215,65 +216,49 @@ const MiPerfilScreen = () => {
         </View>
 
         {/* Contenedor para el campo Nombre */}
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Nombre</Text>
-          <TextInput
-            ref={nombreRef}
-            style={styles.input}
-            onChangeText={setNombre}
-            value={nombre}
-            editable={editando}
-          />
-        </View>
+        <InputMiPerfil
+          label="Nombre"
+          value={nombre}
+          onChangeText={setNombre}
+          editable={editando}
+          ref={nombreRef}
+        />
 
         {/* Contenedor para el campo Usuario */}
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Usuario</Text>
-          <TextInput
-            ref={usernameRef}
-            style={styles.input}
-            onChangeText={setUsername}
-            value={username}
-            editable={editando}
-          />
-        </View>
+        <InputMiPerfil
+          label="Usuario"
+          value={username}
+          onChangeText={setUsername}
+          editable={editando}
+          ref={usernameRef}
+        />
 
         {/* Contenedor para el campo Correo */}
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Correo</Text>
-          <TextInput
-            ref={correoRef}
-            style={styles.input}
-            onChangeText={setCorreo}
-            value={correo}
-            editable={editando}
-          />
-        </View>
+        <InputMiPerfil
+          label="Correo"
+          value={correo}
+          onChangeText={setCorreo}
+          editable={editando}
+          ref={correoRef}
+        />
 
         {/* Contenedor para el campo Teléfono */}
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Teléfono</Text>
-          <TextInput
-            ref={telefonoRef}
-            style={styles.input}
-            onChangeText={setTelefono}
-            value={telefono}
-            editable={editando}
-            keyboardType="phone-pad"
-          />
-        </View>
+        <InputMiPerfil
+          label="Teléfono"
+          value={telefono}
+          onChangeText={setTelefono}
+          editable={editando}
+          ref={telefonoRef}
+        />
 
         {/* Contenedor para el campo Dirección */}
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Dirección</Text>
-          <TextInput
-            ref={direccionRef}
-            style={styles.input}
-            onChangeText={setDireccion}
-            value={direccion}
-            editable={editando}
-          />
-        </View>
+        <InputMiPerfil
+          label="Dirección"
+          value={direccion}
+          onChangeText={setDireccion}
+          editable={editando}
+          ref={direccionRef}
+        />
 
         {/* Contenedor para el mapa */}
         <View style={styles.mapContainer}>

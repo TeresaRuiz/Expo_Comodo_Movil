@@ -7,40 +7,40 @@ import * as Constantes from '../utils/constantes';
 
 const CategoriaScreen = () => {
   const navigation = useNavigation();
-  const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
+  const [categories, setCategories] = useState([]); // Estado para almacenar las categorías
+  const [loading, setLoading] = useState(true); // Estado para manejar el indicador de carga
+  const [refreshing, setRefreshing] = useState(false);// Estado para manejar el indicador de refresco
 
-  const ip = Constantes.IP;
-
+  const ip = Constantes.IP; // Obtiene la IP desde las constantes
+// Función para obtener las categorías desde el servidor
   const fetchCategories = async () => {
     try {
-      const response = await fetch(`${ip}/Expo_Comodo/api/services/public/categoria.php?action=readAll`, {
+      const response = await fetch(`${ip}/Expo_Comodo/api/services/public/categoria.php?action=readAllCategorias`, {
         method: 'GET',
       });
       const data = await response.json();
       if (data.status) {
-        setCategories(data.dataset);
+        setCategories(data.dataset); // Actualiza el estado con las categorías obtenidas
       } else {
-        Alert.alert('Error', data.message);
+        Alert.alert('Error', data.message); // Muestra un mensaje de error si no se obtienen las categorías
       }
     } catch (error) {
-      Alert.alert('Error', 'Ocurrió un error al obtener las categorías');
+      Alert.alert('Error', 'Ocurrió un error al obtener las categorías'); // Muestra un mensaje de error si ocurre una excepción
     } finally {
-      setLoading(false);
-      setRefreshing(false);
+      setLoading(false); // Oculta el indicador de carga
+      setRefreshing(false); // Oculta el indicador de refresh
     }
   };
-
+// Efecto para obtener las categorías al montar el componente
   useEffect(() => {
     fetchCategories();
   }, []);
-
+// Función para manejar el refresh manual de las categorías
   const handleRefresh = () => {
     setRefreshing(true);
     fetchCategories();
   };
-
+ // Renderizado condicional para mostrar el indicador de carga
   if (loading) {
     return (
       <View style={styles.loadingContainer}>

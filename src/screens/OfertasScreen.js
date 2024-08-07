@@ -1,17 +1,20 @@
+// OfertasScreen.js
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, Image, TouchableOpacity, ActivityIndicator, TextInput, Alert } from 'react-native';
+import { View, Text, FlatList, Image, ActivityIndicator, TextInput, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import styles from '../estilos/OfertasScreenStyles';
 import PromoImage from '../img/ofertas.png';
 import * as Constantes from '../utils/constantes';
+import CardOferta from '../componets/Cards/CardOferta'; 
 
 const OfertasScreen = ({ navigation }) => {
+  // Estados para manejar la búsqueda, las ofertas y el estado de carga
   const [searchText, setSearchText] = useState('');
   const [ofertas, setOfertas] = useState([]);
   const [loading, setLoading] = useState(true);
-
+// Obtener la dirección IP de las constantes
   const ip = Constantes.IP;
-
+// Función para obtener las ofertas desde la API
   const fetchOfertas = async () => {
     try {
       const response = await fetch(`${ip}/Expo_Comodo/api/services/public/producto.php?action=getProductosConDescuento`);
@@ -27,11 +30,11 @@ const OfertasScreen = ({ navigation }) => {
       setLoading(false);
     }
   };
-
+// Efecto para cargar las ofertas al montar el componente
   useEffect(() => {
     fetchOfertas();
   }, []);
-
+// Filtrar y eliminar duplicados de las ofertas basándose en el texto de búsqueda
   const filteredOfertas = ofertas
     .filter(oferta =>
       oferta.nombre_descuento.toLowerCase().includes(searchText.toLowerCase())
@@ -42,32 +45,19 @@ const OfertasScreen = ({ navigation }) => {
       }
       return unique;
     }, []);
-
+// Función para renderizar cada item de oferta
   const renderOfertaItem = ({ item }) => (
-    <TouchableOpacity
-      style={styles.ofertaCard}
+    <CardOferta 
+      oferta={item}
       onPress={() => navigation.navigate('DetallesProducto', { idProducto: item.id_producto })}
-    >
-      <Image source={{ uri: `${ip}/Expo_Comodo/api/images/productos/${item.imagen}` }} style={styles.ofertaImage} />
-      <View style={styles.ofertaDetails}>
-        <Text style={styles.ofertaTitle}>{item.nombre_producto}</Text>
-        <Text style={styles.ofertaDescription}>{item.nombre_genero}</Text>
-        <View style={styles.ofertaPriceContainer}>
-          <Text style={styles.ofertaPrice}>${item.precio}</Text>
-          <Text style={styles.discountText}>-{item.valor}%</Text>
-          {item.descuento > 0 && (
-            <View style={styles.discountBadge}>
-              <Text style={styles.discountText}>-{item.descuento}%</Text>
-            </View>
-          )}
-        </View>
-      </View>
-    </TouchableOpacity>
+    />
   );
 
   return (
     <View style={styles.container}>
+        {/* Imagen promocional */}
       <Image source={PromoImage} style={styles.promoImage} />
+       {/* Barra de búsqueda */}
       <View style={styles.searchContainer}>
         <Ionicons name="search" size={24} color="#000" style={styles.searchIcon} />
         <TextInput
@@ -77,6 +67,7 @@ const OfertasScreen = ({ navigation }) => {
           onChangeText={setSearchText}
         />
       </View>
+       {/* Renderizado condicional basado en el estado de carga y las ofertas disponibles */}
       {loading ? (
         <ActivityIndicator size="large" color="#0000ff" />
       ) : filteredOfertas.length === 0 ? (

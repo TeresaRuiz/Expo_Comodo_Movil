@@ -1,13 +1,15 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, FlatList, Image, TouchableOpacity, Alert, RefreshControl } from 'react-native';
+import { View, Text, FlatList, Alert, RefreshControl, TouchableOpacity } from 'react-native'; // Importa TouchableOpacity aquí
 import * as Constantes from '../utils/constantes';
+import { Ionicons } from '@expo/vector-icons';
 import styles from '../estilos/HistorialScreenStyles'; // Importa los estilos desde un archivo externo
+import CardHistorial from '../componets/Cards/CardHistorial'; // Asegúrate de que la ruta sea correcta
 
 const HistorialScreen = ({ navigation }) => {
-  
+
     const [historial, setHistorial] = useState([]); // Estado para almacenar el historial
     const [refreshing, setRefreshing] = useState(false); // Estado para controlar el estado de refrescar
-  
+
     const ip = Constantes.IP; // Asegúrate de que Constantes.IP esté definido
 
     // Función para obtener los productos comprados desde la API
@@ -41,34 +43,20 @@ const HistorialScreen = ({ navigation }) => {
 
     // Función para renderizar cada elemento del historial
     const renderHistorialItem = ({ item }) => (
-        <TouchableOpacity
-            style={styles.ofertaCard}
-            onPress={() => navigation.navigate('DetallesProducto', { producto: item })}
-        >
-            <Image source={{ uri: `${ip}/Expo_Comodo/api/images/productos/${item.imagen}` }} style={styles.ofertaImage} />
-            <View style={styles.ofertaDetails}>
-                <Text style={styles.ofertaTitle}>{item.nombre_producto}</Text>
-                <Text style={styles.ofertaDescription}>Cantidad: {item.cantidad}</Text>
-                <Text style={styles.fecha}>{item.fecha_reserva}</Text>
-                <Text style={styles.subTotal}>Subtotal: ${(item.cantidad * item.precio_unitario)}</Text>
-                <View style={styles.ofertaPriceContainer}>
-                    <Text style={styles.ofertaPrice}>${item.precio_unitario}</Text>
-                    {/* Renderiza un badge de descuento si el producto tiene descuento */}
-                    {item.valor_oferta > 0 && (
-                        <View style={styles.discountBadge}>
-                            <Text style={styles.discountText}>-{item.valor_oferta}%</Text>
-                        </View>
-                    )}
-                </View>
-            </View>
-        </TouchableOpacity>
+        <CardHistorial
+            item={item}
+            onPress={() => navigation.navigate('DetallesProducto', { idProducto: item.id_producto })}
+        />
     );
 
     return (
         <View style={styles.container}>
             {/* Título de la pantalla */}
-            <Text style={styles.title}>Historial</Text>
-            
+            <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+                <Ionicons name="arrow-back" size={24} color="#000" />
+            </TouchableOpacity>
+            <Text style={styles.title}>Historial de pedidos</Text>
+
             {/* Lista de historial usando FlatList */}
             <FlatList
                 data={historial} // Cambiado a 'historial' para mostrar los productos comprados
