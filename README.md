@@ -49,3 +49,8 @@ El proyecto utiliza las siguientes dependencias:
 - **react-native-alert** - ^1.0.3
 - **react-native-appearance** - ^0.0.0
 - **underscore** - ^1.13.1
+
+### DevDependencies
+
+- **@babel/core** - ^7.20.0
+
