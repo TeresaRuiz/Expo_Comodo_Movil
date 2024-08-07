@@ -1,3 +1,4 @@
+// Importación de módulos y componentes necesarios
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, Alert, ActivityIndicator, TextInput, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
@@ -5,17 +6,19 @@ import { useRoute, useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from '../estilos/DetallesProductosScreen';
 import * as Constantes from '../utils/constantes';
-
+// Definición del componente principal
 const DetallesProductoScreen = () => {
+  // Hooks de navegación y ruta
   const navigation = useNavigation();
   const route = useRoute();
   const { idProducto } = route.params;
+  // Estados del componente
   const [producto, setProducto] = useState(null);
   const [loading, setLoading] = useState(true);
   const [cantidadProducto, setCantidadProducto] = useState('');
-
+// Obtención de la dirección IP desde las constantes
   const ip = Constantes.IP;
-
+// Función para obtener los detalles del producto
   const fetchProducto = async () => {
     try {
       const formData = new FormData();
@@ -36,11 +39,11 @@ const DetallesProductoScreen = () => {
       setLoading(false);
     }
   };
-
+// Efecto para cargar los detalles del producto al montar el componente
   useEffect(() => {
     fetchProducto();
   }, []);
-
+ // Función para agregar el producto al carrito
   const agregarAlCarrito = async () => {
     const cantidadNumerica = parseInt(cantidadProducto, 10);
     if (isNaN(cantidadNumerica) || cantidadNumerica <= 0) {
@@ -78,7 +81,7 @@ const DetallesProductoScreen = () => {
       Alert.alert('Error', 'Ocurrió un error al agregar el producto al carrito');
     }
   };
-
+// Renderizado condicional para mostrar el indicador de carga
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
@@ -86,7 +89,7 @@ const DetallesProductoScreen = () => {
       </View>
     );
   }
-
+// Renderizado condicional si no se encuentra el producto
   if (!producto) {
     return (
       <View style={styles.errorContainer}>
@@ -94,15 +97,19 @@ const DetallesProductoScreen = () => {
       </View>
     );
   }
-
+// Renderizado principal del componente
   return (
     <ScrollView contentContainerStyle={styles.container}>
+       {/* Botón para regresar */}
       <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
         <Ionicons name="arrow-back" size={24} color="#000" />
       </TouchableOpacity>
+      {/* Imagen del producto */}
       <Image source={{ uri: `${ip}/Expo_Comodo/api/images/productos/${producto.imagen}` }} style={styles.image} />
+       {/* Título y descripción del producto */}
       <Text style={styles.title}>{producto.nombre_producto}</Text>
       <Text style={styles.description}>{producto.descripcion_detalle}</Text>
+       {/* Detalles del producto */}
       <View style={styles.detailsContainer}>
         <View style={styles.detailsRow}>
           <Text style={styles.detailsLabel}>Marca:</Text>
@@ -129,6 +136,7 @@ const DetallesProductoScreen = () => {
           <Text style={styles.detailsValue}>{producto.color}</Text>
         </View>
       </View>
+      {/* Información de precios y existencias */}
       <View style={styles.pricingInfoContainer}>
         <View style={styles.pricingInfoRow}>
           <Text style={styles.pricingInfoLabel}>Precio unitario (US$):</Text>
@@ -142,6 +150,7 @@ const DetallesProductoScreen = () => {
           <Text style={styles.pricingInfoLabel}>Descuento %:</Text>
           <Text style={styles.pricingInfoValue}>{producto.porcentaje_descuento}</Text>
         </View>
+          {/* Input para la cantidad de producto */}
         <View style={styles.inputContainer}>
           <Text style={styles.label}>Cantidad</Text>
           <TextInput
@@ -153,11 +162,12 @@ const DetallesProductoScreen = () => {
           />
         </View>
       </View>
+      {/* Botón para añadir al carrito */}
       <TouchableOpacity style={styles.addButton} onPress={agregarAlCarrito}>
         <Text style={styles.addButtonText}>Añadir al carrito</Text>
       </TouchableOpacity>
     </ScrollView>
   );
 };
-
+// Exportación del componente
 export default DetallesProductoScreen;

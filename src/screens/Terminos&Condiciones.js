@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import styles from '../estilos/Terminos&Condiciones';
-
+//Información para los terminos
 const TerminosCondicionesScreen = () => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -21,7 +21,6 @@ const TerminosCondicionesScreen = () => {
       <Text style={styles.text}>
         Todo el contenido proporcionado en nuestra aplicación está sujeto a derechos de propiedad intelectual. No está permitido utilizar, copiar o distribuir dicho contenido sin autorización previa.
       </Text>
-      {/* Puedes seguir añadiendo más secciones según sea necesario */}
     </ScrollView>
   );
 };

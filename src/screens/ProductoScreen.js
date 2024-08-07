@@ -2,21 +2,23 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, TextInput, ActivityIndicator, RefreshControl, Alert } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRoute, useNavigation } from '@react-navigation/native';
-import styles from '../estilos/ProductoScreenStyles'; // Asegúrate de que la ruta es correcta
-import Cards1 from '../componets/Cards/Cards3'; // Asegúrate de que la ruta es correcta
+import styles from '../estilos/ProductoScreenStyles'; 
+import Cards1 from '../componets/Cards/Cards3'; 
 import * as Constantes from '../utils/constantes';
 
 const ProductoScreen = () => {
+  // Hooks de navegación y ruta
   const navigation = useNavigation();
   const route = useRoute();
   const { idCategoria } = route.params;
+  // Estados
   const [searchText, setSearchText] = useState('');
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-
+// Obtener la IP de las constantes
   const ip = Constantes.IP;
-
+// Función para obtener los productos de la API
   const fetchProducts = async () => {
     try {
       const formData = new FormData();
@@ -38,20 +40,20 @@ const ProductoScreen = () => {
       setRefreshing(false);
     }
   };
-
+// Efecto para cargar los productos al montar el componente
   useEffect(() => {
     fetchProducts();
   }, []);
-
+// Función para manejar la actualización al hacer pull-to-refresh
   const handleRefresh = () => {
     setRefreshing(true);
     fetchProducts();
   };
-
+// Filtrar productos basados en el texto de búsqueda
   const filteredProducts = products.filter(product =>
     product.nombre_producto.toLowerCase().includes(searchText.toLowerCase())
   );
-
+// Función para navegar a los detalles del producto
   const handleVerMas = (product) => {
     navigation.navigate('DetallesProducto', { idProducto: product.id_producto });
   };
@@ -63,6 +65,7 @@ const ProductoScreen = () => {
         <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
       }
     >
+       {/* Encabezado con botón de retroceso y barra de búsqueda */}
       <View style={styles.headerContainer}>
         <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" size={24} color="#000" />
@@ -77,7 +80,7 @@ const ProductoScreen = () => {
           />
         </View>
       </View>
-
+{/* Renderizado condicional: mostrar indicador de carga o lista de productos */}
       {loading ? (
         <ActivityIndicator size="large" color="#0000ff" />
       ) : (

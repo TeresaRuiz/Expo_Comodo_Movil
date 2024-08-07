@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, TextInput, Image, TouchableOpacity, Alert, ActivityIndicator, ScrollView, RefreshControl } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
-import styles from '../estilos/MiPerfilScreenStyles'; // Asegúrate de que este archivo esté correcto
+import styles from '../estilos/MiPerfilScreenStyles'; 
 import * as Constantes from '../utils/constantes';
 
 const MiPerfilScreen = () => {
