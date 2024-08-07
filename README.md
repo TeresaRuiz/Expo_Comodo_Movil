@@ -14,3 +14,12 @@ Para el correcto funcionamiento de ambas aplicaciones, es crucial un sistema de 
 ## Sección
 
 **1B**
+
+## Integrantes
+
+- **Gerson Alexander Echeverría Hernández** - 20220175
+- **Alejandro Alberto Fernández Robles** - 20220096
+- **Teresa Yessenia Ruiz González** - 20220651
+- **Verónica Alejandra Sánchez Rosales** - 20220505
+- **Allan Gabriel Fuentes Galdamez** - 20220406
+
