@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, FlatList, Image, TouchableOpacity, Alert, RefreshControl } from 'react-native';
+import { View, Text, FlatList, Alert, RefreshControl, TouchableOpacity } from 'react-native'; // Importa TouchableOpacity aquí
 import * as Constantes from '../utils/constantes';
 import { Ionicons } from '@expo/vector-icons';
 import styles from '../estilos/HistorialScreenStyles'; // Importa los estilos desde un archivo externo
+import CardHistorial from '../componets/Cards/CardHistorial'; // Asegúrate de que la ruta sea correcta
 
 const HistorialScreen = ({ navigation }) => {
 
@@ -42,27 +43,10 @@ const HistorialScreen = ({ navigation }) => {
 
     // Función para renderizar cada elemento del historial
     const renderHistorialItem = ({ item }) => (
-        <TouchableOpacity
-            style={styles.ofertaCard}
+        <CardHistorial
+            item={item}
             onPress={() => navigation.navigate('DetallesProducto', { idProducto: item.id_producto })}
-        >
-            <Image source={{ uri: `${ip}/Expo_Comodo/api/images/productos/${item.imagen}` }} style={styles.ofertaImage} />
-            <View style={styles.ofertaDetails}>
-                <Text style={styles.ofertaTitle}>{item.nombre_producto}</Text>
-                <Text style={styles.ofertaDescription}>Cantidad: {item.cantidad}</Text>
-                <Text style={styles.fecha}>{item.fecha_reserva}</Text>
-                <Text style={styles.subTotal}>Subtotal: ${(item.cantidad * item.precio_unitario)}</Text>
-                <View style={styles.ofertaPriceContainer}>
-                    <Text style={styles.ofertaPrice}>${item.precio_unitario}</Text>
-                    {/* Renderiza un badge de descuento si el producto tiene descuento */}
-                    {item.valor_oferta > 0 && (
-                        <View style={styles.discountBadge}>
-                            <Text style={styles.discountText}>-{item.valor_oferta}%</Text>
-                        </View>
-                    )}
-                </View>
-            </View>
-        </TouchableOpacity>
+        />
     );
 
     return (
