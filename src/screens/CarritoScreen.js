@@ -1,21 +1,22 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, FlatList, TouchableOpacity, Alert, ActivityIndicator, RefreshControl, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as Constantes from '../utils/constantes'; // Asegúrate de que este archivo exporte correctamente la IP
-import styles from '../estilos/CarritoScreenStyles'; // Asegúrate de la ruta correcta
+import * as Constantes from '../utils/constantes';
+import styles from '../estilos/CarritoScreenStyles';
 import { useIsFocused } from '@react-navigation/native';
-import CardCarrito from '../componets/Cards/CardCarrito'; // Asegúrate de la ruta correcta
+import CardCarrito from '../componets/Cards/CardCarrito';
 
 const CarritoScreen = ({ navigation }) => {
-  const [carrito, setCarrito] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const [subtotal, setSubtotal] = useState(0);
-  const [descuento, setDescuento] = useState(0);
+  const [carrito, setCarrito] = useState([]); // Estado para almacenar los productos en el carrito
+  const [loading, setLoading] = useState(true);// Estado para manejar el indicador de carga
+  const [refreshing, setRefreshing] = useState(false); // Estado para manejar el indicador de refresh
+  const [subtotal, setSubtotal] = useState(0); // Estado para almacenar el subtotal del carrito
+  const [descuento, setDescuento] = useState(0);// Estado para almacenar el descuento aplicado
 
-  const ip = Constantes.IP; // Verifica que Constantes.IP esté correctamente definido y exportado
+  const ip = Constantes.IP;
   const isFocused = useIsFocused();
 
+// Función para obtener los datos del carrito desde el servidor
   const fetchCarrito = useCallback(async () => {
     setLoading(true);
     try {
@@ -33,13 +34,13 @@ const CarritoScreen = ({ navigation }) => {
       setRefreshing(false);
     }
   }, [ip]);
-
+// Efecto para obtener los datos del carrito cuando la pantalla está enfocada
   useEffect(() => {
     if (isFocused) {
       fetchCarrito();
     }
   }, [isFocused, fetchCarrito]);
-
+// Función para manejar el cambio de cantidad de un producto en el carrito
   const handleQuantityChange = async (item, type) => {
     let newCantidad = item.cantidad;
 
@@ -78,7 +79,7 @@ const CarritoScreen = ({ navigation }) => {
       console.error(error);
     }
   };
-
+// Función para manejar la eliminación de un producto del carrito
   const handleDelete = async (idDetalle) => {
     try {
       const formData = new FormData();
@@ -103,16 +104,16 @@ const CarritoScreen = ({ navigation }) => {
       console.error(error);
     }
   };
-
+// Función para refrescar los datos del carrito
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     fetchCarrito();
   }, [fetchCarrito]);
-
+ // Efecto para obtener los datos del carrito al montar el componente
   useEffect(() => {
     fetchCarrito();
   }, [fetchCarrito]);
-
+// Efecto para calcular el subtotal y el descuento del carrito
   useEffect(() => {
     const calcularSubtotal = () => {
       let total = 0;
@@ -135,7 +136,7 @@ const CarritoScreen = ({ navigation }) => {
 
     calcularSubtotal();
   }, [carrito]);
-
+// Función para finalizar la compra
   const finalizarCompra = async () => {
     if (carrito.length === 0) {
       Alert.alert('Carrito Vacío', 'No hay productos seleccionados en el carrito.');
@@ -163,7 +164,7 @@ const CarritoScreen = ({ navigation }) => {
       console.error(error);
     }
   };
-
+ // Renderizado condicional para mostrar el indicador de carga
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
@@ -178,7 +179,7 @@ const CarritoScreen = ({ navigation }) => {
       <FlatList
         data={carrito}
         renderItem={({ item }) => (
-          <CardCarrito 
+          <CardCarrito
             item={item}
             onIncrease={(item) => handleQuantityChange(item, 'increase')}
             onDecrease={(item) => handleQuantityChange(item, 'decrease')}
