@@ -6,6 +6,7 @@ import styles from '../estilos/CarritoScreenStyles';
 import { useIsFocused } from '@react-navigation/native';
 import CardCarrito from '../componets/Cards/CardCarrito';
 
+
 const CarritoScreen = ({ navigation }) => {
   const [carrito, setCarrito] = useState([]); // Estado para almacenar los productos en el carrito
   const [loading, setLoading] = useState(true);// Estado para manejar el indicador de carga
