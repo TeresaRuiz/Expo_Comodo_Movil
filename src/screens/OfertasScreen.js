@@ -1,9 +1,11 @@
+// OfertasScreen.js
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, Image, TouchableOpacity, ActivityIndicator, TextInput, Alert } from 'react-native';
+import { View, Text, FlatList, Image, ActivityIndicator, TextInput, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import styles from '../estilos/OfertasScreenStyles';
 import PromoImage from '../img/ofertas.png';
 import * as Constantes from '../utils/constantes';
+import CardOferta from '../componets/Cards/CardOferta'; 
 
 const OfertasScreen = ({ navigation }) => {
   const [searchText, setSearchText] = useState('');
@@ -44,25 +46,10 @@ const OfertasScreen = ({ navigation }) => {
     }, []);
 
   const renderOfertaItem = ({ item }) => (
-    <TouchableOpacity
-      style={styles.ofertaCard}
+    <CardOferta 
+      oferta={item}
       onPress={() => navigation.navigate('DetallesProducto', { idProducto: item.id_producto })}
-    >
-      <Image source={{ uri: `${ip}/Expo_Comodo/api/images/productos/${item.imagen}` }} style={styles.ofertaImage} />
-      <View style={styles.ofertaDetails}>
-        <Text style={styles.ofertaTitle}>{item.nombre_producto}</Text>
-        <Text style={styles.ofertaDescription}>{item.nombre_genero}</Text>
-        <View style={styles.ofertaPriceContainer}>
-          <Text style={styles.ofertaPrice}>${item.precio}</Text>
-          <Text style={styles.discountText}>-{item.valor}%</Text>
-          {item.descuento > 0 && (
-            <View style={styles.discountBadge}>
-              <Text style={styles.discountText}>-{item.descuento}%</Text>
-            </View>
-          )}
-        </View>
-      </View>
-    </TouchableOpacity>
+    />
   );
 
   return (

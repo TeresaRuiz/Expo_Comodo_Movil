@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, FlatList, TouchableOpacity, Alert, ActivityIndicator, RefreshControl, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as Constantes from '../utils/constantes';
-import styles from '../estilos/CarritoScreenStyles';
+import * as Constantes from '../utils/constantes'; // Asegúrate de que este archivo exporte correctamente la IP
+import styles from '../estilos/CarritoScreenStyles'; // Asegúrate de la ruta correcta
 import { useIsFocused } from '@react-navigation/native';
+import CardCarrito from '../componets/Cards/CardCarrito'; // Asegúrate de la ruta correcta
 
 const CarritoScreen = ({ navigation }) => {
   const [carrito, setCarrito] = useState([]);
@@ -12,7 +13,7 @@ const CarritoScreen = ({ navigation }) => {
   const [subtotal, setSubtotal] = useState(0);
   const [descuento, setDescuento] = useState(0);
 
-  const ip = Constantes.IP;
+  const ip = Constantes.IP; // Verifica que Constantes.IP esté correctamente definido y exportado
   const isFocused = useIsFocused();
 
   const fetchCarrito = useCallback(async () => {
@@ -22,7 +23,6 @@ const CarritoScreen = ({ navigation }) => {
       const data = await response.json();
       if (data.status) {
         setCarrito(data.dataset);
-        // Save to AsyncStorage if needed
       } else {
         Alert.alert('Error', data.error);
       }
@@ -39,8 +39,6 @@ const CarritoScreen = ({ navigation }) => {
       fetchCarrito();
     }
   }, [isFocused, fetchCarrito]);
-
-  // The rest of your component code remains the same
 
   const handleQuantityChange = async (item, type) => {
     let newCantidad = item.cantidad;
@@ -138,31 +136,6 @@ const CarritoScreen = ({ navigation }) => {
     calcularSubtotal();
   }, [carrito]);
 
-  const renderOfertaItem = ({ item }) => (
-    <TouchableOpacity style={styles.ofertaCard}>
-      <Image source={{ uri: `${ip}/Expo_Comodo/api/images/productos/${item.imagen}` }} style={styles.ofertaImage} />
-      <View style={styles.ofertaDetails}>
-        <Text style={styles.ofertaTitle}>{item.nombre_producto}</Text>
-        <Text style={styles.ofertaPrice}>Precio Unitario: ${item.precio_unitario}</Text>
-        {item.valor_oferta && (
-          <Text style={styles.ofertaPrice}>Oferta: %{item.valor_oferta}</Text>
-        )}
-        <View style={styles.quantityContainer}>
-          <TouchableOpacity style={styles.quantityButton} onPress={() => handleQuantityChange(item, 'decrease')}>
-            <Text style={styles.quantityButtonText}>-</Text>
-          </TouchableOpacity>
-          <Text style={styles.quantity}>{item.cantidad}</Text>
-          <TouchableOpacity style={styles.quantityButton} onPress={() => handleQuantityChange(item, 'increase')}>
-            <Text style={styles.quantityButtonText}>+</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.deleteButton} onPress={() => handleDelete(item.id_detalle_reserva)}>
-            <Text style={{ color: '#fff', fontWeight: 'bold' }}>Eliminar</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </TouchableOpacity>
-  );
-
   const finalizarCompra = async () => {
     if (carrito.length === 0) {
       Alert.alert('Carrito Vacío', 'No hay productos seleccionados en el carrito.');
@@ -204,8 +177,15 @@ const CarritoScreen = ({ navigation }) => {
       <Text style={styles.title}>Carrito</Text>
       <FlatList
         data={carrito}
-        renderItem={renderOfertaItem}
-        keyExtractor={(item, index) => item?.id_detalle_reserva?.toString() ?? index.toString()}
+        renderItem={({ item }) => (
+          <CardCarrito 
+            item={item}
+            onIncrease={(item) => handleQuantityChange(item, 'increase')}
+            onDecrease={(item) => handleQuantityChange(item, 'decrease')}
+            onDelete={(idDetalle) => handleDelete(idDetalle)}
+          />
+        )}
+        keyExtractor={(item) => item?.id_detalle_reserva?.toString() ?? item.id_detalle_reserva.toString()}
         contentContainerStyle={styles.listContainer}
         refreshControl={
           <RefreshControl
