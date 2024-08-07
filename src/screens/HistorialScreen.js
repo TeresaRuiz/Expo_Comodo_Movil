@@ -44,7 +44,7 @@ const HistorialScreen = ({ navigation }) => {
     const renderHistorialItem = ({ item }) => (
         <TouchableOpacity
             style={styles.ofertaCard}
-            onPress={() => navigation.navigate('DetallesProducto', { producto: item })}
+            onPress={() => navigation.navigate('DetallesProducto', { idProducto: item.id_producto })}
         >
             <Image source={{ uri: `${ip}/Expo_Comodo/api/images/productos/${item.imagen}` }} style={styles.ofertaImage} />
             <View style={styles.ofertaDetails}>
