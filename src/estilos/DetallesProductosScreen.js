@@ -73,6 +73,10 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     elevation: 5,
   },
+  disabledButton: {
+    backgroundColor: '#cccccc',
+    shadowOpacity: 0.1,
+  },
   addButtonText: {
     fontSize: 18,
     fontWeight: 'bold',
