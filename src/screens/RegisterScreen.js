@@ -3,6 +3,7 @@ import { View, Text, ScrollView, TouchableOpacity, Image, TextInput, Alert } fro
 import { useNavigation } from '@react-navigation/native';
 import MapView, { Marker } from 'react-native-maps';
 import axios from 'axios';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import DebouncedSearchInput from '../screens/DebouncedSearchInput';
 import styles from '../estilos/RegisterScreenStyles';
 import * as Constantes from '../utils/constantes';
@@ -17,6 +18,8 @@ const RegisterScreen = () => {
   const [phone, setTelefono] = useState('');
   const [dui, setDui] = useState('');
   const [address, setAddress] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword2, setShowPassword2] = useState(false);
   const [location, setLocation] = useState({
     latitude: 13.69294,
     longitude: -89.21819,
@@ -157,20 +160,30 @@ const RegisterScreen = () => {
         value={email}
         keyboardType="email-address"
       />
-      <TextInput
-        style={styles.input}
-        placeholder="Contraseña"
-        onChangeText={text => setPassword(text)}
-        value={password}
-        secureTextEntry={true}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Repetir contraseña"
-        onChangeText={text => setPassword2(text)}
-        value={password2}
-        secureTextEntry={true}
-      />
+      <View style={styles.passwordContainer}>
+        <TextInput
+          style={{ flex: 1 }}
+          placeholder="Contraseña"
+          onChangeText={text => setPassword(text)}
+          value={password}
+          secureTextEntry={!showPassword}
+        />
+        <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeIcon}>
+          <Icon name={showPassword ? "eye" : "eye-slash"} size={20} color="gray" />
+        </TouchableOpacity>
+      </View>
+      <View style={styles.passwordContainer}>
+        <TextInput
+          style={{ flex: 1 }}
+          placeholder="Repetir contraseña"
+          onChangeText={text => setPassword2(text)}
+          value={password2}
+          secureTextEntry={!showPassword2}
+        />
+        <TouchableOpacity onPress={() => setShowPassword2(!showPassword2)} style={styles.eyeIcon}>
+          <Icon name={showPassword2 ? "eye" : "eye-slash"} size={20} color="gray" />
+        </TouchableOpacity>
+      </View>
       <TextInput
         style={styles.input}
         placeholder="Teléfono"

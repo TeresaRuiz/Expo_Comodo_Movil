@@ -6,13 +6,19 @@ const styles = StyleSheet.create({
       backgroundColor: '#f5f5f5',
       marginTop: 50, // Ajusta el margen superior para mover todo hacia abajo
     },
+    backButton: {
+      alignSelf: 'flex-start',
+      marginBottom: 10,
+      marginTop: 10,
+      left: 20,
+    },
     title: {
-      fontSize: 24,
+      fontSize: 26,
       fontWeight: 'bold',
       marginBottom: 20,
       color: '#333',
       textAlign: 'center',
-      marginTop: 20,
+      marginTop: 10,
     },
     listContainer: {
       paddingHorizontal: 10,
