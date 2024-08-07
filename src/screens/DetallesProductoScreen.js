@@ -1,5 +1,6 @@
+
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, Alert, ActivityIndicator, TextInput, ScrollView, RefreshControl } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, Alert, ActivityIndicator, TextInput, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -10,11 +11,9 @@ const DetallesProductoScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const { idProducto } = route.params;
-
   const [producto, setProducto] = useState(null);
   const [loading, setLoading] = useState(true);
   const [cantidadProducto, setCantidadProducto] = useState('');
-  const [refreshing, setRefreshing] = useState(false);
 
   const ip = Constantes.IP;
 
@@ -43,12 +42,6 @@ const DetallesProductoScreen = () => {
     fetchProducto();
   }, []);
 
-  const onRefresh = async () => {
-    setRefreshing(true);
-    await fetchProducto();
-    setRefreshing(false);
-  };
-
   const agregarAlCarrito = async () => {
     const cantidadNumerica = parseInt(cantidadProducto, 10);
     if (isNaN(cantidadNumerica) || cantidadNumerica <= 0) {
@@ -69,13 +62,14 @@ const DetallesProductoScreen = () => {
       const data = await response.json();
 
       if (data.status) {
+        // Actualiza el carrito en AsyncStorage
         const carritoData = await AsyncStorage.getItem('@carrito');
         let carrito = carritoData ? JSON.parse(carritoData) : [];
         carrito.push({ idProducto, cantidad: cantidadNumerica });
         await AsyncStorage.setItem('@carrito', JSON.stringify(carrito));
 
         Alert.alert('Éxito', 'Producto añadido al carrito', [
-          { text: 'OK', onPress: () => navigation.navigate('Carrito') },
+          { text: 'OK', onPress: () => navigation.navigate('Carrito')},
         ]);
       } else {
         Alert.alert('Error', data.message);
@@ -103,10 +97,7 @@ const DetallesProductoScreen = () => {
   }
 
   return (
-    <ScrollView
-      contentContainerStyle={styles.container}
-      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-    >
+    <ScrollView contentContainerStyle={styles.container}>
       <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
         <Ionicons name="arrow-back" size={24} color="#000" />
       </TouchableOpacity>
@@ -114,10 +105,44 @@ const DetallesProductoScreen = () => {
       <Text style={styles.title}>{producto.nombre_producto}</Text>
       <Text style={styles.description}>{producto.descripcion_detalle}</Text>
       <View style={styles.detailsContainer}>
-        {/* Detalles del producto */}
+        <View style={styles.detailsRow}>
+          <Text style={styles.detailsLabel}>Marca:</Text>
+          <Text style={styles.detailsValue}>{producto.nombre_marca}</Text>
+        </View>
+        <View style={styles.detailsRow}>
+          <Text style={styles.detailsLabel}>Código del zapato:</Text>
+          <Text style={styles.detailsValue}>{producto.codigo_interno}</Text>
+        </View>
+        <View style={styles.detailsRow}>
+          <Text style={styles.detailsLabel}>Género del zapato:</Text>
+          <Text style={styles.detailsValue}>{producto.nombre_genero}</Text>
+        </View>
+        <View style={styles.detailsRow}>
+          <Text style={styles.detailsLabel}>Material:</Text>
+          <Text style={styles.detailsValue}>{producto.nombre_material}</Text>
+        </View>
+        <View style={styles.detailsRow}>
+          <Text style={styles.detailsLabel}>Talla:</Text>
+          <Text style={styles.detailsValue}>{producto.nombre_talla}</Text>
+        </View>
+        <View style={styles.detailsRow}>
+          <Text style={styles.detailsLabel}>Color:</Text>
+          <Text style={styles.detailsValue}>{producto.color}</Text>
+        </View>
       </View>
       <View style={styles.pricingInfoContainer}>
-        {/* Información de precios */}
+        <View style={styles.pricingInfoRow}>
+          <Text style={styles.pricingInfoLabel}>Precio unitario (US$):</Text>
+          <Text style={styles.pricingInfoValue}>{producto.precio}</Text>
+        </View>
+        <View style={styles.pricingInfoRow}>
+          <Text style={styles.pricingInfoLabel}>Existencias:</Text>
+          <Text style={styles.pricingInfoValue}>{producto.existencias}</Text>
+        </View>
+        <View style={styles.pricingInfoRow}>
+          <Text style={styles.pricingInfoLabel}>Descuento %:</Text>
+          <Text style={styles.pricingInfoValue}>{producto.porcentaje_descuento}</Text>
+        </View>
         <View style={styles.inputContainer}>
           <Text style={styles.label}>Cantidad</Text>
           <TextInput
@@ -126,18 +151,11 @@ const DetallesProductoScreen = () => {
             keyboardType="numeric"
             onChangeText={setCantidadProducto}
             value={cantidadProducto.toString()}
-            editable={producto.existencias > 0}
           />
         </View>
       </View>
-      <TouchableOpacity
-        style={[styles.addButton, producto.existencias === 0 && styles.disabledButton]}
-        onPress={agregarAlCarrito}
-        disabled={producto.existencias === 0}
-      >
-        <Text style={styles.addButtonText}>
-          {producto.existencias === 0 ? 'Existencias 0' : 'Añadir al carrito'}
-        </Text>
+      <TouchableOpacity style={styles.addButton} onPress={agregarAlCarrito}>
+        <Text style={styles.addButtonText}>Añadir al carrito</Text>
       </TouchableOpacity>
     </ScrollView>
   );
