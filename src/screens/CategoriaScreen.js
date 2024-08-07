@@ -15,7 +15,7 @@ const CategoriaScreen = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch(`${ip}/Expo_Comodo/api/services/public/categoria.php?action=readAll`, {
+      const response = await fetch(`${ip}/Expo_Comodo/api/services/public/categoria.php?action=readAllCategorias`, {
         method: 'GET',
       });
       const data = await response.json();
