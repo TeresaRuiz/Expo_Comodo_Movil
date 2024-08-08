@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, Alert, ActivityIndicator, TextInput, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
@@ -44,7 +43,7 @@ const DetallesProductoScreen = () => {
 
   const agregarAlCarrito = async () => {
     const cantidadNumerica = parseInt(cantidadProducto, 10);
-    if (isNaN(cantidadNumerica) || cantidadNumerica <= 0) {
+    if (isNaN(cantidadNumerica) || cantidadNumerica <= 0 || cantidadNumerica > producto.existencias) {
       Alert.alert('Error', 'Por favor, ingresa una cantidad válida');
       return;
     }
@@ -95,6 +94,15 @@ const DetallesProductoScreen = () => {
       </View>
     );
   }
+
+  const handleCantidadChange = (text) => {
+    const cantidadNumerica = parseInt(text, 10);
+    if (!isNaN(cantidadNumerica) && cantidadNumerica > 0 && cantidadNumerica <= producto.existencias) {
+      setCantidadProducto(text);
+    } else if (text === '') {
+      setCantidadProducto('');
+    }
+  };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -149,16 +157,28 @@ const DetallesProductoScreen = () => {
             style={styles.input}
             placeholder=""
             keyboardType="numeric"
-            onChangeText={setCantidadProducto}
+            onChangeText={handleCantidadChange}
             value={cantidadProducto.toString()}
           />
         </View>
       </View>
-      <TouchableOpacity style={styles.addButton} onPress={agregarAlCarrito}>
-        <Text style={styles.addButtonText}>Añadir al carrito</Text>
+      <TouchableOpacity 
+        style={[styles.addButton, producto.existencias === 0 && styles.disabledButton]} 
+        onPress={agregarAlCarrito}
+        disabled={producto.existencias === 0}
+      >
+        <Text style={styles.addButtonText}>
+          {producto.existencias === 0 ? 'Producto no disponible' : 'Añadir al carrito'}
+        </Text>
       </TouchableOpacity>
     </ScrollView>
   );
 };
+
+const localStyles = StyleSheet.create({
+  disabledButton: {
+    backgroundColor: '#ccc',
+  },
+});
 
 export default DetallesProductoScreen;
