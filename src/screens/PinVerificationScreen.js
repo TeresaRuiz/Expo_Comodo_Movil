@@ -9,9 +9,16 @@ const PinVerificationScreen = ({ route, navigation }) => {
   const [pin, setPin] = useState('');
   // Extraer el email de los parámetros de la ruta
   const { email } = route.params;
-// Función para manejar la verificación del PIN
+
+  // Función para manejar la verificación del PIN
   const handleVerifyPin = async () => {
     try {
+      // Verificar que el PIN no esté vacío
+      if (!pin.trim()) {
+        Alert.alert('Error', 'Por favor, ingresa el PIN.');
+        return;
+      }
+
       // Realizar una solicitud POST al servidor para verificar el PIN
       const response = await fetch(`${Constantes.IP}/Expo_Comodo/api/services/public/cliente.php?action=verificarPin`, {
         method: 'POST',
@@ -24,10 +31,12 @@ const PinVerificationScreen = ({ route, navigation }) => {
       const data = await response.json();
 
       if (data.status === 1) {
-        // Si el PIN es válido, navegar a la pantalla de nueva contraseña
-        navigation.navigate('NewPassword', { id_usuario: data.id_usuario, email: email });
+        // Si el PIN es válido, mostrar una alerta de éxito y navegar a la pantalla de nueva contraseña
+        Alert.alert('Éxito', 'PIN verificado correctamente', [
+          { text: 'OK', onPress: () => navigation.navigate('NewPassword', { id_usuario: data.id_usuario, email: email }) }
+        ]);
       } else {
-         // Si el PIN no es válido, mostrar una alerta
+        // Si el PIN no es válido, mostrar una alerta
         Alert.alert('Error', data.error || 'PIN inválido o expirado');
       }
     } catch (error) {

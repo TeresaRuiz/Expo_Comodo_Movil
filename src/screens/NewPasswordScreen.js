@@ -1,4 +1,3 @@
-// NewPasswordScreen.js
 import React, { useState } from 'react';
 import { View, Text, TextInput, Alert } from 'react-native';
 import styles from '../estilos/RecuperacionScreenStyles';
@@ -9,10 +8,16 @@ const NewPasswordScreen = ({ route, navigation }) => {
   const [newPassword, setNewPassword] = useState(''); // Estado para la nueva contraseña
   const [confirmPassword, setConfirmPassword] = useState(''); // Estado para confirmar la nueva contraseña
   const { id_usuario, email } = route.params; // Obtiene el id_usuario y el email de los parámetros de la ruta
-// Función para manejar el cambio de contraseña
+
+  // Función para manejar el cambio de contraseña
   const handleChangePassword = async () => {
-    if (newPassword !== confirmPassword) {// Verifica que las contraseñas coincidan
+    if (newPassword !== confirmPassword) { // Verifica que las contraseñas coincidan
       Alert.alert('Error', 'Las contraseñas no coinciden');
+      return;
+    }
+
+    if (newPassword.length < 6) { // Verifica que la nueva contraseña tenga al menos 6 caracteres
+      Alert.alert('Error', 'La contraseña debe tener al menos 6 caracteres');
       return;
     }
 
@@ -29,8 +34,9 @@ const NewPasswordScreen = ({ route, navigation }) => {
       const data = await response.json();
 
       if (data.status === 1) { // Verifica si la solicitud fue exitosa
-        Alert.alert('Éxito', 'Contraseña cambiada exitosamente');
-        navigation.navigate('Login'); // Navega a la pantalla de login
+        Alert.alert('Éxito', 'Contraseña cambiada exitosamente', [
+          { text: 'OK', onPress: () => navigation.navigate('Login') } // Navega a la pantalla de login después de mostrar el mensaje de éxito
+        ]);
       } else {
         Alert.alert('Error', data.error || 'Ocurrió un error al cambiar la contraseña');
       }

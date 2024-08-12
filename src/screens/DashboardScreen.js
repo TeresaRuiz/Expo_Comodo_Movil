@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, Image, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import styles from '../estilos/DashboardScreenStyles'; // Importa los estilos desde un archivo externo
-import LogOut from '../componets/LogOut'; // Importa el componente LogOut
+import LogOut from '../componets/Buttons/LogOut';
 import Button from '../componets/Buttons/Button'; // Importa el componente Button
 import * as Constantes from '../utils/constantes'; // Importa las constantes
 

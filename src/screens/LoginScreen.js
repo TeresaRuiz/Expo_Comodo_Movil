@@ -3,7 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Animated, Easing, 
 import { Ionicons } from '@expo/vector-icons'; // Import Ionicons
 import styles from '../estilos/LoginScreenStyles'; // Import styles from an external file
 import Button3 from '../componets/Buttons/Button3';
-import LogOut from '../componets/LogOut';
+import LogOut from '../componets/Buttons/LogOut';
 import * as Constantes from '../utils/constantes'; // Import constants, assuming you have IP in a constants file
 
 const LoginScreen = ({ navigation }) => {
@@ -41,6 +41,12 @@ const LoginScreen = ({ navigation }) => {
 
   // Function to handle login
   const handleLogin = async () => {
+    // Check if username or password is empty
+    if (!username.trim() || !password.trim()) {
+      Alert.alert('Error', 'Por favor, complete los campos de usuario y contraseña');
+      return;
+    }
+
     try {
       const formData = new FormData();
       formData.append('UsuarioCliente', username); // Add username to form data
@@ -60,6 +66,9 @@ const LoginScreen = ({ navigation }) => {
       try {
         const data = JSON.parse(responseText); // Try to parse the response as JSON
         if (data.status) {
+          // Clear the input fields after successful login
+          setUsername('');
+          setPassword('');
           navigation.navigate('DashboardTabs'); // Navigate to the dashboard tabs screen
         } else {
           showLoginErrorAlert(); // Show a custom alert in case of an error

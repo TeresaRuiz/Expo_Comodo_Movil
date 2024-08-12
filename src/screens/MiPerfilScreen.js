@@ -3,6 +3,7 @@ import { View, Text, Image, TouchableOpacity, Alert, ActivityIndicator, ScrollVi
 import MapView, { Marker } from 'react-native-maps';
 import styles from '../estilos/MiPerfilScreenStyles'; 
 import * as Constantes from '../utils/constantes';
+import { TextInputMask } from 'react-native-masked-text';
 import InputMiPerfil from '../componets/Inputs/InputMiPerfil'; // Asegúrate de que esta ruta sea correcta
 
 const MiPerfilScreen = () => {
@@ -87,6 +88,12 @@ const MiPerfilScreen = () => {
 
   // Función para manejar la actualización de los datos del perfil
   const handleUpdate = async () => {
+    // Validación de campos vacíos
+    if (!nombre || !username || !correo || !direccion || !telefono) {
+      Alert.alert('Error', 'Todos los campos deben ser llenados');
+      return;
+    }
+
     try {
       // Crea un objeto con los datos del perfil
       const formData = new FormData();
@@ -129,17 +136,14 @@ const MiPerfilScreen = () => {
 
   // Función para manejar la cancelación y limpiar los campos
   const handleDelete = () => {
+    // Limpiar los valores de los campos directamente mediante el estado
     setNombre('');
     setUsername('');
     setCorreo('');
     setDireccion('');
-    setTelefono('');
-
-    nombreRef.current.clear();
-    usernameRef.current.clear();
-    correoRef.current.clear();
-    direccionRef.current.clear();
-    telefonoRef.current.clear();
+    setTelefono(''); // Limpia el estado del teléfono
+  
+    // Limpiar el valor de los campos de entrada usando las referencias no es necesario
     setEditando(false);
     fetchProfile(); // Actualiza los datos del perfil al cancelar
   };
@@ -242,13 +246,18 @@ const MiPerfilScreen = () => {
           ref={correoRef}
         />
 
-        {/* Contenedor para el campo Teléfono */}
-        <InputMiPerfil
+        {/* Contenedor para el campo Teléfono con máscara */}
+        <TextInputMask
+          type={'custom'}
+          options={{
+            mask: '9999-9999'
+          }}
           label="Teléfono"
           value={telefono}
           onChangeText={setTelefono}
           editable={editando}
           ref={telefonoRef}
+          style={styles.input}
         />
 
         {/* Contenedor para el campo Dirección */}
@@ -266,17 +275,18 @@ const MiPerfilScreen = () => {
             style={styles.map}
             region={region}
             onPress={handleMapPress}
+            showsUserLocation
           >
             <Marker coordinate={region} />
           </MapView>
         </View>
 
-        {/* Contenedor para los botones */}
+        {/* Botones para guardar o cancelar */}
         <View style={styles.buttonContainer}>
           {editando ? (
             <>
               <TouchableOpacity style={styles.button} onPress={handleUpdate}>
-                <Text style={styles.buttonText}>Actualizar</Text>
+                <Text style={styles.buttonText}>Guardar</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.button} onPress={handleDelete}>
                 <Text style={styles.buttonText}>Cancelar</Text>
