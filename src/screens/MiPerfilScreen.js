@@ -1,12 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, Image, TouchableOpacity, Alert, ActivityIndicator, ScrollView, RefreshControl } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
+import { Ionicons } from '@expo/vector-icons'; // Asegúrate de tener este paquete instalado
 import styles from '../estilos/MiPerfilScreenStyles'; 
 import * as Constantes from '../utils/constantes';
 import { TextInputMask } from 'react-native-masked-text';
 import InputMiPerfil from '../componets/Inputs/InputMiPerfil'; // Asegúrate de que esta ruta sea correcta
 
-const MiPerfilScreen = () => {
+const MiPerfilScreen = ({ navigation }) => {
   const ip = Constantes.IP;
 
   // Estados para los datos del perfil
@@ -209,6 +210,12 @@ const MiPerfilScreen = () => {
       }
     >
       <View style={styles.container}>
+        
+        {/* Icono de retroceder */}
+        <TouchableOpacity style={styles.backIcon} onPress={() => navigation.goBack()}>
+          <Ionicons name="arrow-back" size={24} color="black" />
+        </TouchableOpacity>
+
         <Text style={styles.title}>Datos personales</Text>
 
         {/* Contenedor para la imagen de perfil */}
@@ -250,14 +257,15 @@ const MiPerfilScreen = () => {
         <TextInputMask
           type={'custom'}
           options={{
-            mask: '9999-9999'
+            mask: '9999-9999',
           }}
-          label="Teléfono"
           value={telefono}
           onChangeText={setTelefono}
           editable={editando}
+          style={[styles.input, editando ? {} : { backgroundColor: '#f0f0f0' }]} // Aplica un estilo diferente si no es editable
+          placeholder="Teléfono"
+          keyboardType="numeric"
           ref={telefonoRef}
-          style={styles.input}
         />
 
         {/* Contenedor para el campo Dirección */}
@@ -269,31 +277,39 @@ const MiPerfilScreen = () => {
           ref={direccionRef}
         />
 
-        {/* Contenedor para el mapa */}
+        {/* Contenedor del mapa */}
         <View style={styles.mapContainer}>
           <MapView
             style={styles.map}
             region={region}
-            onPress={handleMapPress}
-            showsUserLocation
+            onPress={handleMapPress} // Permite seleccionar una ubicación en el mapa
           >
             <Marker coordinate={region} />
           </MapView>
         </View>
 
-        {/* Botones para guardar o cancelar */}
+        {/* Contenedor para los botones de actualización y cancelación */}
         <View style={styles.buttonContainer}>
           {editando ? (
             <>
-              <TouchableOpacity style={styles.button} onPress={handleUpdate}>
-                <Text style={styles.buttonText}>Guardar</Text>
+              <TouchableOpacity
+                style={[styles.button, styles.updateButton]}
+                onPress={handleUpdate}
+              >
+                <Text style={styles.buttonText}>Actualizar</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.button} onPress={handleDelete}>
+              <TouchableOpacity
+                style={[styles.button, styles.deleteButton]}
+                onPress={handleDelete}
+              >
                 <Text style={styles.buttonText}>Cancelar</Text>
               </TouchableOpacity>
             </>
           ) : (
-            <TouchableOpacity style={styles.button} onPress={() => setEditando(true)}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => setEditando(true)}
+            >
               <Text style={styles.buttonText}>Editar</Text>
             </TouchableOpacity>
           )}

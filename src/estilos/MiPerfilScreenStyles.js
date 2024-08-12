@@ -97,6 +97,12 @@ const styles = StyleSheet.create({
     deleteButtonText: {
       color: '#fff',
     },
+    backIcon: {
+      position: 'absolute',
+      top: 50,
+      left: 25,
+      zIndex: 10, // Asegura que esté encima de otros elementos
+    },
   });
 
   export default styles;  
