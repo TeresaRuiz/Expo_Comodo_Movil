@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Image, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; // Importar Ionicons para el ícono de "ojo"
 import styles from '../estilos/RecuperacionScreenStyles';
 import Button3 from '../componets/Buttons/Button3';
@@ -56,6 +56,7 @@ const NewPasswordScreen = ({ route, navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Cambiar contraseña</Text>
+      <Image source={require('../img/imagendosxd.png')} style={styles.logo} />
       <View style={styles.passwordContainer}>
         <TextInput
           style={{ flex: 1 }}

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Alert } from 'react-native';
-import styles from '../estilos/RecuperacionScreenStyles';
+import { View, Text,Image, TextInput, Alert } from 'react-native';
+import styles from '../estilos/PinVerificationStyles';
 import Button3 from '../componets/Buttons/Button3';
 import * as Constantes from '../utils/constantes';
 
@@ -48,6 +48,7 @@ const PinVerificationScreen = ({ route, navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Verificar PIN</Text>
+      <Image source={require('../img/imagenxd.png')} style={styles.logo} />
       <TextInput
         style={styles.input}
         placeholder="Ingrese el PIN"

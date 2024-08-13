@@ -43,7 +43,14 @@ const CarritoScreen = ({ navigation }) => {
     let newCantidad = item.cantidad;
 
     if (type === 'increase') {
+
         newCantidad++; // Permite incrementar sin límite
+
+        if (newCantidad >= 5) {
+            Alert.alert('Límite alcanzado', 'No puedes agregar más de 5 productos.');
+            return;
+        }
+        newCantidad++;
     } else if (type === 'decrease') {
         newCantidad--;
     }
@@ -68,7 +75,10 @@ const CarritoScreen = ({ navigation }) => {
                     producto.id_detalle_reserva === item.id_detalle_reserva ? { ...producto, cantidad: newCantidad } : producto
                 )
             ));
+
             Alert.alert('Éxito', data.message);
+
+            // Alert.alert('Éxito', data.message); // Alerta eliminada
         } else {
             Alert.alert('Error', data.error || 'Ocurrió un problema al actualizar la cantidad del producto');
         }
@@ -77,6 +87,8 @@ const CarritoScreen = ({ navigation }) => {
         console.error(error);
     }
 };
+
+
   const handleDelete = async (idDetalle) => {
     try {
       const formData = new FormData();
