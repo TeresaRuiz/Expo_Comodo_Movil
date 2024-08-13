@@ -10,7 +10,8 @@ import * as Constantes from '../utils/constantes';
 const DetallesProductoScreen = () => {
   const navigation = useNavigation(); // Hook para manejar la navegación
   const route = useRoute(); // Hook para obtener la ruta actual y sus parámetros
-  const { idProducto } = route.params; // Extraer el id del producto de los parámetros de la ruta
+  const { idProducto, id_detalle } = route.params; // Extraer el id del producto de los parámetros de la ruta
+  console.log(id_detalle);
   const [producto, setProducto] = useState(null); // Estado para almacenar los detalles del producto
   const [loading, setLoading] = useState(true); // Estado para controlar la animación de carga
   const [cantidadProducto, setCantidadProducto] = useState(''); // Estado para almacenar la cantidad del producto que se va a agregar al carrito
@@ -56,7 +57,7 @@ const DetallesProductoScreen = () => {
 
     try {
         const formData = new FormData(); // Crear un objeto FormData para enviar los datos
-        formData.append('idProducto', idProducto); // Añadir el id del producto al FormData
+        formData.append('idProducto', id_detalle); // Añadir el id del producto al FormData
         formData.append('cantidadProducto', cantidadNumerica); // Añadir la cantidad del producto al FormData
 
         const response = await fetch(`${ip}/Expo_Comodo/api/services/public/pedido.php?action=createDetail`, {

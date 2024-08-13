@@ -55,7 +55,7 @@ const ProductoScreen = () => {
   );
 // Función para navegar a los detalles del producto
   const handleVerMas = (product) => {
-    navigation.navigate('DetallesProducto', { idProducto: product.id_producto });
+    navigation.navigate('DetallesProducto', { idProducto: product.id_producto, id_detalle: product.id_detalle_producto });
   };
 
   return (
