@@ -59,7 +59,7 @@ const OfertasScreen = ({ navigation }) => {
   const renderOfertaItem = ({ item }) => (
     <CardOferta 
       oferta={item}
-      onPress={() => navigation.navigate('DetallesProducto', { idProducto: item.id_producto })}
+      onPress={() => navigation.navigate('DetallesProducto', { idProducto: item.id_producto, id_detalle: item.id_detalle_producto})}
     />
   );
 
