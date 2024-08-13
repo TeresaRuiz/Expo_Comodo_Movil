@@ -6,6 +6,7 @@ import { useIsFocused } from '@react-navigation/native';
 import DashboardScreen from '../screens/DashboardScreen';
 import CategoriaScreen from '../screens/CategoriaScreen';
 import PerfilScreen from '../screens/PerfilScreen';
+import MiPerfilScreen from '../screens/MiPerfilScreen';
 import CarritoScreen from '../screens/CarritoScreen';
 import OfertasScreen from '../screens/OfertasScreen'; // Importa OfertasScreen
 
@@ -90,6 +91,7 @@ const DashboardTabNavigator = () => {
         }}
       />
     </Tab.Navigator>
+    
   );
 };
 

@@ -213,6 +213,7 @@ const RegisterScreen = () => {
         placeholder="DUI"
         onChangeText={text => setDui(text)}
         value={dui}
+         keyboardType="phone-pad"
       />
       {/* Búsqueda de dirección y mapa */}
       <View style={styles.addressContainer}>

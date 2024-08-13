@@ -49,9 +49,9 @@ const DetallesProductoScreen = () => {
   const agregarAlCarrito = async () => {
     const cantidadNumerica = parseInt(cantidadProducto, 10); // Convertir la cantidad a un número entero
     
-    // Validar que la cantidad ingresada sea un número positivo
-    if (isNaN(cantidadNumerica) || cantidadNumerica <= 0) {
-        Alert.alert('Error', 'Por favor, ingresa una cantidad válida'); // Mostrar error si la cantidad no es válida
+    // Validar que la cantidad ingresada sea un número positivo y no mayor a 5
+    if (isNaN(cantidadNumerica) || cantidadNumerica <= 0 || cantidadNumerica > 5) {
+        Alert.alert('Error', 'Por favor, ingresa una cantidad válida (máximo 5)'); // Mostrar error si la cantidad no es válida
         return;
     }
 
@@ -173,4 +173,4 @@ const DetallesProductoScreen = () => {
   );
 };
 
-export default DetallesProductoScreen; // Exportar el componente para que pueda ser utilizado en otras partes de la aplicación
+export default DetallesProductoScreen;

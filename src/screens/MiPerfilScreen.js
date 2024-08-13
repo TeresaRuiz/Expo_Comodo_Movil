@@ -293,13 +293,13 @@ const MiPerfilScreen = ({ navigation }) => {
           {editando ? (
             <>
               <TouchableOpacity
-                style={[styles.button, styles.updateButton]}
+                style={[styles.button]}
                 onPress={handleUpdate}
               >
                 <Text style={styles.buttonText}>Actualizar</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={[styles.button, styles.deleteButton]}
+                style={[styles.button]}
                 onPress={handleDelete}
               >
                 <Text style={styles.buttonText}>Cancelar</Text>
