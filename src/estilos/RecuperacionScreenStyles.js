@@ -26,6 +26,20 @@ const styles = StyleSheet.create({
       paddingHorizontal: 15,
       marginBottom: 15,
     },
+    passwordContainer: {
+      width: '80%',
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: '#f0f0f0',
+      height: 50,
+      borderRadius: 10,
+      paddingHorizontal: 15,
+      marginBottom: 15,
+    },
+    eyeIcon: {
+      position: 'absolute',
+      right: 15,
+    },
     button: {
       backgroundColor: '#3046BC',
       paddingHorizontal: 20,
@@ -44,4 +58,4 @@ const styles = StyleSheet.create({
     },
   });
 
-  export default styles;
+export default styles;

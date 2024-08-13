@@ -1,11 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, FlatList, TouchableOpacity, Alert, ActivityIndicator, RefreshControl, Image } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Constantes from '../utils/constantes';
 import styles from '../estilos/CarritoScreenStyles';
 import { useIsFocused } from '@react-navigation/native';
 import CardCarrito from '../componets/Cards/CardCarrito';
-
 
 const CarritoScreen = ({ navigation }) => {
   const [carrito, setCarrito] = useState([]); // Estado para almacenar los productos en el carrito
@@ -17,7 +15,6 @@ const CarritoScreen = ({ navigation }) => {
   const ip = Constantes.IP;
   const isFocused = useIsFocused();
 
-// Función para obtener los datos del carrito desde el servidor
   const fetchCarrito = useCallback(async () => {
     setLoading(true);
     try {
@@ -35,17 +32,21 @@ const CarritoScreen = ({ navigation }) => {
       setRefreshing(false);
     }
   }, [ip]);
-// Efecto para obtener los datos del carrito cuando la pantalla está enfocada
+
   useEffect(() => {
     if (isFocused) {
       fetchCarrito();
     }
   }, [isFocused, fetchCarrito]);
-// Función para manejar el cambio de cantidad de un producto en el carrito
+
   const handleQuantityChange = async (item, type) => {
     let newCantidad = item.cantidad;
 
     if (type === 'increase') {
+      if (newCantidad >= 5) {
+        Alert.alert('Límite alcanzado', 'No puedes agregar más de 5 productos.');
+        return;
+      }
       newCantidad++;
     } else if (type === 'decrease') {
       newCantidad--;
@@ -80,7 +81,7 @@ const CarritoScreen = ({ navigation }) => {
       console.error(error);
     }
   };
-// Función para manejar la eliminación de un producto del carrito
+
   const handleDelete = async (idDetalle) => {
     try {
       const formData = new FormData();
@@ -105,16 +106,16 @@ const CarritoScreen = ({ navigation }) => {
       console.error(error);
     }
   };
-// Función para refrescar los datos del carrito
+
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     fetchCarrito();
   }, [fetchCarrito]);
- // Efecto para obtener los datos del carrito al montar el componente
+
   useEffect(() => {
     fetchCarrito();
   }, [fetchCarrito]);
-// Efecto para calcular el subtotal y el descuento del carrito
+
   useEffect(() => {
     const calcularSubtotal = () => {
       let total = 0;
@@ -137,7 +138,7 @@ const CarritoScreen = ({ navigation }) => {
 
     calcularSubtotal();
   }, [carrito]);
-// Función para finalizar la compra
+
   const finalizarCompra = async () => {
     if (carrito.length === 0) {
       Alert.alert('Carrito Vacío', 'No hay productos seleccionados en el carrito.');
@@ -165,7 +166,7 @@ const CarritoScreen = ({ navigation }) => {
       console.error(error);
     }
   };
- // Renderizado condicional para mostrar el indicador de carga
+
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
