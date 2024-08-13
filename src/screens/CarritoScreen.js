@@ -43,45 +43,40 @@ const CarritoScreen = ({ navigation }) => {
     let newCantidad = item.cantidad;
 
     if (type === 'increase') {
-      if (newCantidad >= 5) {
-        Alert.alert('Límite alcanzado', 'No puedes agregar más de 5 productos.');
-        return;
-      }
-      newCantidad++;
+        newCantidad++; // Permite incrementar sin límite
     } else if (type === 'decrease') {
-      newCantidad--;
+        newCantidad--;
     }
 
-    if (newCantidad < 1) return;
+    if (newCantidad < 1) return; // Evita que la cantidad sea menor que 1
 
     try {
-      const formData = new FormData();
-      formData.append('idDetalle', item.id_detalle_reserva.toString());
-      formData.append('cantidadProducto', newCantidad.toString());
+        const formData = new FormData();
+        formData.append('idDetalle', item.id_detalle_reserva.toString());
+        formData.append('cantidadProducto', newCantidad.toString());
 
-      const response = await fetch(`${ip}/Expo_Comodo/api/services/public/pedido.php?action=updateDetail`, {
-        method: 'POST',
-        body: formData,
-      });
+        const response = await fetch(`${ip}/Expo_Comodo/api/services/public/pedido.php?action=updateDetail`, {
+            method: 'POST',
+            body: formData,
+        });
 
-      const data = await response.json();
+        const data = await response.json();
 
-      if (data.status === 1) {
-        setCarrito(prevCarrito => (
-          prevCarrito.map(producto =>
-            producto.id_detalle_reserva === item.id_detalle_reserva ? { ...producto, cantidad: newCantidad } : producto
-          )
-        ));
-        Alert.alert('Éxito', data.message);
-      } else {
-        Alert.alert('Error', data.error || 'Ocurrió un problema al actualizar la cantidad del producto');
-      }
+        if (data.status === 1) {
+            setCarrito(prevCarrito => (
+                prevCarrito.map(producto =>
+                    producto.id_detalle_reserva === item.id_detalle_reserva ? { ...producto, cantidad: newCantidad } : producto
+                )
+            ));
+            Alert.alert('Éxito', data.message);
+        } else {
+            Alert.alert('Error', data.error || 'Ocurrió un problema al actualizar la cantidad del producto');
+        }
     } catch (error) {
-      Alert.alert('Error', 'Ocurrió un error al actualizar la cantidad del producto');
-      console.error(error);
+        Alert.alert('Error', 'Ocurrió un error al actualizar la cantidad del producto');
+        console.error(error);
     }
-  };
-
+};
   const handleDelete = async (idDetalle) => {
     try {
       const formData = new FormData();
