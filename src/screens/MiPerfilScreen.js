@@ -1,16 +1,16 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, Image, TouchableOpacity, Alert, ActivityIndicator, ScrollView, RefreshControl } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
-import { Ionicons } from '@expo/vector-icons'; // Asegúrate de tener este paquete instalado
+import { Ionicons } from '@expo/vector-icons';
 import styles from '../estilos/MiPerfilScreenStyles'; 
 import * as Constantes from '../utils/constantes';
 import { TextInputMask } from 'react-native-masked-text';
-import InputMiPerfil from '../componets/Inputs/InputMiPerfil'; // Asegúrate de que esta ruta sea correcta
+import InputMiPerfil from '../componets/Inputs/InputMiPerfil';
 
 const MiPerfilScreen = ({ navigation }) => {
   const ip = Constantes.IP;
+  const openCageApiKey = '052db57c37214995836949fa033d4518'; // Reemplaza con tu clave de API de OpenCage
 
-  // Estados para los datos del perfil
   const [nombre, setNombre] = useState('');
   const [username, setUsername] = useState('');
   const [correo, setCorreo] = useState('');
@@ -26,20 +26,16 @@ const MiPerfilScreen = ({ navigation }) => {
   const [editando, setEditando] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
 
-  // Referencias para los TextInput
   const nombreRef = useRef(null);
   const usernameRef = useRef(null);
   const correoRef = useRef(null);
   const direccionRef = useRef(null);
   const telefonoRef = useRef(null);
 
-  // Función para obtener y mostrar el perfil del usuario
   const fetchProfile = async () => {
     try {
       const response = await fetch(`${ip}/Expo_Comodo/api/services/public/cliente.php?action=readProfile`);
       const data = await response.json();
-
-      console.log('Perfil Data:', data);
 
       if (data.status) {
         setNombre(data.dataset.nombre);
@@ -48,23 +44,19 @@ const MiPerfilScreen = ({ navigation }) => {
         setDireccion(data.dataset.direccion_cliente);
         setTelefono(data.dataset.telefono);
 
-        // Utiliza Nominatim para obtener las coordenadas reales de la dirección
-        const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(data.dataset.direccion_cliente)}`;
+        const url = `https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(data.dataset.direccion_cliente)}&key=${openCageApiKey}`;
         const geoResponse = await fetch(url);
         const geoData = await geoResponse.json();
 
-        console.log('Geocode Data:', geoData);
-
-        if (geoData.length > 0) {
-          const { lat, lon } = geoData[0];
+        if (geoData.results.length > 0) {
+          const { lat, lng } = geoData.results[0].geometry;
           const newRegion = {
             latitude: parseFloat(lat),
-            longitude: parseFloat(lon),
+            longitude: parseFloat(lng),
             latitudeDelta: 0.01,
             longitudeDelta: 0.01,
           };
           setRegion(newRegion);
-          console.log('New Region:', newRegion);
         } else {
           setRegion({
             latitude: 13.6929,
@@ -72,7 +64,6 @@ const MiPerfilScreen = ({ navigation }) => {
             latitudeDelta: 0.1,
             longitudeDelta: 0.1,
           });
-          console.log('Default Region:', region);
           Alert.alert('Error', 'No se encontró la ubicación');
         }
       } else {
@@ -87,16 +78,13 @@ const MiPerfilScreen = ({ navigation }) => {
     }
   };
 
-  // Función para manejar la actualización de los datos del perfil
   const handleUpdate = async () => {
-    // Validación de campos vacíos
     if (!nombre || !username || !correo || !direccion || !telefono) {
       Alert.alert('Error', 'Todos los campos deben ser llenados');
       return;
     }
 
     try {
-      // Crea un objeto con los datos del perfil
       const formData = new FormData();
       formData.append('nombre', nombre);
       formData.append('correo', correo);
@@ -104,10 +92,8 @@ const MiPerfilScreen = ({ navigation }) => {
       formData.append('telefono', telefono);
       formData.append('direccion', direccion);
 
-      // URL de la API para actualizar el perfil
       const url = `${ip}/Expo_Comodo/api/services/public/cliente.php?action=editProfile`;
 
-      // Realiza la solicitud POST para actualizar el perfil
       const response = await fetch(url, {
         method: 'POST',
         body: formData,
@@ -118,48 +104,37 @@ const MiPerfilScreen = ({ navigation }) => {
       });
 
       const responseJson = await response.json();
-      console.log('API Response:', responseJson); // Imprime la respuesta JSON
 
-      // Manejo de la respuesta
       if (responseJson.status === 1) {
         Alert.alert('Perfil actualizado', 'Los datos del perfil han sido actualizados exitosamente');
-        setEditando(false); // Desactiva el modo de edición
+        setEditando(false);
       } else {
-        // Muestra un mensaje de error si el perfil no se pudo actualizar
         Alert.alert('Error', responseJson.error || 'No se pudo actualizar el perfil');
       }
     } catch (error) {
-      // Muestra un mensaje de error en caso de que ocurra un problema
       Alert.alert('Error', 'Ocurrió un error al actualizar el perfil');
       console.error('Error al actualizar el perfil:', error);
     }
   };
 
-  // Función para manejar la cancelación y limpiar los campos
   const handleDelete = () => {
-    // Limpiar los valores de los campos directamente mediante el estado
     setNombre('');
     setUsername('');
     setCorreo('');
     setDireccion('');
-    setTelefono(''); // Limpia el estado del teléfono
-  
-    // Limpiar el valor de los campos de entrada usando las referencias no es necesario
+    setTelefono('');
     setEditando(false);
-    fetchProfile(); // Actualiza los datos del perfil al cancelar
+    fetchProfile();
   };
 
-  // Función para obtener la dirección basada en las coordenadas
   const reverseGeocode = async (lat, lon) => {
     try {
-      const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`;
+      const url = `https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=${openCageApiKey}`;
       const response = await fetch(url);
       const data = await response.json();
 
-      console.log('Reverse Geocode Data:', data);
-
-      if (data && data.address) {
-        const address = `${data.address.road || ''}, ${data.address.city || ''}, ${data.address.country || ''}`;
+      if (data.results.length > 0) {
+        const address = data.results[0].formatted;
         setDireccion(address);
       } else {
         Alert.alert('Error', 'No se encontró la dirección para esta ubicación');
@@ -170,7 +145,6 @@ const MiPerfilScreen = ({ navigation }) => {
     }
   };
 
-  // Función para manejar el clic en el mapa para cambiar la ubicación
   const handleMapPress = (e) => {
     const { latitude, longitude } = e.nativeEvent.coordinate;
     if (editando) {
@@ -181,7 +155,7 @@ const MiPerfilScreen = ({ navigation }) => {
         longitudeDelta: 0.01,
       };
       setRegion(newRegion);
-      reverseGeocode(latitude, longitude); // Actualiza la dirección basada en las nuevas coordenadas
+      reverseGeocode(latitude, longitude);
     }
   };
 
@@ -210,15 +184,12 @@ const MiPerfilScreen = ({ navigation }) => {
       }
     >
       <View style={styles.container}>
-        
-        {/* Icono de retroceder */}
         <TouchableOpacity style={styles.backIcon} onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
 
         <Text style={styles.title}>Datos personales</Text>
 
-        {/* Contenedor para la imagen de perfil */}
         <View style={styles.profileImageContainer}>
           <Image
             source={{ uri: 'https://i.pinimg.com/236x/2f/97/f0/2f97f05b32547f54ef1bdf99cd207c90.jpg' }}
@@ -226,7 +197,6 @@ const MiPerfilScreen = ({ navigation }) => {
           />
         </View>
 
-        {/* Contenedor para el campo Nombre */}
         <InputMiPerfil
           label="Nombre"
           value={nombre}
@@ -235,7 +205,6 @@ const MiPerfilScreen = ({ navigation }) => {
           ref={nombreRef}
         />
 
-        {/* Contenedor para el campo Usuario */}
         <InputMiPerfil
           label="Usuario"
           value={username}
@@ -244,7 +213,6 @@ const MiPerfilScreen = ({ navigation }) => {
           ref={usernameRef}
         />
 
-        {/* Contenedor para el campo Correo */}
         <InputMiPerfil
           label="Correo"
           value={correo}
@@ -253,7 +221,6 @@ const MiPerfilScreen = ({ navigation }) => {
           ref={correoRef}
         />
 
-        {/* Contenedor para el campo Teléfono con máscara */}
         <TextInputMask
           type={'custom'}
           options={{
@@ -262,13 +229,12 @@ const MiPerfilScreen = ({ navigation }) => {
           value={telefono}
           onChangeText={setTelefono}
           editable={editando}
-          style={[styles.input, editando ? {} : { backgroundColor: '#f0f0f0' }]} // Aplica un estilo diferente si no es editable
+          style={[styles.input, editando ? {} : { backgroundColor: '#f0f0f0' }]}
           placeholder="Teléfono"
           keyboardType="numeric"
           ref={telefonoRef}
         />
 
-        {/* Contenedor para el campo Dirección */}
         <InputMiPerfil
           label="Dirección"
           value={direccion}
@@ -277,18 +243,16 @@ const MiPerfilScreen = ({ navigation }) => {
           ref={direccionRef}
         />
 
-        {/* Contenedor del mapa */}
         <View style={styles.mapContainer}>
           <MapView
             style={styles.map}
             region={region}
-            onPress={handleMapPress} // Permite seleccionar una ubicación en el mapa
+            onPress={handleMapPress}
           >
             <Marker coordinate={region} />
           </MapView>
         </View>
 
-        {/* Contenedor para los botones de actualización y cancelación */}
         <View style={styles.buttonContainer}>
           {editando ? (
             <>
