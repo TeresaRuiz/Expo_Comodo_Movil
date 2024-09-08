@@ -3,7 +3,6 @@ import { View, Text, ScrollView, TouchableOpacity, Image, TextInput, Alert } fro
 import { useNavigation } from '@react-navigation/native';
 import MapView, { Marker } from 'react-native-maps';
 import axios from 'axios';
-import { TextInputMask } from 'react-native-masked-text';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import DebouncedSearchInput from '../screens/DebouncedSearchInput';
 import styles from '../estilos/RegisterScreenStyles';
