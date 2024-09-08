@@ -4,7 +4,6 @@ import MapView, { Marker } from 'react-native-maps';
 import { Ionicons } from '@expo/vector-icons';
 import styles from '../estilos/MiPerfilScreenStyles'; 
 import * as Constantes from '../utils/constantes';
-import { TextInputMask } from 'react-native-masked-text';
 import InputMiPerfil from '../componets/Inputs/InputMiPerfil';
 
 const MiPerfilScreen = ({ navigation }) => {

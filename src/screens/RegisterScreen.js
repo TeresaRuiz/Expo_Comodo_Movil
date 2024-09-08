@@ -30,6 +30,34 @@ const RegisterScreen = () => {
   const navigation = useNavigation();
   const ip = Constantes.IP;
 
+  const formatPhoneNumber = (value) => {
+    const cleaned = value.replace(/\D/g, '');
+    const match = cleaned.match(/^(\d{0,4})(\d{0,4})$/);
+    if (match) {
+      return !match[2] ? match[1] : `${match[1]}-${match[2]}`;
+    }
+    return cleaned;
+  };
+
+  const formatDUI = (value) => {
+    const cleaned = value.replace(/\D/g, '');
+    const match = cleaned.match(/^(\d{0,8})(\d{0,1})$/);
+    if (match) {
+      return !match[2] ? match[1] : `${match[1]}-${match[2]}`;
+    }
+    return cleaned;
+  };
+
+  const handlePhoneChange = (text) => {
+    const formatted = formatPhoneNumber(text);
+    setTelefono(formatted);
+  };
+
+  const handleDUIChange = (text) => {
+    const formatted = formatDUI(text);
+    setDui(formatted);
+  };
+
   const handleRegister = async () => {
     if (
       !name.trim() ||
@@ -204,27 +232,21 @@ const RegisterScreen = () => {
           <Icon name={showPassword2 ? "eye" : "eye-slash"} size={20} color="gray" />
         </TouchableOpacity>
       </View>
-      <TextInputMask
+      <TextInput
         style={styles.input}
-        type={'custom'}
-        options={{
-          mask: '9999-9999'
-        }}
         placeholder="Teléfono"
-        onChangeText={text => setTelefono(text)}
+        onChangeText={handlePhoneChange}
         value={phone}
         keyboardType="phone-pad"
+        maxLength={9}
       />
-      <TextInputMask
+      <TextInput
         style={styles.input}
-        type={'custom'}
-        options={{
-          mask: '99999999-9'
-        }}
         placeholder="DUI"
-        onChangeText={text => setDui(text)}
+        onChangeText={handleDUIChange}
         value={dui}
-        keyboardType="phone-pad"
+        keyboardType="number-pad"
+        maxLength={10}
       />
       <View style={styles.addressContainer}>
         <DebouncedSearchInput
