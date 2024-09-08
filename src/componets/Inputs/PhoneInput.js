@@ -1,5 +1,4 @@
 import React from 'react';
-import { TextInputMask } from 'react-native-masked-text';
 import { StyleSheet } from 'react-native';
 
 const PhoneInput = ({ value, onChangeText }) => (
