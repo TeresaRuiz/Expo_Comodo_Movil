@@ -2,13 +2,28 @@ import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, Image, TouchableOpacity, Alert, ActivityIndicator, ScrollView, RefreshControl } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { Ionicons } from '@expo/vector-icons';
-import styles from '../estilos/MiPerfilScreenStyles'; 
+import styles from '../estilos/MiPerfilScreenStyles';
 import * as Constantes from '../utils/constantes';
 import InputMiPerfil from '../componets/Inputs/InputMiPerfil';
 
 const MiPerfilScreen = ({ navigation }) => {
   const ip = Constantes.IP;
   const openCageApiKey = '052db57c37214995836949fa033d4518'; // Reemplaza con tu clave de API de OpenCage
+
+  const formatPhoneNumber = (value) => {
+    const cleaned = value.replace(/\D/g, '');
+    const match = cleaned.match(/^(\d{0,4})(\d{0,4})$/);
+    if (match) {
+      return !match[2] ? match[1] : `${match[1]}-${match[2]}`;
+    }
+    return cleaned;
+  };
+
+  const handlePhoneChange = (text) => {
+    const formatted = formatPhoneNumber(text);
+    setTelefono(formatted);
+  };
+
 
   const [nombre, setNombre] = useState('');
   const [username, setUsername] = useState('');
@@ -220,18 +235,14 @@ const MiPerfilScreen = ({ navigation }) => {
           ref={correoRef}
         />
 
-        <TextInputMask
-          type={'custom'}
-          options={{
-            mask: '9999-9999',
-          }}
-          value={telefono}
-          onChangeText={setTelefono}
-          editable={editando}
+        <InputMiPerfil
           style={[styles.input, editando ? {} : { backgroundColor: '#f0f0f0' }]}
           placeholder="Teléfono"
           keyboardType="numeric"
-          ref={telefonoRef}
+          onChangeText={handlePhoneChange}
+          value={telefono}
+          maxLength={9}
+          editable={editando}
         />
 
         <InputMiPerfil
