@@ -161,7 +161,7 @@ const RegisterScreen = () => {
 
   const handleSearchAddress = async (text) => {
     if (!text.trim()) {
-      Alert.alert('Error', 'Por favor ingresa una dirección válida');
+      // Simply return if text is empty without showing any alert
       return;
     }
 
