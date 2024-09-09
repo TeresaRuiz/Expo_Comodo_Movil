@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Image, TextInput, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import MapView, { Marker } from 'react-native-maps';
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import * as Location from 'expo-location';
 import DebouncedSearchInput from '../screens/DebouncedSearchInput';
 import styles from '../estilos/RegisterScreenStyles';
 import * as Constantes from '../utils/constantes';
@@ -38,6 +39,24 @@ const RegisterScreen = () => {
     }
     return cleaned;
   };
+
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert('Permiso denegado', 'Se necesita permiso para acceder a la ubicación');
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      setLocation({
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
+      });
+    })();
+  }, []);
 
   const formatDUI = (value) => {
     const cleaned = value.replace(/\D/g, '');
@@ -110,8 +129,8 @@ const RegisterScreen = () => {
   const handleLoginRedirect = () => {
     navigation.navigate('Login');
   };
-
-  const handleMapPress = async (event) => {
+  
+const handleMapPress = async (event) => {
     const { latitude, longitude } = event.nativeEvent.coordinate;
     setLocation({
       ...location,
@@ -139,7 +158,7 @@ const RegisterScreen = () => {
     }
   };
 
-  const handleSearchAddress = async (text) => {
+ const handleSearchAddress = async (text) => {
     if (!text.trim()) {
       Alert.alert('Error', 'Por favor ingresa una dirección válida');
       return;
@@ -160,6 +179,7 @@ const RegisterScreen = () => {
           latitude: parseFloat(lat),
           longitude: parseFloat(lng),
         });
+        setAddress(response.data.results[0].formatted);
       } else {
         Alert.alert('Error', 'No se encontraron resultados para la dirección proporcionada');
       }
@@ -252,7 +272,7 @@ const RegisterScreen = () => {
         <DebouncedSearchInput
           onSearch={handleSearchAddress}
           value={address}
-          onChangeText={handleAddressChange}
+          onChangeText={setAddress}
         />
         <TouchableOpacity style={styles.clearButton} onPress={handleClearAddress}>
           <Text style={styles.clearButtonText}>Limpiar</Text>
