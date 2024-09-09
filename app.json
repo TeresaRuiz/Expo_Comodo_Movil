@@ -5,20 +5,40 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/logo_transparente.png",
+    "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/logo_transparente.png",
-      "resizeMode": "contain"
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Esta aplicación necesita acceder a tu ubicación para mostrarla en el mapa."
+      }
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/Logo_pequeño.png"
+        "foregroundImage": "./assets/Logo_pequeño.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.dhakhax.Comodo$_app",
+      "permissions": [
+        "ACCESS_FINE_LOCATION"
+      ],
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyCSk9RV--DRre2uYu0d-K24CQlJbv1s_UU"
+        }
       }
     },
     "web": {
       "favicon": "./assets/logoComodos.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "af4fb211-65b9-41c3-af0d-17d65d399fd3"
+      }
     }
   }
 }

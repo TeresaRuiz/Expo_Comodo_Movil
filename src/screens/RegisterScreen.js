@@ -130,7 +130,7 @@ const RegisterScreen = () => {
     navigation.navigate('Login');
   };
   
-const handleMapPress = async (event) => {
+  const handleMapPress = async (event) => {
     const { latitude, longitude } = event.nativeEvent.coordinate;
     setLocation({
       ...location,
@@ -139,16 +139,17 @@ const handleMapPress = async (event) => {
     });
 
     try {
-      const response = await axios.get(`https://api.opencagedata.com/geocode/v1/json`, {
+      const response = await axios.get(`https://nominatim.openstreetmap.org/reverse`, {
         params: {
-          q: `${latitude},${longitude}`,
-          key: '052db57c37214995836949fa033d4518',
+          format: 'json',
+          lat: latitude,
+          lon: longitude,
+          addressdetails: 1,
         },
       });
 
-      if (response.data && response.data.results && response.data.results.length > 0) {
-        const formattedAddress = response.data.results[0].formatted;
-        setAddress(formattedAddress);
+      if (response.data && response.data.display_name) {
+        setAddress(response.data.display_name);
       } else {
         setAddress('Dirección no disponible');
       }
@@ -158,28 +159,29 @@ const handleMapPress = async (event) => {
     }
   };
 
- const handleSearchAddress = async (text) => {
+  const handleSearchAddress = async (text) => {
     if (!text.trim()) {
       Alert.alert('Error', 'Por favor ingresa una dirección válida');
       return;
     }
 
     try {
-      const response = await axios.get(`https://api.opencagedata.com/geocode/v1/json`, {
+      const response = await axios.get(`https://nominatim.openstreetmap.org/search`, {
         params: {
           q: text,
-          key: '052db57c37214995836949fa033d4518',
+          format: 'json',
+          limit: 1,
         },
       });
 
-      if (response.data && response.data.results && response.data.results.length > 0) {
-        const { lat, lng } = response.data.results[0].geometry;
+      if (response.data && response.data.length > 0) {
+        const { lat, lon } = response.data[0];
         setLocation({
           ...location,
           latitude: parseFloat(lat),
-          longitude: parseFloat(lng),
+          longitude: parseFloat(lon),
         });
-        setAddress(response.data.results[0].formatted);
+        setAddress(response.data[0].display_name);
       } else {
         Alert.alert('Error', 'No se encontraron resultados para la dirección proporcionada');
       }

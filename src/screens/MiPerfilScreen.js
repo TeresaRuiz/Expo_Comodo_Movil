@@ -5,10 +5,10 @@ import { Ionicons } from '@expo/vector-icons';
 import styles from '../estilos/MiPerfilScreenStyles';
 import * as Constantes from '../utils/constantes';
 import InputMiPerfil from '../componets/Inputs/InputMiPerfil';
+import axios from 'axios';
 
 const MiPerfilScreen = ({ navigation }) => {
   const ip = Constantes.IP;
-  const openCageApiKey = '052db57c37214995836949fa033d4518'; // Reemplaza con tu clave de API de OpenCage
 
   const formatPhoneNumber = (value) => {
     const cleaned = value.replace(/\D/g, '');
@@ -23,7 +23,6 @@ const MiPerfilScreen = ({ navigation }) => {
     const formatted = formatPhoneNumber(text);
     setTelefono(formatted);
   };
-
 
   const [nombre, setNombre] = useState('');
   const [username, setUsername] = useState('');
@@ -58,15 +57,19 @@ const MiPerfilScreen = ({ navigation }) => {
         setDireccion(data.dataset.direccion_cliente);
         setTelefono(data.dataset.telefono);
 
-        const url = `https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(data.dataset.direccion_cliente)}&key=${openCageApiKey}`;
-        const geoResponse = await fetch(url);
-        const geoData = await geoResponse.json();
+        const nominatimResponse = await axios.get(`https://nominatim.openstreetmap.org/search`, {
+          params: {
+            q: data.dataset.direccion_cliente,
+            format: 'json',
+            limit: 1,
+          },
+        });
 
-        if (geoData.results.length > 0) {
-          const { lat, lng } = geoData.results[0].geometry;
+        if (nominatimResponse.data.length > 0) {
+          const { lat, lon } = nominatimResponse.data[0];
           const newRegion = {
             latitude: parseFloat(lat),
-            longitude: parseFloat(lng),
+            longitude: parseFloat(lon),
             latitudeDelta: 0.01,
             longitudeDelta: 0.01,
           };
@@ -143,13 +146,16 @@ const MiPerfilScreen = ({ navigation }) => {
 
   const reverseGeocode = async (lat, lon) => {
     try {
-      const url = `https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=${openCageApiKey}`;
-      const response = await fetch(url);
-      const data = await response.json();
+      const response = await axios.get(`https://nominatim.openstreetmap.org/reverse`, {
+        params: {
+          lat: lat,
+          lon: lon,
+          format: 'json',
+        },
+      });
 
-      if (data.results.length > 0) {
-        const address = data.results[0].formatted;
-        setDireccion(address);
+      if (response.data && response.data.display_name) {
+        setDireccion(response.data.display_name);
       } else {
         Alert.alert('Error', 'No se encontró la dirección para esta ubicación');
       }
