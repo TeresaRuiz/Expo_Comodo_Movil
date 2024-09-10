@@ -4,8 +4,10 @@ import * as Constantes from '../utils/constantes';
 import styles from '../estilos/CarritoScreenStyles';
 import { useIsFocused } from '@react-navigation/native';
 import CardCarrito from '../componets/Cards/CardCarrito';
+import { useInactividadSesion } from '../componets/Hooks/inactividad.js';
 
 const CarritoScreen = ({ navigation }) => {
+  const { handleLogout, checkSession } = useInactividadSesion(navigation);
   const [carrito, setCarrito] = useState([]); // Estado para almacenar los productos en el carrito
   const [loading, setLoading] = useState(true);// Estado para manejar el indicador de carga
   const [refreshing, setRefreshing] = useState(false); // Estado para manejar el indicador de refresh

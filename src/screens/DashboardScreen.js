@@ -1,14 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, Image, Alert } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, Text, ScrollView, Image, Alert, AppState } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import styles from '../estilos/DashboardScreenStyles'; // Importa los estilos desde un archivo externo
+import styles from '../estilos/DashboardScreenStyles';
 import LogOut from '../componets/Buttons/LogOut';
-import Button from '../componets/Buttons/Button'; // Importa el componente Button
-import * as Constantes from '../utils/constantes'; // Importa las constantes
+import Button from '../componets/Buttons/Button';
+import * as Constantes from '../utils/constantes';
 
 const DashboardScreen = ({ navigation }) => {
-  const ip = Constantes.IP; // Obtiene la IP desde las constantes
-  const [currentImageIndex, setCurrentImageIndex] = useState(0); // Estado para manejar el índice de la imagen actual del banner
+  const ip = Constantes.IP;
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const appState = useRef(AppState.currentState);
+  const [appStateVisible, setAppStateVisible] = useState(appState.current);
+  const inactivityTimer = useRef(null);
 
   // Efecto para cambiar automáticamente las imágenes del banner cada 5 segundos
   useEffect(() => {
@@ -25,21 +28,18 @@ const DashboardScreen = ({ navigation }) => {
       const url = `${ip}/Expo_Comodo/api/services/public/cliente.php?action=logOut`;
       console.log('URL solicitada:', url);
 
-      const response = await fetch(url, {
-        method: 'GET',
-      });
-
+      const response = await fetch(url, { method: 'GET' });
       const data = await response.json();
 
       if (data.status) {
-        navigation.navigate('Login', { clearLoginData: true }); // Navega a la pantalla de login
-        Alert.alert('Sesión cerrada exitosamente'); // Muestra un mensaje de éxito
+        navigation.navigate('Login', { clearLoginData: true });
+        Alert.alert('Sesión cerrada', 'Su sesión ha sido cerrada.');
       } else {
-        Alert.alert('Error', data.error); // Muestra un mensaje de error si no se puede cerrar sesión
+        Alert.alert('Error', data.error);
       }
     } catch (error) {
       console.error('Error al cerrar sesión:', error);
-      Alert.alert('Error', 'Ocurrió un error al cerrar sesión'); // Muestra un mensaje de error si ocurre una excepción
+      Alert.alert('Error', 'Ocurrió un error al cerrar sesión');
     }
   };
 
@@ -58,6 +58,49 @@ const DashboardScreen = ({ navigation }) => {
     'https://www.experimenta.es/wp-content/uploads/2016/12/zapatillas-biodegradables-de-fibra-de-seda-de-arana-artificial-de-adidas-800x599.jpg',
   ];
 
+  useEffect(() => {
+    const bannerInterval = setInterval(() => {
+      setCurrentImageIndex(prevIndex => (prevIndex + 1) % images.length);
+    }, 5000);
+
+    const subscription = AppState.addEventListener("change", nextAppState => {
+      if (appState.current.match(/inactive|background/) && nextAppState === "active") {
+        // App has come to the foreground
+        checkSession();
+      } else if (nextAppState.match(/inactive|background/)) {
+        // App has gone to the background or is inactive
+        handleLogout();
+      }
+
+      appState.current = nextAppState;
+      setAppStateVisible(appState.current);
+    });
+
+    const sessionCheckInterval = setInterval(checkSession, 60000);
+    return () => {
+      clearInterval(bannerInterval);
+      clearInterval(sessionCheckInterval);
+      clearTimeout(inactivityTimer.current);
+      subscription.remove();
+    };
+  }, []);
+
+  const checkSession = async () => {
+    try {
+      const url = `${ip}/Expo_Comodo/api/services/public/cliente.php?action=checkSession`;
+      const response = await fetch(url, { method: 'GET' });
+      const data = await response.json();
+
+      if (!data.status) {
+        navigation.navigate('Login', { clearLoginData: true });
+        Alert.alert('Sesión expirada', 'Su sesión ha expirado. Por favor, inicie sesión nuevamente.');
+      }
+    } catch (error) {
+      console.error('Error al verificar la sesión:', error);
+    }
+  };
+
+  
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Image

@@ -4,6 +4,7 @@ import { Ionicons } from '@expo/vector-icons'; // Importar Ionicons para el íco
 import styles from '../estilos/RecuperacionScreenStyles';
 import Button3 from '../componets/Buttons/Button3';
 import * as Constantes from '../utils/constantes';
+import { useInactividadSesion } from '../componets/Hooks/inactividad.js';
 
 const NewPasswordScreen = ({ route, navigation }) => {
   const [newPassword, setNewPassword] = useState(''); // Estado para la nueva contraseña
@@ -11,7 +12,8 @@ const NewPasswordScreen = ({ route, navigation }) => {
   const [showNewPassword, setShowNewPassword] = useState(false); // Estado para mostrar/ocultar la nueva contraseña
   const [showConfirmPassword, setShowConfirmPassword] = useState(false); // Estado para mostrar/ocultar la confirmación de la contraseña
   const { id_usuario, email } = route.params; // Obtiene el id_usuario y el email de los parámetros de la ruta
-
+  const { handleLogout, checkSession } = useInactividadSesion(navigation);
+  
   // Función para manejar el cambio de contraseña
   const handleChangePassword = async () => {
     if (!newPassword || !confirmPassword) { // Verifica que ningún campo esté vacío

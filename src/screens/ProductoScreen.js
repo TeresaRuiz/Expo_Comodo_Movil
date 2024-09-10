@@ -5,6 +5,7 @@ import { useRoute, useNavigation } from '@react-navigation/native';
 import styles from '../estilos/ProductoScreenStyles'; 
 import Cards1 from '../componets/Cards/Cards3'; 
 import * as Constantes from '../utils/constantes';
+import { useInactividadSesion } from '../componets/Hooks/inactividad.js';
 
 const ProductoScreen = () => {
   // Hooks de navegación y ruta
@@ -16,6 +17,8 @@ const ProductoScreen = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const { handleLogout, checkSession } = useInactividadSesion(navigation);
+  
 // Obtener la IP de las constantes
   const ip = Constantes.IP;
 // Función para obtener los productos de la API

@@ -4,8 +4,10 @@ import { useNavigation } from '@react-navigation/native';
 import styles from '../estilos/CategoriaScreenStyles'; // Importa los estilos desde un archivo externo
 import Cards1 from '../componets/Cards/Cards1'; // Importa el componente Cards1
 import * as Constantes from '../utils/constantes';
+import { useInactividadSesion } from '../componets/Hooks/inactividad.js';
 
 const CategoriaScreen = () => {
+  const { handleLogout, checkSession } = useInactividadSesion(navigation);
   const navigation = useNavigation();
   const [categories, setCategories] = useState([]); // Estado para almacenar las categorías
   const [loading, setLoading] = useState(true); // Estado para manejar el indicador de carga

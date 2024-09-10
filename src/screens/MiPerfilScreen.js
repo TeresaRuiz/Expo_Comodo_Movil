@@ -6,9 +6,12 @@ import styles from '../estilos/MiPerfilScreenStyles';
 import * as Constantes from '../utils/constantes';
 import InputMiPerfil from '../componets/Inputs/InputMiPerfil';
 import axios from 'axios';
+import { useInactividadSesion } from '../componets/Hooks/inactividad.js';
 
 const MiPerfilScreen = ({ navigation }) => {
   const ip = Constantes.IP;
+  const { handleLogout, checkSession } = useInactividadSesion(navigation);
+  
 
   const formatPhoneNumber = (value) => {
     const cleaned = value.replace(/\D/g, '');

@@ -3,10 +3,13 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Alert } fro
 import styles from '../estilos/RecuperacionScreenStyles';
 import Button3 from '../componets/Buttons/Button3';
 import * as Constantes from '../utils/constantes';
+import { useInactividadSesion } from '../componets/Hooks/inactividad.js';
 
 const PasswordRecoveryScreen = ({ navigation }) => {
   // Estado para almacenar el email ingresado por el usuario
   const [email, setEmail] = useState('');
+  const { handleLogout, checkSession } = useInactividadSesion(navigation);
+  
 
   // Función para manejar el proceso de recuperación de contraseña
   const handleRecovery = async () => {

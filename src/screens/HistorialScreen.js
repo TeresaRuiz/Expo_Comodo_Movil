@@ -4,9 +4,10 @@ import * as Constantes from '../utils/constantes';
 import { Ionicons } from '@expo/vector-icons';
 import styles from '../estilos/HistorialScreenStyles'; // Importa los estilos desde un archivo externo
 import CardHistorial from '../componets/Cards/CardHistorial'; // Asegúrate de que la ruta sea correcta
+import { useInactividadSesion } from '../componets/Hooks/inactividad.js';
 
 const HistorialScreen = ({ navigation }) => {
-
+    const { handleLogout, checkSession } = useInactividadSesion(navigation);
     const [historial, setHistorial] = useState([]); // Estado para almacenar el historial
     const [refreshing, setRefreshing] = useState(false); // Estado para controlar el estado de refrescar
 
