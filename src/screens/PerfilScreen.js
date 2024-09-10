@@ -47,7 +47,7 @@ const PerfilScreen = () => {
 
   // Función para abrir enlace de Facebook
   const abrirFacebook = () => {
-    Linking.openURL('https://www.facebook.com/Comodos.sv');
+    Linking.openURL('');
   };
 
   // Función para navegar a la pantalla 'MiPerfil'

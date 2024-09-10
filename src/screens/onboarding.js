@@ -3,34 +3,31 @@ import { StyleSheet, View, Text, Animated, Image, TouchableOpacity } from 'react
 import { useNavigation } from '@react-navigation/native';
 
 const Onboarding = () => {
-    // Obtiene una referencia a la función de navegación
     const navigation = useNavigation();
-    // Crea estados para el índice de la diapositiva actual y la animación de la imagen
     const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
     const [imageAnimation] = useState(new Animated.Value(0));
-    // Define un array con información sobre cada diapositiva
+
     const slides = [
         {
             id: '1',
             title: 'Encuentra tus zapatos ideales',
             description: 'Accede a una amplia variedad de zapatos y encuentra el par perfecto en "Comodo$"',
-            image: require('../img/onboarding1.png'), 
+            image: require('../../assets/onboarding1.png'),
         },
         {
             id: '2',
             title: 'Compra fácil y seguro',
             description: 'Compra tus zapatos de manera segura y conveniente en nuestra tienda',
-            image: require('../img/onboarding2.png'), 
+            image: require('../../assets/onboarding2.png'),
         },
         {
             id: '3',
             title: 'Entrega rápida y segura',
             description: 'Recibe tus zapatos en la comodidad de tu hogar de manera segura y oportuna',
-            image: require('../img/onboarding3.png'),
+            image: require('../../assets/onboarding3.png'),
         },
     ];
 
-    // Efecto para iniciar la animación de la imagen al montar el componente
     useEffect(() => {
         startImageAnimation();
 
@@ -55,22 +52,21 @@ const Onboarding = () => {
             ])
         ).start();
     };
-    // Función para manejar el cambio de diapositiva
+
     const handleNext = () => {
         if (currentSlideIndex < slides.length - 1) {
-            // Incrementa el índice de la diapositiva actual
             setCurrentSlideIndex(currentSlideIndex + 1);
         } else {
             navigation.navigate('Login');
         }
     };
-    //Función para regresar a la siguiente pantalla
+
     const handleBack = () => {
         if (currentSlideIndex > 0) {
             setCurrentSlideIndex(currentSlideIndex - 1);
         }
     };
-    //Función para crear un componente animado
+
     const AnimatedImage = Animated.createAnimatedComponent(Image);
 
     const renderSlide = (slide) => (
@@ -123,7 +119,7 @@ const Onboarding = () => {
         </View>
     );
 };
-// Estilos del componente
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,

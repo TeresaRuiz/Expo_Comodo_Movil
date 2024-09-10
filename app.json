@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Comodo$_app",
-    "slug": "Comodo$_app",
+    "name": "Comodos_app",
+    "slug": "Comodos_app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/logo_transparente.png",
@@ -22,7 +22,7 @@
         "foregroundImage": "./assets/Logo_pequeño.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.dhakhax.Comodo$_app",
+      "package": "com.gerson8098.Comodos_app",
       "permissions": [
         "ACCESS_FINE_LOCATION"
       ],
@@ -37,11 +37,8 @@
     },
     "extra": {
       "eas": {
-        "projectId": "af4fb211-65b9-41c3-af0d-17d65d399fd3"
+        "projectId": "4ea3a940-9df0-4987-b983-f8a9ac518f90"
       }
     }
   }
 }
-
-
-
