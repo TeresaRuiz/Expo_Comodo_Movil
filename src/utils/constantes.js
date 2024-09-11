@@ -5,8 +5,8 @@
 
 
 //export const IP = 'https://comodosv.site';
-export const IP = 'http://10.10.0.22';
-//export const IP = 'http://172.20.10.10';
+//export const IP = 'http://192.168.163.128';
+export const IP = 'http://192.168.163.128';
 //192.168.137.104 gerson
 //192.168.137.136 mia
 
