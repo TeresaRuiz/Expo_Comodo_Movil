@@ -1,8 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
 import { AppState, Alert } from 'react-native';
+import { useNavigation } from '@react-navigation/native'; // Importa useNavigation
 import * as Constantes from '../../utils/constantes.js';
 
-export const useInactividadSesion = (navigation) => {
+export const useInactividadSesion = () => {
+  const navigation = useNavigation(); // Usa useNavigation para obtener el objeto navigation
   const ip = Constantes.IP;
   const appState = useRef(AppState.currentState);
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
@@ -17,8 +19,10 @@ export const useInactividadSesion = (navigation) => {
       const data = await response.json();
 
       if (data.status) {
-        navigation.navigate('Login', { clearLoginData: true });
-        Alert.alert('Sesión cerrada', 'Su sesión ha sido cerrada.');
+        if (navigation && navigation.navigate) {
+          navigation.navigate('Login', { clearLoginData: true });
+          Alert.alert('Sesión cerrada', 'Su sesión ha sido cerrada.');
+        }
       } else {
         Alert.alert('Error', data.error);
       }
@@ -35,8 +39,10 @@ export const useInactividadSesion = (navigation) => {
       const data = await response.json();
 
       if (!data.status) {
-        navigation.navigate('Login', { clearLoginData: true });
-        Alert.alert('Sesión expirada', 'Su sesión ha expirado. Por favor, inicie sesión nuevamente.');
+        if (navigation && navigation.navigate) {
+          navigation.navigate('Login', { clearLoginData: true });
+          Alert.alert('Sesión expirada', 'Su sesión ha expirado. Por favor, inicie sesión nuevamente.');
+        }
       }
     } catch (error) {
       console.error('Error al verificar la sesión:', error);
@@ -64,7 +70,7 @@ export const useInactividadSesion = (navigation) => {
       clearTimeout(inactivityTimer.current);
       subscription.remove();
     };
-  }, [navigation]);
+  }, []);
 
   return { handleLogout, checkSession };
 };

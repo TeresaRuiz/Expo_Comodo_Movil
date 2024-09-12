@@ -6,13 +6,13 @@ import styles from '../estilos/DashboardScreenStyles';
 import LogOut from '../componets/Buttons/LogOut';
 import Button from '../componets/Buttons/Button';
 import * as Constantes from '../utils/constantes';
+import { useInactividadSesion } from '../componets/Hooks/inactividad.js';
 
 const DashboardScreen = ({ navigation }) => {
   const ip = Constantes.IP;
+  const { handleLogout, checkSession } = useInactividadSesion(navigation);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const appState = useRef(AppState.currentState);
-  const [appStateVisible, setAppStateVisible] = useState(appState.current);
-  const inactivityTimer = useRef(null);
 
   const images = [
     'https://eldinero.com.do/wp-content/uploads/calzado-deportivo-adidas.jpg',
@@ -27,28 +27,7 @@ const DashboardScreen = ({ navigation }) => {
     { title: 'Historial', icon: 'time-outline', screen: 'Historial' }
   ];
 
-  useEffect(() => {
-    const bannerInterval = setInterval(() => {
-      setCurrentImageIndex(prevIndex => (prevIndex + 1) % images.length);
-    }, 5000);
-
-    const subscription = AppState.addEventListener("change", nextAppState => {
-      if (appState.current.match(/inactive|background/) && nextAppState === "active") {
-        checkSession();
-      }
-      appState.current = nextAppState;
-      setAppStateVisible(appState.current);
-    });
-
-    const sessionCheckInterval = setInterval(checkSession, 60000);
-
-    return () => {
-      clearInterval(bannerInterval);
-      clearInterval(sessionCheckInterval);
-      clearTimeout(inactivityTimer.current);
-      subscription.remove();
-    };
-  }, []);
+  
 
   useFocusEffect(
     React.useCallback(() => {
@@ -69,47 +48,6 @@ const DashboardScreen = ({ navigation }) => {
       return () => BackHandler.removeEventListener('Login', onBackPress);
     }, [])
   );
-
-  const checkSession = async () => {
-    try {
-      const url = `${ip}/Expo_Comodo/api/services/public/cliente.php?action=checkSession`;
-      const response = await fetch(url, { method: 'GET' });
-      const data = await response.json();
-
-      if (!data.status) {
-        navigation.reset({
-          index: 0,
-          routes: [{ name: 'Login', params: { clearLoginData: true } }],
-        });
-        Alert.alert('Sesión expirada', 'Su sesión ha expirado. Por favor, inicie sesión nuevamente.');
-      }
-    } catch (error) {
-      console.error('Error al verificar la sesión:', error);
-    }
-  };
-
-  const handleLogout = async () => {
-    try {
-      const url = `${ip}/Expo_Comodo/api/services/public/cliente.php?action=logOut`;
-      console.log('URL solicitada:', url);
-
-      const response = await fetch(url, { method: 'GET' });
-      const data = await response.json();
-
-      if (data.status) {
-        navigation.reset({
-          index: 0,
-          routes: [{ name: 'Login', params: { clearLoginData: true } }],
-        });
-        Alert.alert('Sesión cerrada', 'Su sesión ha sido cerrada.');
-      } else {
-        Alert.alert('Error', data.error);
-      }
-    } catch (error) {
-      console.error('Error al cerrar sesión:', error);
-      Alert.alert('Error', 'Ocurrió un error al cerrar sesión');
-    }
-  };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
