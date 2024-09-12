@@ -63,7 +63,7 @@ export const useInactividadSesion = () => {
       setAppStateVisible(appState.current);
     });
 
-    const sessionCheckInterval = setInterval(checkSession, 60000);
+    const sessionCheckInterval = setInterval(checkSession, 30000); // 300000 ms = 5 minutos
 
     return () => {
       clearInterval(sessionCheckInterval);

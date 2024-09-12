@@ -8,7 +8,7 @@ import * as Constantes from '../utils/constantes'; // Importa constantes, como l
 import { useInactividadSesion } from '../componets/Hooks/inactividad.js';
 
 const PerfilScreen = () => {
-  const { handleLogout, checkSession } = useInactividadSesion(navigation);
+  const { handleLogout, checkSession } = useInactividadSesion();
   const [nombre, setNombre] = useState('');
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -40,11 +40,6 @@ const PerfilScreen = () => {
 
   useEffect(() => {
     fetchProfile(); // Llama a la función para obtener el perfil del usuario cuando se monta el componente
-    const intervalId = setInterval(() => {
-      fetchProfile(); // Actualiza el perfil automáticamente cada 10 minutos
-    }, 600000); // 600000 ms = 10 minutos
-
-    return () => clearInterval(intervalId); // Limpia el intervalo cuando el componente se desmonte
   }, []);
 
   // Función para abrir enlace de Facebook
