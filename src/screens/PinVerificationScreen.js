@@ -3,14 +3,14 @@ import { View, Text,Image, TextInput, Alert } from 'react-native';
 import styles from '../estilos/PinVerificationStyles';
 import Button3 from '../componets/Buttons/Button3';
 import * as Constantes from '../utils/constantes';
-import { useInactividadSesion } from '../componets/Hooks/inactividad.js';
+// import { useInactividadSesion } from '../componets/Hooks/inactividad.js';
 
 const PinVerificationScreen = ({ route, navigation }) => {
   // Estado para almacenar el PIN ingresado por el usuario
   const [pin, setPin] = useState('');
   // Extraer el email de los parámetros de la ruta
   const { email } = route.params;
-  const { handleLogout, checkSession } = useInactividadSesion(navigation);
+  // const { handleLogout, checkSession } = useInactividadSesion(navigation);
   
 
   // Función para manejar la verificación del PIN
