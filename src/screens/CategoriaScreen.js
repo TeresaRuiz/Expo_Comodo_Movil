@@ -7,7 +7,7 @@ import * as Constantes from '../utils/constantes';
 import { useInactividadSesion } from '../componets/Hooks/inactividad.js';
 
 const CategoriaScreen = () => {
-  const { handleLogout, checkSession } = useInactividadSesion(navigation);
+  const { panHandlers, handleLogout } = useInactividadSesion();
   const navigation = useNavigation();
   const [categories, setCategories] = useState([]); // Estado para almacenar las categorías
   const [loading, setLoading] = useState(true); // Estado para manejar el indicador de carga

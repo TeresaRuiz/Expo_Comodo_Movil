@@ -10,7 +10,7 @@ import { useInactividadSesion } from '../componets/Hooks/inactividad.js';
 
 const DashboardScreen = ({ navigation }) => {
   const ip = Constantes.IP;
-  const { handleLogout, checkSession } = useInactividadSesion(navigation);
+  const { panHandlers, handleLogout } = useInactividadSesion();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const appState = useRef(AppState.currentState);
 

@@ -1,10 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
-import { AppState, Alert } from 'react-native';
-import { useNavigation } from '@react-navigation/native'; // Importa useNavigation
+import { AppState, Alert, PanResponder } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import * as Constantes from '../../utils/constantes.js';
 
-export const useInactividadSesion = () => {
-  const navigation = useNavigation(); // Usa useNavigation para obtener el objeto navigation
+export const useInactividadSesion = (inactivityTimeout = 300000) => { // 5 minutos por defecto
+  const navigation = useNavigation();
   const ip = Constantes.IP;
   const appState = useRef(AppState.currentState);
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
@@ -19,16 +19,16 @@ export const useInactividadSesion = () => {
       const data = await response.json();
 
       if (data.status) {
-        if (navigation && navigation.navigate) {
-          navigation.navigate('Login', { clearLoginData: true });
-          Alert.alert('Sesión cerrada', 'Su sesión ha sido cerrada.');
-        }
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'Login', params: { clearLoginData: true } }],
+        });
+        Alert.alert('Sesión cerrada', 'Su sesión ha sido cerrada por inactividad.');
       } else {
-        Alert.alert('Error', data.error);
+        console.error('Error al cerrar sesión:', data.error);
       }
     } catch (error) {
       console.error('Error al cerrar sesión:', error);
-      Alert.alert('Error', 'Ocurrió un error al cerrar sesión');
     }
   };
 
@@ -39,38 +39,56 @@ export const useInactividadSesion = () => {
       const data = await response.json();
 
       if (!data.status) {
-        if (navigation && navigation.navigate) {
-          navigation.navigate('Login', { clearLoginData: true });
-          Alert.alert('Sesión expirada', 'Su sesión ha expirado. Por favor, inicie sesión nuevamente.');
-        }
+        handleLogout();
       }
     } catch (error) {
       console.error('Error al verificar la sesión:', error);
     }
   };
 
+  const resetInactivityTimer = () => {
+    if (inactivityTimer.current) {
+      clearTimeout(inactivityTimer.current);
+    }
+    inactivityTimer.current = setTimeout(handleLogout, inactivityTimeout);
+  };
+
+  const panResponder = useRef(
+    PanResponder.create({
+      onStartShouldSetPanResponder: () => true,
+      onMoveShouldSetPanResponder: () => true,
+      onStartShouldSetPanResponderCapture: () => true,
+      onMoveShouldSetPanResponderCapture: () => true,
+      onPanResponderGrant: resetInactivityTimer,
+      onPanResponderMove: resetInactivityTimer,
+    })
+  ).current;
+
   useEffect(() => {
     const subscription = AppState.addEventListener("change", nextAppState => {
-      if (appState.current.match(/inactive|background/) && nextAppState === "active") {
-        // App ha vuelto al primer plano
-        checkSession();
-      } else if (nextAppState.match(/inactive|background/)) {
-        // App ha ido al segundo plano o está inactiva
+      if (appState.current === "active" && nextAppState.match(/inactive|background/)) {
         handleLogout();
+      } else if (appState.current.match(/inactive|background/) && nextAppState === "active") {
+        checkSession();
       }
 
       appState.current = nextAppState;
       setAppStateVisible(appState.current);
     });
 
-    const sessionCheckInterval = setInterval(checkSession, 30000); // 300000 ms = 5 minutos
+    resetInactivityTimer();
 
     return () => {
-      clearInterval(sessionCheckInterval);
-      clearTimeout(inactivityTimer.current);
       subscription.remove();
+      if (inactivityTimer.current) {
+        clearTimeout(inactivityTimer.current);
+      }
     };
   }, []);
 
-  return { handleLogout, checkSession };
+  return { 
+    handleLogout, 
+    checkSession,
+    panHandlers: panResponder.panHandlers,
+  };
 };

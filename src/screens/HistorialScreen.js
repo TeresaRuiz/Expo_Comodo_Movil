@@ -7,7 +7,7 @@ import CardHistorial from '../componets/Cards/CardHistorial'; // Asegúrate de q
 import { useInactividadSesion } from '../componets/Hooks/inactividad.js';
 
 const HistorialScreen = ({ navigation }) => {
-    const { handleLogout, checkSession } = useInactividadSesion(navigation);
+    const { panHandlers, handleLogout } = useInactividadSesion();
     const [historial, setHistorial] = useState([]); // Estado para almacenar el historial
     const [refreshing, setRefreshing] = useState(false); // Estado para controlar el estado de refrescar
 

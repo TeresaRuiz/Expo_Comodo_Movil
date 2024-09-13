@@ -10,7 +10,7 @@ import { useInactividadSesion } from '../componets/Hooks/inactividad.js';
 
 const MiPerfilScreen = ({ navigation }) => {
   const ip = Constantes.IP;
-  const { handleLogout, checkSession } = useInactividadSesion();
+  const { panHandlers, handleLogout } = useInactividadSesion();
   
 
   const formatPhoneNumber = (value) => {

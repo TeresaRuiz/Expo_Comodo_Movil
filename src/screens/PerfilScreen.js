@@ -8,7 +8,7 @@ import * as Constantes from '../utils/constantes'; // Importa constantes, como l
 import { useInactividadSesion } from '../componets/Hooks/inactividad.js';
 
 const PerfilScreen = () => {
-  const { handleLogout, checkSession } = useInactividadSesion();
+  const { panHandlers, handleLogout } = useInactividadSesion();
   const [nombre, setNombre] = useState('');
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);

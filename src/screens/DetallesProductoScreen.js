@@ -9,7 +9,7 @@ import { useInactividadSesion } from '../componets/Hooks/inactividad.js';
 
 // Componente funcional para mostrar los detalles del producto
 const DetallesProductoScreen = () => {
-  const { handleLogout, checkSession } = useInactividadSesion(navigation);
+  const { panHandlers, handleLogout } = useInactividadSesion();
   const navigation = useNavigation(); // Hook para manejar la navegación
   const route = useRoute(); // Hook para obtener la ruta actual y sus parámetros
   const { idProducto, id_detalle } = route.params; // Extraer el id del producto de los parámetros de la ruta

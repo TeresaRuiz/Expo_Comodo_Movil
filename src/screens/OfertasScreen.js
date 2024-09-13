@@ -12,7 +12,7 @@ const OfertasScreen = ({ navigation }) => {
   const [ofertas, setOfertas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false); // Estado para manejar el refresco manual
-  const { handleLogout, checkSession } = useInactividadSesion(navigation);
+  const { panHandlers, handleLogout } = useInactividadSesion();
   
   const ip = Constantes.IP;
 

@@ -17,7 +17,7 @@ const ProductoScreen = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  const { handleLogout, checkSession } = useInactividadSesion(navigation);
+  const { panHandlers, handleLogout } = useInactividadSesion();
   
 // Obtener la IP de las constantes
   const ip = Constantes.IP;
