@@ -4,9 +4,9 @@
 //utilizar la direccion IP del servidor y no localhost
 
 
-//export const IP = 'https://comodosv.site';
+export const IP = 'https://comodosv.site';
 //export const IP = 'http://192.168.163.128';
-export const IP = 'http://192.168.79.216';
+//export const IP = 'http://192.168.79.216';
 //192.168.137.104 gerson
 //192.168.137.136 mia
 
