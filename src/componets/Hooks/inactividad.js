@@ -9,7 +9,7 @@ export const useInactividadSesion = (inactivityTimeout = 300000) => { // 5 minut
   const appState = useRef(AppState.currentState);
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
   const inactivityTimer = useRef(null);
-  const appStateLogoutTimer = useRef(null);  // Temporizador para la salida de sesión por cambio de estado
+  const screenChangeTimer = useRef(null); // Nuevo temporizador para cambiar pantalla
 
   const handleLogout = async () => {
     try {
@@ -54,10 +54,14 @@ export const useInactividadSesion = (inactivityTimeout = 300000) => { // 5 minut
     inactivityTimer.current = setTimeout(handleLogout, inactivityTimeout);
   };
 
-  const resetAppStateLogoutTimer = () => {
-    if (appStateLogoutTimer.current) {
-      clearTimeout(appStateLogoutTimer.current);
+  const resetScreenChangeTimer = () => {
+    if (screenChangeTimer.current) {
+      clearTimeout(screenChangeTimer.current);
     }
+    // Temporizador de 1 minuto al cambiar de pantalla
+    screenChangeTimer.current = setTimeout(() => {
+      resetInactivityTimer(); // Reinicia el temporizador de inactividad
+    }, 60000); // Espera 1 minuto
   };
 
   const panResponder = useRef(
@@ -74,11 +78,10 @@ export const useInactividadSesion = (inactivityTimeout = 300000) => { // 5 minut
   useEffect(() => {
     const subscription = AppState.addEventListener("change", nextAppState => {
       if (appState.current === "active" && nextAppState.match(/inactive|background/)) {
-        // Si la aplicación va a inactiva o segundo plano, inicia un temporizador de 1 minuto
-        appStateLogoutTimer.current = setTimeout(handleLogout, 60000); // 1 minuto
+        // Cierra sesión inmediatamente si la aplicación va a inactivo o segundo plano
+        handleLogout();
       } else if (appState.current.match(/inactive|background/) && nextAppState === "active") {
-        // Si la aplicación vuelve a activa, cancela el temporizador de cierre de sesión
-        resetAppStateLogoutTimer();
+        // Verifica la sesión cuando la aplicación regresa a activo
         checkSession();
       }
 
@@ -86,14 +89,17 @@ export const useInactividadSesion = (inactivityTimeout = 300000) => { // 5 minut
       setAppStateVisible(appState.current);
     });
 
-    resetInactivityTimer();
+    // Al cambiar pantalla, espera 1 minuto antes de considerar inactividad
+    resetScreenChangeTimer();
 
     return () => {
       subscription.remove();
       if (inactivityTimer.current) {
         clearTimeout(inactivityTimer.current);
       }
-      resetAppStateLogoutTimer();
+      if (screenChangeTimer.current) {
+        clearTimeout(screenChangeTimer.current);
+      }
     };
   }, []);
 
