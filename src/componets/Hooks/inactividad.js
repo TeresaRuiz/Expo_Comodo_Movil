@@ -9,6 +9,7 @@ export const useInactividadSesion = (inactivityTimeout = 300000) => { // 5 minut
   const appState = useRef(AppState.currentState);
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
   const inactivityTimer = useRef(null);
+  const appStateLogoutTimer = useRef(null);  // Temporizador para la salida de sesión por cambio de estado
 
   const handleLogout = async () => {
     try {
@@ -53,6 +54,12 @@ export const useInactividadSesion = (inactivityTimeout = 300000) => { // 5 minut
     inactivityTimer.current = setTimeout(handleLogout, inactivityTimeout);
   };
 
+  const resetAppStateLogoutTimer = () => {
+    if (appStateLogoutTimer.current) {
+      clearTimeout(appStateLogoutTimer.current);
+    }
+  };
+
   const panResponder = useRef(
     PanResponder.create({
       onStartShouldSetPanResponder: () => true,
@@ -67,8 +74,11 @@ export const useInactividadSesion = (inactivityTimeout = 300000) => { // 5 minut
   useEffect(() => {
     const subscription = AppState.addEventListener("change", nextAppState => {
       if (appState.current === "active" && nextAppState.match(/inactive|background/)) {
-        handleLogout();
+        // Si la aplicación va a inactiva o segundo plano, inicia un temporizador de 1 minuto
+        appStateLogoutTimer.current = setTimeout(handleLogout, 60000); // 1 minuto
       } else if (appState.current.match(/inactive|background/) && nextAppState === "active") {
+        // Si la aplicación vuelve a activa, cancela el temporizador de cierre de sesión
+        resetAppStateLogoutTimer();
         checkSession();
       }
 
@@ -83,6 +93,7 @@ export const useInactividadSesion = (inactivityTimeout = 300000) => { // 5 minut
       if (inactivityTimer.current) {
         clearTimeout(inactivityTimer.current);
       }
+      resetAppStateLogoutTimer();
     };
   }, []);
 
