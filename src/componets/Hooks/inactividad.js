@@ -23,7 +23,7 @@ export const useInactividadSesion = (inactivityTimeout = 300000) => { // 5 minut
           index: 0,
           routes: [{ name: 'Login', params: { clearLoginData: true } }],
         });
-        Alert.alert('Sesión cerrada', 'Su sesión ha sido cerrada por inactividad.');
+        Alert.alert('Sesión cerrada', 'Su sesión ha sido cerrada exitosamente.');
       } else {
         console.error('Error al cerrar sesión:', data.error);
       }
