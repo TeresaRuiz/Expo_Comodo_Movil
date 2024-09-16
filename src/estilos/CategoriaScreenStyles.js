@@ -4,21 +4,21 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     backgroundColor: '#F8F9FB',
-    paddingVertical: 60, // Reducido el espacio vertical
+    paddingVertical: 14, // Reducido el espacio vertical
     paddingHorizontal: 15,
   },
   cardTitle: {
     fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'center',
-    marginBottom: 8,
+    marginBottom: 0,
     color: '#333',
   },
   title: {
     fontSize: 26,
     fontWeight: 'bold',
     left: 120,
-    marginBottom: 20,
+    marginBottom:20,
     color: '#333', // dark grey color for the title
   },
   sectionTitle: {

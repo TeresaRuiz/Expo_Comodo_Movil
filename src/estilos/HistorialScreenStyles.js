@@ -4,7 +4,7 @@ const styles = StyleSheet.create({
     container: {
       flex: 1,
       backgroundColor: '#f5f5f5',
-      marginTop: 50, // Ajusta el margen superior para mover todo hacia abajo
+      marginTop: 10, // Ajusta el margen superior para mover todo hacia abajo
     },
     backButton: {
       alignSelf: 'flex-start',

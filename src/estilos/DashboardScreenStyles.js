@@ -2,33 +2,12 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
-    justifyContent: 'center',
+    flex: 1, // Esto asegura que el contenedor ocupe todo el espacio disponible
+    justifyContent: 'flex-start', // Alinea los componentes hacia la parte superior
     alignItems: 'center',
     backgroundColor: '#f5f5f5',
     paddingVertical: 10,
-  },
-  searchContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    borderRadius: 15,
-    padding: 10,
-    marginBottom: 20,
-    width: '90%',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 5 },
-    shadowOpacity: 0.1,
-    shadowRadius: 10,
-    elevation: 5,
-  },
-  searchIcon: {
-    marginRight: 10,
-  },
-  searchInput: {
-    flex: 1,
-    fontSize: 18,
-    color: '#333',
+    paddingTop: 120, // Reduce el padding superior
   },
   banner: {
     width: '90%',

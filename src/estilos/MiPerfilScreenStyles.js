@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       backgroundColor: '#f9f9f9',
       paddingHorizontal: 20,
-      paddingTop: 40,
+      paddingTop: 25,
       paddingBottom: 20,
     },
     title: {
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     },
     backIcon: {
       position: 'absolute',
-      top: 50,
+      top: 15,
       left: 25,
       zIndex: 10, // Asegura que esté encima de otros elementos
     },

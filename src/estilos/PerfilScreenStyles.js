@@ -4,7 +4,7 @@ const styles = StyleSheet.create({
     container: {
       flexGrow: 1,
       backgroundColor: '#f0f4f7',
-      paddingVertical: 70,
+      paddingVertical: 20,
     },
     profileContainer: {
       alignItems: 'center',

@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     color: '#333',
     textAlign: 'center',
-    marginTop: 65,
+    marginTop: 20,
   },
   ofertaCard: {
     flexDirection: 'row',
