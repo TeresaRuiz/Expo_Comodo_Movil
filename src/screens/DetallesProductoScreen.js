@@ -67,29 +67,33 @@ const DetallesProductoScreen = () => {
 
         // Si todo está bien, proceder a agregar al carrito
         const response = await fetch(`${ip}/Expo_Comodo/api/services/public/pedido.php?action=createDetail`, {
-            method: 'POST',
-            body: formData,
-        });
+          method: 'POST', // Usar el método POST para la solicitud
+          body: formData, // Enviar el FormData en el cuerpo de la solicitud
+      });
 
-        const data = await response.json();
+      const data = await response.json(); // Convertir la respuesta a formato JSON
 
-        // Verificar la respuesta del servidor
-        if (data.status) {
-            carrito.push({ idProducto, cantidad: cantidadNumerica }); // Añadir el producto al carrito
-            await AsyncStorage.setItem('@carrito', JSON.stringify(carrito)); // Guardar el carrito actualizado
+      // Verificar la respuesta del servidor
+      if (data.status) {
+          // Actualiza el carrito en AsyncStorage
+          const carritoData = await AsyncStorage.getItem('@carrito'); // Obtener el carrito almacenado en AsyncStorage
+          let carrito = carritoData ? JSON.parse(carritoData) : []; // Si existe, convertirlo a objeto, sino, crear un nuevo array
+          carrito.push({ idProducto, cantidad: cantidadNumerica }); // Añadir el producto al carrito
+          await AsyncStorage.setItem('@carrito', JSON.stringify(carrito)); // Guardar el carrito actualizado en AsyncStorage
 
-            // Mostrar mensaje de éxito y navegar al carrito
-            Alert.alert('Éxito', 'Producto añadido al carrito', [
-                { text: 'OK', onPress: () => navigation.navigate('Carrito') },
-            ]);
-        } else {
-            Alert.alert('Error', data.message || 'Ocurrió un error al agregar el producto al carrito');
-        }
-    } catch (error) {
-        console.error(error);
-        Alert.alert('Error', 'Ocurrió un error al agregar el producto al carrito');
-    }
-}
+          // Mostrar mensaje de éxito y navegar al carrito
+          Alert.alert('Éxito', 'Producto añadido al carrito', [
+              { text: 'OK', onPress: () => navigation.navigate('Carrito') }, // Navegar al carrito si el usuario presiona "OK"
+          ]);
+      } else {
+          // Si la respuesta indica un error, muestra el mensaje de error
+          Alert.alert('Error', data.message || 'La cantidad ingresada sobrepasa la disponibilidad del producto'); // Mostrar mensaje de error
+      }
+  } catch (error) {
+      console.error(error); // Mostrar el error en la consola
+      Alert.alert('Error', 'Ocurrió un error al agregar el producto al carrito'); // Mostrar una alerta en caso de error
+  }
+};
 
 // Función para obtener las existencias disponibles del servidor
 async function obtenerExistencias(idProducto) {
