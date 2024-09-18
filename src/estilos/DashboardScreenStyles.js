@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#f5f5f5',
     paddingVertical: 10,
-    paddingTop: 120, // Reduce el padding superior
+    paddingTop: 90, // Reduce el padding superior
   },
   banner: {
     width: '90%',
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
   },
   logoutButton: {
     position: 'absolute',
-    top: 40,
+    top: 20,
     right: 20,
   },
 });

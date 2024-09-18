@@ -246,6 +246,7 @@ const MiPerfilScreen = ({ navigation }) => {
 
         <InputMiPerfil
           style={[styles.input, editando ? {} : { backgroundColor: '#f0f0f0' }]}
+          label="Teléfono"
           placeholder="Teléfono"
           keyboardType="numeric"
           onChangeText={handlePhoneChange}

@@ -4,7 +4,7 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     backgroundColor: '#F8F9FB',
-    paddingVertical: 60, // Reducido el espacio vertical
+    paddingVertical: 35, // Reducido el espacio vertical
     paddingHorizontal: 15,
   },
   backButton: {
