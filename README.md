@@ -64,4 +64,7 @@ El proyecto utiliza las siguientes dependencias:
 - `ios`: `expo start --ios`
 - `web`: `expo start --web`
 
-mapa(teresa)
+## 📍Link de la apk
+- **Enlace**
+
+
