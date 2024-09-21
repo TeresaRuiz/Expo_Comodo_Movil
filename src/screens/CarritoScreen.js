@@ -7,6 +7,7 @@ import CardCarrito from '../componets/Cards/CardCarrito';
 import { useInactividadSesion } from '../componets/Hooks/inactividad.js';
 
 const CarritoScreen = ({ navigation }) => {
+  // Hooks y estados
   const { panHandlers, handleLogout } = useInactividadSesion();
   const [carrito, setCarrito] = useState([]); // Estado para almacenar los productos en el carrito
   const [loading, setLoading] = useState(true);// Estado para manejar el indicador de carga
@@ -14,33 +15,36 @@ const CarritoScreen = ({ navigation }) => {
   const [subtotal, setSubtotal] = useState(0); // Estado para almacenar el subtotal del carrito
   const [descuento, setDescuento] = useState(0);// Estado para almacenar el descuento aplicado
 
-  const ip = Constantes.IP;
-  const isFocused = useIsFocused();
+  const ip = Constantes.IP;// IP del servidor
+  const isFocused = useIsFocused();// Verifica si la pantalla está enfocada
 
+   // Función para obtener los productos del carrito
   const fetchCarrito = useCallback(async () => {
-    setLoading(true);
+    setLoading(true); // Inicia el loading
     try {
       const response = await fetch(`${ip}/Expo_Comodo/api/services/public/pedido.php?action=readDetail`);
       const data = await response.json();
       if (data.status) {
-        setCarrito(data.dataset);
+        setCarrito(data.dataset); // Actualiza el estado del carrito con los datos obtenidos
       } else {
-        Alert.alert('Error', data.error);
+        Alert.alert('Error', data.error); // Muestra un error si no se obtienen datos
       }
     } catch (error) {
       Alert.alert('Error', 'Ocurrió un error al obtener los datos del carrito');
     } finally {
-      setLoading(false);
-      setRefreshing(false);
+      setLoading(false); // Finaliza el loading
+      setRefreshing(false); // Finaliza el refreshing
     }
   }, [ip]);
 
+   // useEffect para cargar los datos del carrito al enfocarse la pantalla
   useEffect(() => {
     if (isFocused) {
       fetchCarrito();
     }
   }, [isFocused, fetchCarrito]);
 
+  // Función para manejar el cambio de cantidad de un producto
   const handleQuantityChange = async (item, type) => {
     let newCantidad = item.cantidad;
 
@@ -54,7 +58,7 @@ const CarritoScreen = ({ navigation }) => {
       newCantidad--;
     }
 
-    if (newCantidad < 1) return;
+    if (newCantidad < 1) return; // No permite cantidades negativas
 
     try {
       const formData = new FormData();
@@ -80,7 +84,7 @@ const CarritoScreen = ({ navigation }) => {
       }
     } catch (error) {
       Alert.alert('Error', 'Ocurrió un error al actualizar la cantidad del producto');
-      console.error(error);
+      console.error(error); // Muestra error en consola
     }
   };
   const handleDelete = async (idDetalle) => {
@@ -108,6 +112,7 @@ const CarritoScreen = ({ navigation }) => {
     }
   };
 
+  // Función para refrescar los datos del carrito
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     fetchCarrito();
@@ -117,6 +122,7 @@ const CarritoScreen = ({ navigation }) => {
     fetchCarrito();
   }, [fetchCarrito]);
 
+  // useEffect para calcular el subtotal y descuentos
   useEffect(() => {
     const calcularSubtotal = () => {
       let total = 0;
@@ -126,20 +132,21 @@ const CarritoScreen = ({ navigation }) => {
         const subtotalProducto = item.precio_unitario * item.cantidad;
         if (item.valor_oferta) {
           const subtotalConDescuento = subtotalProducto - (subtotalProducto * item.valor_oferta) / 100;
-          total += subtotalConDescuento;
-          descuentoTotal += subtotalProducto - subtotalConDescuento;
+          total += subtotalConDescuento; // Sumar total con descuento
+          descuentoTotal += subtotalProducto - subtotalConDescuento; // Calcular total de descuentos
         } else {
           total += subtotalProducto;
         }
       });
 
-      setSubtotal(total);
-      setDescuento(descuentoTotal);
+      setSubtotal(total); // Actualiza subtotal
+      setDescuento(descuentoTotal); // Actualiza descuento
     };
 
-    calcularSubtotal();
+    calcularSubtotal(); // Llama a la función de cálculo
   }, [carrito]);
 
+  // Función para finalizar la compra
   const finalizarCompra = async () => {
     if (carrito.length === 0) {
       Alert.alert('Carrito Vacío', 'No hay productos seleccionados en el carrito.');
@@ -164,10 +171,11 @@ const CarritoScreen = ({ navigation }) => {
       }
     } catch (error) {
       Alert.alert('Error', 'Ocurrió un error al finalizar la compra');
-      console.error(error);
+      console.error(error); // Muestra error en consola
     }
   };
 
+  // Indicador de carga
   if (loading) {
     return (
       <View style={styles.loadingContainer}>

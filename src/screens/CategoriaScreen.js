@@ -53,21 +53,21 @@ const CategoriaScreen = () => {
 
   return (
     <ScrollView
-      contentContainerStyle={styles.container}
+      contentContainerStyle={styles.container}  // Estilo del contenedor principal
       refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+        <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} /> // Control para refrescar la lista
       }
     >
-      <Text style={styles.title}>Categorías</Text>
-      <View style={styles.grid}>
+      <Text style={styles.title}>Categorías</Text> // Título de la sección
+      <View style={styles.grid}> // Contenedor para las tarjetas de categorías
         {categories.map((category, index) => (
           <Cards1
             key={index}
             item={{
               title: category.nombre_categoria,
-              image: `${ip}/Expo_Comodo/api/images/categorias/${category.imagen}`
+              image: `${ip}/Expo_Comodo/api/images/categorias/${category.imagen}`// Estilo del contenedor principal
             }}
-            onPress={() => navigation.navigate('Producto', { idCategoria: category.id_categoria })}
+            onPress={() => navigation.navigate('Producto', { idCategoria: category.id_categoria })}  // Navega a la pantalla de productos
           />
         ))}
       </View>
@@ -75,4 +75,5 @@ const CategoriaScreen = () => {
   );
 };
 
+// Exporta el componente
 export default CategoriaScreen;

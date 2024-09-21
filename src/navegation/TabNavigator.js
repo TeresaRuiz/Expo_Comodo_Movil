@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import { useIsFocused } from '@react-navigation/native';
 
+// Importación de las pantallas que se usarán en la navegación por pestañas
 import DashboardScreen from '../screens/DashboardScreen';
 import CategoriaScreen from '../screens/CategoriaScreen';
 import PerfilScreen from '../screens/PerfilScreen';
@@ -24,20 +25,22 @@ const DashboardTabNavigator = () => {
   }, [isFocused]);
 
   return (
+    // Navegador de pestañas
     <Tab.Navigator screenOptions={{ headerShown: false }}>
       <Tab.Screen
         name="Dashboard"
         component={DashboardScreen}
         listeners={({ navigation }) => ({
-          focus: () => handleScreenFocus(navigation),
+          focus: () => handleScreenFocus(navigation),// Llama a la función al enfocar la pantalla
         })}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="home" size={size} color={color} />
+            <Ionicons name="home" size={size} color={color} /> // Ícono de inicio
           ),
           tabBarLabel: () => null,
         }}
       />
+       
       <Tab.Screen
         name="Categorias"
         component={CategoriaScreen}
@@ -46,7 +49,7 @@ const DashboardTabNavigator = () => {
         })}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="grid" size={size} color={color} /> 
+            <Ionicons name="grid" size={size} color={color} /> // Ícono de cuadrícula
           ),
           tabBarLabel: () => null,
         }}
@@ -72,7 +75,7 @@ const DashboardTabNavigator = () => {
         })}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="cart" size={size} color={color} />
+            <Ionicons name="cart" size={size} color={color} /> // Ícono de carrito
           ),
           tabBarLabel: () => null,
         }}
@@ -95,4 +98,5 @@ const DashboardTabNavigator = () => {
   );
 };
 
+// Exportación del componente para su uso en otras partes de la aplicación
 export default DashboardTabNavigator;

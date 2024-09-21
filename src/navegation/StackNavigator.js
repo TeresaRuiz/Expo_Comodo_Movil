@@ -3,6 +3,7 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 
+// Importación de las pantallas que se utilizarán en la navegación
 import Onboarding from '../screens/onboarding';
 import LoginScreen from '../screens/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen';
@@ -19,10 +20,12 @@ import DetallesProductoScreen from '../screens/DetallesProductoScreen';
 import PinVerificationScreen from '../screens/PinVerificationScreen';
 import NewPasswordScreen from '../screens/NewPasswordScreen';
 
+// Creación del stack navigator
 const Stack = createStackNavigator();
 
 const MainStackNavigator = () => {
   return (
+     // Contenedor de navegación principal
     <NavigationContainer>
       <Stack.Navigator
         initialRouteName='Onboarding' // Establece 'Sesion' como la ruta inicial
@@ -48,4 +51,5 @@ const MainStackNavigator = () => {
   );
 };
 
+// Exportación del componente para su uso en otras partes de la aplicación
 export default MainStackNavigator;
