@@ -14,11 +14,11 @@ CREATE TABLE tb_usuarios (
   nombre VARCHAR(100) NOT NULL,
   usuario VARCHAR(100) NOT NULL,
   correo VARCHAR(100) NOT NULL,
-  clave VARCHAR(100) NOT NULL, -- Asegúrate de almacenar hashes seguros, no contraseñas en texto plano
-  direccion_cliente LONGTEXT NOT NULL, -- Considera normalizar esto en una tabla separada
+  clave VARCHAR(100) NOT NULL,
+  direccion_cliente LONGTEXT NOT NULL, 
   telefono VARCHAR(20) NOT NULL, 
   dui_cliente VARCHAR(20) NOT NULL, -- Documento Único de Identidad
-  estado_cliente TINYINT(1) DEFAULT TRUE, -- Considera usar ENUM para mayor claridad
+  estado_cliente TINYINT(1) DEFAULT TRUE, 
   PRIMARY KEY (id_usuario),
   CONSTRAINT uc_usuario UNIQUE (usuario),
   CONSTRAINT uc_correo UNIQUE (correo),
@@ -41,7 +41,7 @@ CREATE TABLE tb_admins (
   nombre_administrador VARCHAR(50) NOT NULL,
   usuario_administrador VARCHAR(50) NOT NULL,
   correo_administrador VARCHAR(50) NOT NULL,
-  clave_administrador VARCHAR(100) NOT NULL, -- Asegúrate de almacenar hashes seguros
+  clave_administrador VARCHAR(100) NOT NULL, 
   id_nivel_usuario INT UNSIGNED NOT NULL,
   PRIMARY KEY (id_administrador),
   CONSTRAINT fk_nivel_usuario FOREIGN KEY (id_nivel_usuario) REFERENCES tb_niveles_usuarios(id_nivel_usuario),
