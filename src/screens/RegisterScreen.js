@@ -10,7 +10,9 @@ import styles from '../estilos/RegisterScreenStyles';
 import * as Constantes from '../utils/constantes';
 import Button3 from '../componets/Buttons/Button3';
 
+// Componente de registro de usuario
 const RegisterScreen = () => {
+  // Estado para manejar los datos del formulario
   const [name, setName] = useState('');
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -19,8 +21,8 @@ const RegisterScreen = () => {
   const [phone, setTelefono] = useState('');
   const [dui, setDui] = useState('');
   const [address, setAddress] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const [showPassword2, setShowPassword2] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); // Muestra/oculta la contraseña
+  const [showPassword2, setShowPassword2] = useState(false); // Muestra/oculta la confirmación de la contraseña
   const [location, setLocation] = useState({
     latitude: 13.69294,
     longitude: -89.21819,
@@ -28,18 +30,20 @@ const RegisterScreen = () => {
     longitudeDelta: 0.0421,
   });
 
-  const navigation = useNavigation();
-  const ip = Constantes.IP;
+  const navigation = useNavigation(); // Hook de navegación
+  const ip = Constantes.IP; // Obtiene la IP desde las constantes
 
+  // Función para formatear el número de teléfono
   const formatPhoneNumber = (value) => {
-    const cleaned = value.replace(/\D/g, '');
-    const match = cleaned.match(/^(\d{0,4})(\d{0,4})$/);
+    const cleaned = value.replace(/\D/g, ''); // Elimina cualquier carácter no numérico
+    const match = cleaned.match(/^(\d{0,4})(\d{0,4})$/); // Agrupa el número en partes
     if (match) {
-      return !match[2] ? match[1] : `${match[1]}-${match[2]}`;
+      return !match[2] ? match[1] : `${match[1]}-${match[2]}`; // Formatea el número en formato XXXX-XXXX
     }
     return cleaned;
   };
 
+  // Solicita permiso para acceder a la ubicación y la obtiene
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
@@ -58,15 +62,17 @@ const RegisterScreen = () => {
     })();
   }, []);
 
+  // Función para formatear el DUI
   const formatDUI = (value) => {
-    const cleaned = value.replace(/\D/g, '');
-    const match = cleaned.match(/^(\d{0,8})(\d{0,1})$/);
+    const cleaned = value.replace(/\D/g, ''); // Elimina caracteres no numéricos
+    const match = cleaned.match(/^(\d{0,8})(\d{0,1})$/); // Agrupa el DUI
     if (match) {
-      return !match[2] ? match[1] : `${match[1]}-${match[2]}`;
+      return !match[2] ? match[1] : `${match[1]}-${match[2]}`; // Formatea el DUI en formato XXXXXXXX-X
     }
     return cleaned;
   };
 
+  // Manejadores para actualizar el estado de teléfono y DUI con el formato correcto
   const handlePhoneChange = (text) => {
     const formatted = formatPhoneNumber(text);
     setTelefono(formatted);
@@ -77,7 +83,9 @@ const RegisterScreen = () => {
     setDui(formatted);
   };
 
+  // Función que maneja el registro de usuario
   const handleRegister = async () => {
+    // Verifica si todos los campos están llenos
     if (
       !name.trim() ||
       !username.trim() ||
@@ -92,11 +100,13 @@ const RegisterScreen = () => {
       return;
     }
 
+    // Verifica si las contraseñas coinciden
     if (password !== password2) {
       Alert.alert('Error', 'Las contraseñas no coinciden');
       return;
     }
 
+    // Intenta realizar el registro del usuario
     try {
       const formData = new FormData();
       formData.append('nombreCliente', name);
@@ -115,6 +125,7 @@ const RegisterScreen = () => {
 
       const data = await response.json();
       if (data.status) {
+        // Si el registro fue exitoso, muestra un mensaje y redirige al login
         Alert.alert('Éxito', 'Usuario creado correctamente', [
           { text: 'OK', onPress: () => navigation.navigate('Login') }
         ]);
@@ -126,10 +137,12 @@ const RegisterScreen = () => {
     }
   };
 
+  // Redirecciona al usuario a la pantalla de login
   const handleLoginRedirect = () => {
     navigation.navigate('Login');
   };
   
+  // Maneja el evento cuando se presiona en el mapa para actualizar la ubicación
   const handleMapPress = async (event) => {
     const { latitude, longitude } = event.nativeEvent.coordinate;
     setLocation({
@@ -149,7 +162,7 @@ const RegisterScreen = () => {
       });
 
       if (response.data && response.data.display_name) {
-        setAddress(response.data.display_name);
+        setAddress(response.data.display_name); // Actualiza la dirección obtenida desde la API
       } else {
         setAddress('Dirección no disponible');
       }
@@ -159,9 +172,9 @@ const RegisterScreen = () => {
     }
   };
 
+  // Busca la dirección introducida por el usuario usando una API de búsqueda
   const handleSearchAddress = async (text) => {
     if (!text.trim()) {
-      // Simply return if text is empty without showing any alert
       return;
     }
 
@@ -191,6 +204,7 @@ const RegisterScreen = () => {
     }
   };
 
+  // Limpia la dirección y la ubicación en el mapa
   const handleClearAddress = () => {
     setAddress('');
     setLocation({
@@ -201,28 +215,36 @@ const RegisterScreen = () => {
     });
   };
 
+  // Cambia la dirección introducida manualmente por el usuario
   const handleAddressChange = (text) => {
     setAddress(text);
   };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      {/* Título e imagen de registro */}
       <View style={styles.titleContainer}>
         <Image source={require('../img/registro.png')} style={styles.logo} />
         <Text style={styles.title}>Registro</Text>
       </View>
+
+      {/* Campo de entrada para el nombre */}
       <TextInput
         style={styles.input}
         placeholder="Nombre"
         onChangeText={text => setName(text)}
         value={name}
       />
+
+      {/* Campo de entrada para el nombre de usuario */}
       <TextInput
         style={styles.input}
         placeholder="Usuario"
         onChangeText={text => setUsername(text)}
         value={username}
       />
+
+      {/* Campo de entrada para el correo electrónico */}
       <TextInput
         style={styles.input}
         placeholder="Correo"
@@ -230,6 +252,8 @@ const RegisterScreen = () => {
         value={email}
         keyboardType="email-address"
       />
+
+      {/* Campo de entrada para la contraseña con opción de mostrar/ocultar */}
       <View style={styles.passwordContainer}>
         <TextInput
           style={{ flex: 1 }}
@@ -242,6 +266,8 @@ const RegisterScreen = () => {
           <Icon name={showPassword ? "eye" : "eye-slash"} size={20} color="gray" />
         </TouchableOpacity>
       </View>
+
+      {/* Campo de entrada para repetir la contraseña con opción de mostrar/ocultar */}
       <View style={styles.passwordContainer}>
         <TextInput
           style={{ flex: 1 }}
@@ -254,6 +280,8 @@ const RegisterScreen = () => {
           <Icon name={showPassword2 ? "eye" : "eye-slash"} size={20} color="gray" />
         </TouchableOpacity>
       </View>
+
+      {/* Campo de entrada para el teléfono */}
       <TextInput
         style={styles.input}
         placeholder="Teléfono"
@@ -262,6 +290,8 @@ const RegisterScreen = () => {
         keyboardType="phone-pad"
         maxLength={9}
       />
+
+      {/* Campo de entrada para el DUI */}
       <TextInput
         style={styles.input}
         placeholder="DUI"
@@ -270,6 +300,8 @@ const RegisterScreen = () => {
         keyboardType="number-pad"
         maxLength={10}
       />
+
+      {/* Campo de entrada para la dirección con opción de búsqueda */}
       <View style={styles.addressContainer}>
         <DebouncedSearchInput
           onSearch={handleSearchAddress}
@@ -280,6 +312,8 @@ const RegisterScreen = () => {
           <Text style={styles.clearButtonText}>Limpiar</Text>
         </TouchableOpacity>
       </View>
+
+      {/* Mapa que muestra la ubicación actual */}
       <MapView
         style={styles.map}
         region={location}
@@ -287,9 +321,13 @@ const RegisterScreen = () => {
       >
         <Marker coordinate={location} />
       </MapView>
+
+      {/* Botón de registro */}
       <Button3 style={styles.registerButton} onPress={handleRegister}>
         <Text style={styles.buttonText}>Registrar</Text>
       </Button3>
+
+      {/* Redireccionar al login */}
       <TouchableOpacity onPress={handleLoginRedirect}>
         <Text style={styles.loginRedirectText}>¿Ya tienes cuenta? Inicia sesión</Text>
       </TouchableOpacity>
