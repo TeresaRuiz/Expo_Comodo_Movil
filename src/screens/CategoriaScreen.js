@@ -58,8 +58,8 @@ const CategoriaScreen = () => {
         <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} /> // Control para refrescar la lista
       }
     >
-      <Text style={styles.title}>Categorías</Text> // Título de la sección
-      <View style={styles.grid}> // Contenedor para las tarjetas de categorías
+      <Text style={styles.title}>Categorías</Text>
+      <View style={styles.grid}> 
         {categories.map((category, index) => (
           <Cards1
             key={index}

@@ -138,21 +138,17 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      {/* Animated logo */}
       <Animated.Image
         source={require('../img/calentamiento.png')}
         style={[styles.logo, { transform: [{ translateY }] }]}
       />
-      {/* Screen title */}
       <Text style={styles.title}>Inicio de sesión</Text>
-      {/* Username input */}
       <TextInput
         style={styles.input}
         placeholder="Nombre de usuario"
         onChangeText={text => setUsername(text)}
         value={username}
       />
-      {/* Password input with visibility toggle */}
       <View style={styles.passwordContainer}>
         <TextInput
           style={{ flex: 1 }}
@@ -165,15 +161,15 @@ const LoginScreen = ({ navigation }) => {
           <Ionicons name={showPassword ? "eye" : "eye-off"} size={20} color="gray" />
         </TouchableOpacity>
       </View>
-      {/* Login button */}
+      
       <Button3 style={styles.button} onPress={handleLogin}>
         <Text style={styles.buttonText}>Iniciar sesión</Text>
       </Button3>
-      {/* Link to redirect to the registration screen */}
+      
       <TouchableOpacity onPress={handleRegisterRedirect}>
         <Text style={styles.registerLink}>¿No tienes cuenta? Crea una</Text>
       </TouchableOpacity>
-      {/* Link to redirect to the password recovery screen */}
+     
       <TouchableOpacity onPress={handleForgotPasswordRedirect}>
         <Text style={styles.forgotPasswordText}>¿Olvidaste tu contraseña?</Text>
       </TouchableOpacity>

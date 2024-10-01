@@ -30,7 +30,6 @@ const DashboardScreen = ({ navigation }) => {
   ];
 
   
-  // Efecto para manejar el evento de retroceso (BackHandler)
   useFocusEffect(
     React.useCallback(() => {
       const onBackPress = () => {
@@ -57,8 +56,8 @@ const DashboardScreen = ({ navigation }) => {
         source={{ uri: images[currentImageIndex] }}
         style={styles.banner}
       />
-      <Text style={styles.title}>Dashboard</Text> // Título de la pantalla
-      <View style={styles.grid}> // Contenedor para las categorías
+      <Text style={styles.title}>Dashboard</Text>
+      <View style={styles.grid}> 
         {categories.map((category, index) => ( 
           <Button
             key={index}

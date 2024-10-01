@@ -46,9 +46,11 @@ const HistorialScreen = ({ navigation }) => {
     const renderHistorialItem = ({ item }) => (
         <CardHistorial
             item={item}
-            onPress={() => navigation.navigate('DetallesProducto', { idProducto: item.id_producto })}
+            // Eliminar o comentar la navegación
+            // onPress={() => navigation.navigate('DetallesProducto', { idProducto: item.id_producto })}
         />
     );
+    
 
     return (
         <View style={styles.container}>
