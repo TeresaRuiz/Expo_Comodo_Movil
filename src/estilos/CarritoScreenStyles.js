@@ -2,141 +2,143 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
+    flex: 1, // Hace que el contenedor ocupe todo el espacio disponible en la pantalla
+    backgroundColor: '#f5f5f5', // Color de fondo claro para el contenedor principal
   },
   listContainer: {
-    paddingVertical: 20,
-    paddingHorizontal: 10,
+    paddingVertical: 20, // Espaciado vertical para el contenido de la lista
+    paddingHorizontal: 10, // Espaciado horizontal para que los elementos no estén al borde
   },
   subtotalContainer: {
-    padding: 16,
-    borderTopWidth: 1,
-    borderColor: '#ccc',
-    backgroundColor: '#f9f9f9',
+    padding: 16, // Espaciado interno para el contenedor del subtotal
+    borderTopWidth: 1, // Borde superior para diferenciar del contenido anterior
+    borderColor: '#ccc', // Color del borde superior
+    backgroundColor: '#f9f9f9', // Fondo claro para el subtotal
   },
   subtotalText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'right',
-    marginTop: -50,
+    fontSize: 18, // Tamaño de fuente para el texto del subtotal
+    fontWeight: 'bold', // Texto en negrita para resaltar
+    textAlign: 'right', // Alineación del texto a la derecha
+    marginTop: -50, // Ajuste para el margen superior
   },
   title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    color: '#333',
-    textAlign: 'center',
-    marginTop: 20,
+    fontSize: 24, // Tamaño de la fuente del título principal
+    fontWeight: 'bold', // Negrita para resaltar el título
+    marginBottom: 20, // Margen inferior para separar del siguiente elemento
+    color: '#333', // Color gris oscuro para el título
+    textAlign: 'center', // Alineación centrada para el título
+    marginTop: 20, // Margen superior para dar espacio al título
   },
   ofertaCard: {
-    flexDirection: 'row',
-    backgroundColor: '#fff',
-    borderRadius: 15,
-    marginBottom: 15,
-    padding: 15,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 5,
-    elevation: 5,
+    flexDirection: 'row', // Coloca los elementos de la oferta en una fila
+    backgroundColor: '#fff', // Fondo blanco para la tarjeta de la oferta
+    borderRadius: 15, // Bordes redondeados
+    marginBottom: 15, // Espacio inferior entre las tarjetas
+    padding: 15, // Espaciado interno para la tarjeta
+    shadowColor: '#000', // Sombra negra
+    shadowOffset: { width: 0, height: 2 }, // Desplazamiento de la sombra
+    shadowOpacity: 0.3, // Opacidad de la sombra
+    shadowRadius: 5, // Radio de difuminado de la sombra
+    elevation: 5, // Elevación para agregar sombra en Android
   },
   ofertaImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 10,
-    marginRight: 15,
+    width: 100, // Ancho de la imagen de la oferta
+    height: 100, // Altura de la imagen de la oferta
+    borderRadius: 10, // Bordes redondeados de la imagen
+    marginRight: 15, // Margen derecho para separar la imagen del texto
   },
   ofertaDetails: {
-    flex: 1,
-    justifyContent: 'space-between',
+    flex: 1, // Permite que los detalles de la oferta ocupen el espacio restante
+    justifyContent: 'space-between', // Distribuye los elementos equitativamente
   },
   ofertaTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 5,
-    color: '#333',
+    fontSize: 16, // Tamaño de fuente para el título de la oferta
+    fontWeight: 'bold', // Negrita para destacar el título
+    marginBottom: 5, // Margen inferior para separar del siguiente texto
+    color: '#333', // Color gris oscuro para el título
   },
   ofertaPrice: {
-    fontSize: 14,
-    padding: 3, // Tamaño de fuente reducido
-    fontWeight: 'bold',
-    color: '#333',
+    fontSize: 14, // Tamaño de la fuente reducido para el precio
+    padding: 3, // Espaciado interno
+    fontWeight: 'bold', // Negrita para destacar el precio
+    color: '#333', // Color gris oscuro
   },
   quantityContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: 'row', // Coloca los botones de cantidad en una fila
+    alignItems: 'center', // Centra verticalmente los elementos en la fila
+    justifyContent: 'space-between', // Espaciado entre los botones y la cantidad
   },
   quantityButton: {
-    backgroundColor: '#3046BC',
-    borderRadius: 5,
-    width: 30,
-    height: 30,
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: '#3046BC', // Fondo azul para los botones de cantidad
+    borderRadius: 5, // Bordes redondeados
+    width: 30, // Ancho del botón de cantidad
+    height: 30, // Altura del botón de cantidad
+    alignItems: 'center', // Centra horizontalmente el texto dentro del botón
+    justifyContent: 'center', // Centra verticalmente el texto dentro del botón
   },
   quantityButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-    fontSize: 16,
+    color: '#fff', // Texto blanco
+    fontWeight: 'bold', // Texto en negrita
+    fontSize: 16, // Tamaño del texto
   },
   quantity: {
-    fontSize: 16,
-    fontWeight: 'bold',
+    fontSize: 16, // Tamaño del texto de la cantidad
+    fontWeight: 'bold', // Texto en negrita
   },
   deleteButton: {
-    backgroundColor: '#FF0000',
-    borderRadius: 10,
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginLeft: 10,
+    backgroundColor: '#FF0000', // Fondo rojo para el botón de eliminar
+    borderRadius: 10, // Bordes redondeados
+    paddingVertical: 5, // Padding vertical
+    paddingHorizontal: 10, // Padding horizontal
+    alignItems: 'center', // Centra el contenido horizontalmente
+    justifyContent: 'center', // Centra el contenido verticalmente
+    marginLeft: 10, // Margen izquierdo para separar del resto de los botones
   },
   finalizarCompraButton: {
-    backgroundColor: '#3046BC',
-    borderRadius: 10,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.3,
-    shadowRadius: 5,
-    elevation: 5,
-    alignSelf: 'center',
-    width: 200,
-    left: 95,
-    marginVertical: 10,
+    backgroundColor: '#3046BC', // Fondo azul para el botón de finalizar compra
+    borderRadius: 10, // Bordes redondeados
+    paddingVertical: 10, // Espaciado vertical
+    paddingHorizontal: 20, // Espaciado horizontal
+    alignItems: 'center', // Centra el texto horizontalmente
+    justifyContent: 'center', // Centra el texto verticalmente
+    shadowColor: '#000', // Sombra negra
+    shadowOffset: { width: 0, height: 3 }, // Desplazamiento de la sombra
+    shadowOpacity: 0.3, // Opacidad de la sombra
+    shadowRadius: 5, // Difuminado de la sombra
+    elevation: 5, // Elevación para dispositivos Android
+    alignSelf: 'center', // Centra el botón en la pantalla
+    width: 200, // Ancho del botón
+    left: 95, // Ajusta la posición hacia la derecha
+    marginVertical: 10, // Margen vertical
   },
   emptyCarritoContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginVertical: 20,
+    flex: 1, // Hace que el contenedor ocupe todo el espacio disponible
+    justifyContent: 'center', // Centra el contenido verticalmente
+    alignItems: 'center', // Centra el contenido horizontalmente
+    marginVertical: 20, // Margen vertical para darle espacio
   },
   emptyCartImage: {
-    width: 150, // Ajusta el tamaño según sea necesario
-    height: 150,
-    marginBottom: 10,
-    marginTop: -350,
+    width: 150, // Ancho de la imagen del carrito vacío
+    height: 150, // Altura de la imagen del carrito vacío
+    marginBottom: 10, // Espacio inferior debajo de la imagen
+    marginTop: -350, // Ajusta la posición de la imagen hacia arriba
   },
   emptyCarritoText: {
-    fontSize: 18,
-    color: '#333',
+    fontSize: 18, // Tamaño de la fuente del texto de carrito vacío
+    color: '#333', // Color gris oscuro
+    textAlign: 'center', // Centra el texto
+    marginTop: 10, // Margen superior para separar del resto del contenido
   },
   loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    flex: 1, // Hace que el contenedor ocupe todo el espacio disponible
+    justifyContent: 'center', // Centra el contenido verticalmente
+    alignItems: 'center', // Centra el contenido horizontalmente
   },
   emptyCarritoText: {
-    textAlign: 'center',
-    marginTop: 10,
-    fontSize: 18,
-    color: '#666',
+    textAlign: 'center', // Alinea el texto en el centro
+    marginTop: 10, // Margen superior
+    fontSize: 18, // Tamaño de la fuente del texto de carrito vacío
+    color: '#666', // Color gris claro
   },
 });
 

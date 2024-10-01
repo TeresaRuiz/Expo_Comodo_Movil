@@ -1,19 +1,24 @@
+-- Eliminar la base de datos si ya existe
 DROP DATABASE IF EXISTS expo_comodos;
 
+-- Crear la base de datos
 CREATE DATABASE expo_comodos;
 
+-- Seleccionar la base de datos para su uso
 USE expo_comodos;
 
+-- Tabla de usuarios
+-- Almacena información de los clientes registrados
 CREATE TABLE tb_usuarios (
   id_usuario INT UNSIGNED AUTO_INCREMENT NOT NULL,
   nombre VARCHAR(100) NOT NULL,
   usuario VARCHAR(100) NOT NULL,
   correo VARCHAR(100) NOT NULL,
-  clave VARCHAR(100) NOT NULL, 
-  direccion_cliente LONGTEXT NOT NULL,
+  clave VARCHAR(100) NOT NULL,
+  direccion_cliente LONGTEXT NOT NULL, 
   telefono VARCHAR(20) NOT NULL, 
-  dui_cliente VARCHAR(20) NOT NULL, 
-  estado_cliente TINYINT(1) DEFAULT TRUE,
+  dui_cliente VARCHAR(20) NOT NULL, -- Documento Único de Identidad
+  estado_cliente TINYINT(1) DEFAULT TRUE, 
   PRIMARY KEY (id_usuario),
   CONSTRAINT uc_usuario UNIQUE (usuario),
   CONSTRAINT uc_correo UNIQUE (correo),
@@ -21,19 +26,22 @@ CREATE TABLE tb_usuarios (
   CONSTRAINT uc_dui_cliente UNIQUE (dui_cliente)
 );
 
-
+-- Tabla de niveles de usuarios
+-- Define los diferentes niveles de acceso para los administradores
 CREATE TABLE tb_niveles_usuarios (
   id_nivel_usuario INT UNSIGNED AUTO_INCREMENT NOT NULL,
   nombre_nivel VARCHAR (50) NOT NULL,
   PRIMARY KEY (id_nivel_usuario)
 );
 
+-- Tabla de administradores
+-- Almacena información de los usuarios administrativos del sistema
 CREATE TABLE tb_admins (
   id_administrador INT UNSIGNED AUTO_INCREMENT NOT NULL,
   nombre_administrador VARCHAR(50) NOT NULL,
   usuario_administrador VARCHAR(50) NOT NULL,
   correo_administrador VARCHAR(50) NOT NULL,
-  clave_administrador VARCHAR(100) NOT NULL,
+  clave_administrador VARCHAR(100) NOT NULL, 
   id_nivel_usuario INT UNSIGNED NOT NULL,
   PRIMARY KEY (id_administrador),
   CONSTRAINT fk_nivel_usuario FOREIGN KEY (id_nivel_usuario) REFERENCES tb_niveles_usuarios(id_nivel_usuario),
@@ -41,7 +49,8 @@ CREATE TABLE tb_admins (
   CONSTRAINT uc_correo_administrador UNIQUE (correo_administrador)
 );
 
-
+-- Tabla de géneros de zapatos
+-- Clasifica los productos por género
 CREATE TABLE tb_generos_zapatos (
   id_genero INT UNSIGNED AUTO_INCREMENT NOT NULL,
   nombre_genero VARCHAR(100) NOT NULL,
@@ -49,7 +58,8 @@ CREATE TABLE tb_generos_zapatos (
   PRIMARY KEY (id_genero)
 );
 
-
+-- Tabla de categorías
+-- Define las diferentes categorías de productos
 CREATE TABLE tb_categorias (
   id_categoria INT UNSIGNED AUTO_INCREMENT NOT NULL,
   nombre_categoria VARCHAR(100) NOT NULL,
@@ -57,24 +67,32 @@ CREATE TABLE tb_categorias (
   PRIMARY KEY (id_categoria)
 );
 
+-- Tabla de tallas
+-- Almacena las diferentes tallas disponibles para los productos
 CREATE TABLE tb_tallas (
   id_talla INT UNSIGNED AUTO_INCREMENT NOT NULL,
   nombre_talla VARCHAR(20) NOT NULL,
   PRIMARY KEY (id_talla)
 );
 
+-- Tabla de marcas
+-- Almacena las diferentes marcas de productos
 CREATE TABLE tb_marcas (
   id_marca INT UNSIGNED AUTO_INCREMENT NOT NULL,
   marca VARCHAR(50) NOT NULL,
   PRIMARY KEY (id_marca)
 );
 
+-- Tabla de colores
+-- Define los colores disponibles para los productos
 CREATE TABLE tb_colores (
   id_color INT UNSIGNED AUTO_INCREMENT NOT NULL,
   color VARCHAR(20) NOT NULL,
   PRIMARY KEY (id_color)
 );
 
+-- Tabla de descuentos
+-- Almacena información sobre los descuentos aplicables a los productos
 CREATE TABLE tb_descuentos (
   id_descuento INT UNSIGNED AUTO_INCREMENT NOT NULL,
   nombre_descuento VARCHAR(100) NOT NULL,
@@ -85,13 +103,16 @@ CREATE TABLE tb_descuentos (
   CONSTRAINT ck_valor CHECK (valor >= 0)
 );
 
-
+-- Tabla de materiales
+-- Define los materiales utilizados en los productos
 CREATE TABLE tb_materiales (
   id_material INT UNSIGNED AUTO_INCREMENT NOT NULL,
   nombre VARCHAR(20) NOT NULL,
   PRIMARY KEY (id_material)
 );
 
+-- Tabla de productos
+-- Almacena la información principal de los productos
 CREATE TABLE tb_productos (
   id_producto INT UNSIGNED AUTO_INCREMENT NOT NULL,
   nombre_producto VARCHAR(100) NOT NULL,
@@ -116,7 +137,8 @@ CREATE TABLE tb_productos (
   CONSTRAINT uc_referencia_proveedor UNIQUE (referencia_proveedor)
 );
 
-
+-- Tabla de detalles de productos
+-- Almacena información específica de cada variante de producto (por talla, color, etc.)
 CREATE TABLE tb_detalles_productos (
   id_detalle_producto INT UNSIGNED AUTO_INCREMENT NOT NULL,
   id_producto INT UNSIGNED NOT NULL,
@@ -131,6 +153,8 @@ CREATE TABLE tb_detalles_productos (
   CONSTRAINT ck_existencias  CHECK (existencias >= 0)
 );
 
+-- Tabla de reservas
+-- Almacena información sobre las reservas realizadas por los usuarios
 CREATE TABLE tb_reservas (
   id_reserva INT UNSIGNED AUTO_INCREMENT NOT NULL,
   id_usuario INT UNSIGNED NOT NULL,
@@ -140,6 +164,8 @@ CREATE TABLE tb_reservas (
   CONSTRAINT fk_reserva_usuario FOREIGN KEY (id_usuario) REFERENCES tb_usuarios (id_usuario)
 );
 
+-- Tabla de detalles de reservas
+-- Almacena los productos específicos incluidos en cada reserva
 CREATE TABLE tb_detalles_reservas (
   id_detalle_reserva INT UNSIGNED AUTO_INCREMENT NOT NULL,
   id_reserva INT UNSIGNED NOT NULL,
@@ -153,53 +179,56 @@ CREATE TABLE tb_detalles_reservas (
   CONSTRAINT ck_precio_unitario CHECK (precio_unitario >= 0)
 );
 
+-- Agregar columnas para la recuperación de contraseña en la tabla de usuarios
 ALTER TABLE tb_usuarios
 ADD COLUMN recovery_pin VARCHAR(10) NULL,
 ADD COLUMN pin_expiry DATETIME NULL;
 
+-- Agregar columnas para la seguridad de la cuenta en la tabla de administradores
 ALTER TABLE tb_admins
 ADD COLUMN intentos_fallidos INT UNSIGNED DEFAULT 0 NOT NULL,
 ADD COLUMN fecha_clave DATETIME NULL DEFAULT NOW(),
 ADD COLUMN bloqueo_hasta DATETIME NULL;
 
+-- Agregar columnas para el restablecimiento de contraseña en la tabla de administradores
 ALTER TABLE tb_admins
 ADD COLUMN reset_code VARCHAR(6) DEFAULT NULL,
 ADD COLUMN reset_code_expiry DATETIME DEFAULT NULL;
 
+-- Agregar columnas para la autenticación de dos factores en la tabla de administradores
 ALTER TABLE tb_admins ADD COLUMN totp_secret VARCHAR(32);
 ALTER TABLE tb_admins ADD COLUMN totp_enabled BOOLEAN DEFAULT FALSE;
 
+-- Agregar columna para el seguimiento de la última actividad del usuario
 ALTER TABLE tb_usuarios ADD COLUMN ultima_actividad TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
 
-
+-- Agregar columnas para la autenticación de dos factores en la tabla de administradores
 ALTER TABLE tb_admins 
 ADD COLUMN codigo_2fa VARCHAR(6), 
 ADD COLUMN expiracion_2fa DATETIME;
 
-
+-- Insertar niveles de usuario predefinidos
 INSERT INTO tb_niveles_usuarios (id_nivel_usuario, nombre_nivel)
 VALUES 
 (1, 'administrador'),
 (2, 'inventaristas'),
 (3, 'vendedoras');
 
-SELECT * FROM tb_niveles_usuarios
+-- Crear una función para generar un saludo personalizado
+DELIMITER //
 
-DELIMITER // -- Cambia el delimitador para que puedas utilizar ";" dentro de la función.
-
-CREATE FUNCTION generar_saludo(nombre_usuario VARCHAR(100)) -- Crea una función llamada generar_saludo que toma un parámetro de nombre_usuario.
+CREATE FUNCTION generar_saludo(nombre_usuario VARCHAR(100))
 RETURNS VARCHAR(255)
 BEGIN
-    DECLARE saludo VARCHAR(255); -- Declara una variable llamada saludo de tipo VARCHAR(255).
-    SET saludo = CONCAT('¡Hola ', nombre_usuario, '! Bienvenido/a.'); -- Construye el saludo utilizando el nombre proporcionado.
-    RETURN saludo; -- Devuelve el saludo.
-END; -- Finaliza la definición de la función.
+    DECLARE saludo VARCHAR(255);
+    SET saludo = CONCAT('¡Hola ', nombre_usuario, '! Bienvenido/a.');
+    RETURN saludo;
+END;
 //
 
-DELIMITER ; -- Restaura el delimitador predeterminado.
+DELIMITER ;
 
-SELECT nombre, generar_saludo(nombre) AS saludo FROM tb_usuarios; -- Selecciona el nombre de los usuarios y llama a la función generar_saludo para obtener el saludo correspondiente.
-
+-- Modificar la tabla de productos para permitir descuentos nulos
 ALTER TABLE tb_productos
 MODIFY COLUMN id_descuento INT UNSIGNED DEFAULT NULL,
 ADD CONSTRAINT ck_descuento 
@@ -208,8 +237,8 @@ ADD CONSTRAINT ck_descuento
     ON DELETE CASCADE 
     ON UPDATE CASCADE;
 
-
-    DELIMITER //
+-- Crear un trigger para actualizar existencias después de aceptar una reserva
+DELIMITER //
 
 CREATE TRIGGER actualizar_existencias
 AFTER UPDATE ON tb_reservas
@@ -224,6 +253,63 @@ BEGIN
 END //
 
 DELIMITER ;
+
+-- Crear un procedimiento almacenado para eliminar reservas pendientes antiguas
+DELIMITER //
+
+CREATE PROCEDURE eliminar_reservas_pendientes()
+BEGIN
+    DECLARE done INT DEFAULT FALSE;
+    DECLARE usuario_id INT;
+    DECLARE reserva_id INT;
+    DECLARE usuario_correo VARCHAR(100);
+    
+    DECLARE cur CURSOR FOR 
+        SELECT r.id_usuario, r.id_reserva, u.correo 
+        FROM tb_reservas r
+        JOIN tb_usuarios u ON r.id_usuario = u.id_usuario
+        WHERE r.estado_reserva = 'Pendiente' 
+          AND r.fecha_reserva < NOW() - INTERVAL 72 HOUR;
+    
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+
+    OPEN cur;
+
+    read_loop: LOOP
+        FETCH cur INTO usuario_id, reserva_id, usuario_correo;
+        IF done THEN
+            LEAVE read_loop;
+        END IF;
+
+        -- Eliminar todos los detalles de la reserva
+        DELETE FROM tb_detalles_reservas WHERE id_reserva = reserva_id;
+
+        -- Eliminar la reserva
+        DELETE FROM tb_reservas WHERE id_reserva = reserva_id;
+
+        -- Llamar a la función para enviar correo (asume que existe una función 'enviar_correo')
+        CALL enviar_correo(usuario_correo, 'Su pedido ha sido eliminado por políticas de la app.');
+    END LOOP;
+
+    CLOSE cur;
+END //
+
+DELIMITER ;
+
+-- Crear un evento programado para ejecutar el procedimiento de eliminación de reservas
+DELIMITER //
+
+CREATE EVENT eliminar_reservas_event
+ON SCHEDULE EVERY 1 HOUR
+DO
+BEGIN
+    CALL eliminar_reservas_pendientes();
+END //
+
+DELIMITER ;
+
+-- Activar el programador de eventos
+SET GLOBAL event_scheduler = ON;
 
 INSERT INTO tb_usuarios (id_usuario, nombre, usuario, correo, clave, direccion_cliente, telefono, dui_cliente)
 VALUES 

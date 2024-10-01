@@ -65,6 +65,6 @@ El proyecto utiliza las siguientes dependencias:
 - `web`: `expo start --web`
 
 ## 📍Link de la apk
-- **Enlace**
+- **Enlace:** https://expo.dev/accounts/gerson8098/projects/Comodos_app/builds/47e2f926-81a6-4c58-bafc-da8b0f132a9d
 
 
