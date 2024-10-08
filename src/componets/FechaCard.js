@@ -5,7 +5,7 @@ import styles from '../estilos/HistorialScreenStyles';
 import CardHistorial from '././Cards/CardHistorial';
 
 const FechaCard = ({ fecha, pedidos }) => {
-    const [expanded, setExpanded] = useState(true); // Inicializa como false para que empiece colapsado
+    const [expanded, setExpanded] = useState(false); // Inicializa como false para que empiece colapsado
 
     const totalPedidos = pedidos.length;
     const totalGastado = pedidos.reduce((sum, pedido) => 

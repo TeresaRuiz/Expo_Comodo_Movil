@@ -14,7 +14,7 @@ const DashboardScreen = ({ navigation }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0); // Estado para el índice de la imagen actual
   const appState = useRef(AppState.currentState); // Referencia al estado de la aplicación
 
-   // Array de imágenes para el banner
+  // Array de imágenes para el banner
   const images = [
     'https://eldinero.com.do/wp-content/uploads/calzado-deportivo-adidas.jpg',
     'https://media.gq.com.mx/photos/5df2c28cf428fa0008c870a5/master/w_7184,c_limit/los-10-mejores-tenis-en-amazon-para-empezar-el-2020.jpg',
@@ -22,14 +22,14 @@ const DashboardScreen = ({ navigation }) => {
     'https://www.experimenta.es/wp-content/uploads/2016/12/zapatillas-biodegradables-de-fibra-de-seda-de-arana-artificial-de-adidas-800x599.jpg',
   ];
 
-    // Array de categorías para el Dashboard
+  // Array de categorías para el Dashboard
   const categories = [
     { title: 'Categorías', icon: 'grid-outline', screen: 'Categorias' }, // Navega a la pantalla de categorías
     { title: 'Ofertas', icon: 'gift-outline', screen: 'Ofertas' }, // Navega a la pantalla de ofertas
     { title: 'Historial', icon: 'time-outline', screen: 'Historial' } // Navega a la pantalla de historial
   ];
 
-  
+
   useFocusEffect(
     React.useCallback(() => {
       const onBackPress = () => {
@@ -38,8 +38,8 @@ const DashboardScreen = ({ navigation }) => {
           "¿Está seguro que desea salir de la aplicación?", // Mensaje de confirmación
           [
             { text: "Cancelar", onPress: () => null, style: "cancel" }, // Opción de cancelar
-            { text: "Sí", onPress: () => BackHandler.exitApp() } // Opción de salir
-          ] 
+            { text: "Sí", onPress: () => handleLogout() } // Opción para llamar a handleLogout
+          ]
         );
         return true; // Prevenir la acción de retroceso predeterminada
       };
@@ -57,8 +57,8 @@ const DashboardScreen = ({ navigation }) => {
         style={styles.banner}
       />
       <Text style={styles.title}>Dashboard</Text>
-      <View style={styles.grid}> 
-        {categories.map((category, index) => ( 
+      <View style={styles.grid}>
+        {categories.map((category, index) => (
           <Button
             key={index}
             title={category.title}
