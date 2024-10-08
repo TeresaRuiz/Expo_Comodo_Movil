@@ -1,26 +1,43 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, FlatList, Alert, RefreshControl, TouchableOpacity } from 'react-native'; // Importa TouchableOpacity aquí
+import { View, Text, FlatList, Alert, RefreshControl, TouchableOpacity } from 'react-native';
 import * as Constantes from '../utils/constantes';
 import { Ionicons } from '@expo/vector-icons';
-import styles from '../estilos/HistorialScreenStyles'; // Importa los estilos desde un archivo externo
-import CardHistorial from '../componets/Cards/CardHistorial'; // Asegúrate de que la ruta sea correcta
-import { useInactividadSesion } from '../componets/Hooks/inactividad.js';
+import styles from '../estilos/HistorialScreenStyles';
+import FechaCard from '../componets/FechaCard';
 
 const HistorialScreen = ({ navigation }) => {
-    const { panHandlers, handleLogout } = useInactividadSesion();
-    const [historial, setHistorial] = useState([]); // Estado para almacenar el historial
-    const [refreshing, setRefreshing] = useState(false); // Estado para controlar el estado de refrescar
+    const [historialAgrupado, setHistorialAgrupado] = useState([]);
+    const [refreshing, setRefreshing] = useState(false);
 
-    const ip = Constantes.IP; // Asegúrate de que Constantes.IP esté definido
+    const ip = Constantes.IP;
 
-    // Función para obtener los productos comprados desde la API
+    const agruparHistorialPorFecha = (historial) => {
+        const grupos = historial.reduce((acc, pedido) => {
+            const fecha = pedido.fecha_reserva.split(' ')[0];
+            if (!acc[fecha]) {
+                acc[fecha] = [];
+            }
+            acc[fecha].push(pedido);
+            return acc;
+        }, {});
+
+        // Convertir el objeto en un array y ordenar por fecha
+        return Object.entries(grupos)
+            .map(([fecha, pedidos]) => ({
+                fecha,
+                pedidos
+            }))
+            .sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+    };
+
     const fetchHistorial = useCallback(async () => {
-        setRefreshing(true); // Inicia el estado de refrescar
+        setRefreshing(true);
         try {
             const response = await fetch(`${ip}/Expo_Comodo/api/services/public/pedido.php?action=readHistorials`);
             const data = await response.json();
             if (data.status) {
-                setHistorial(data.dataset); // Asegúrate de que 'dataset' contenga los productos comprados
+                const historialOrdenado = agruparHistorialPorFecha(data.dataset);
+                setHistorialAgrupado(historialOrdenado);
             } else {
                 Alert.alert('Error', data.error);
             }
@@ -28,48 +45,38 @@ const HistorialScreen = ({ navigation }) => {
             Alert.alert('Error', 'Ocurrió un error al obtener los datos del historial');
             console.log(error);
         } finally {
-            setRefreshing(false); // Finaliza el estado de refrescar
+            setRefreshing(false);
         }
     }, [ip]);
 
-    // Función para manejar el evento de refrescar
     const onRefresh = useCallback(() => {
-        fetchHistorial(); // Vuelve a cargar los datos del historial desde la API
+        fetchHistorial();
     }, [fetchHistorial]);
 
-    // Efecto para cargar el historial al cargar la pantalla
     useEffect(() => {
         fetchHistorial();
     }, [fetchHistorial]);
 
-    // Función para renderizar cada elemento del historial
-    const renderHistorialItem = ({ item }) => (
-        <CardHistorial
-            item={item}
-            // Eliminar o comentar la navegación
-            // onPress={() => navigation.navigate('DetallesProducto', { idProducto: item.id_producto })}
-        />
+    const renderFechaCard = ({ item }) => (
+        <FechaCard fecha={item.fecha} pedidos={item.pedidos} />
     );
-    
 
     return (
         <View style={styles.container}>
-            {/* Título de la pantalla */}
             <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
                 <Ionicons name="arrow-back" size={24} color="#000" />
             </TouchableOpacity>
             <Text style={styles.title}>Historial de pedidos</Text>
 
-            {/* Lista de historial usando FlatList */}
             <FlatList
-                data={historial} // Cambiado a 'historial' para mostrar los productos comprados
-                renderItem={renderHistorialItem} // Renderiza cada elemento de la lista
-                keyExtractor={item => item.id_detalle_reserva.toString()} // Asegúrate de que el id sea una cadena
-                contentContainerStyle={styles.listContainer} // Aplica estilos al contenedor de la lista
+                data={historialAgrupado}
+                renderItem={renderFechaCard}
+                keyExtractor={item => item.fecha}
+                contentContainerStyle={styles.listContainer}
                 refreshControl={
                     <RefreshControl
-                        refreshing={refreshing} // Estado de refrescar
-                        onRefresh={onRefresh} // Función para refrescar
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
                     />
                 }
             />
