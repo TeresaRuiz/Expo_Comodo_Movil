@@ -1,17 +1,13 @@
 // Button.js
-import React from 'react'; // Importa React
-import { TouchableOpacity, Text, StyleSheet, View } from 'react-native'; // Importa componentes de React Native
+import React from 'react';
+import { TouchableOpacity, Text, StyleSheet, View } from 'react-native';
 
-// Componente de botón personalizado que acepta un título, función onPress, estilos y un ícono opcional
 const Button = ({ title, onPress, style, textStyle, icon }) => {
   return (
-    <TouchableOpacity 
-      style={[styles.button, style]} // Estilo del botón, incluyendo estilos adicionales si se proporcionan
-      onPress={onPress} // Función a ejecutar al presionar el botón
-    >
-      <View style={styles.content}> {/* Contenedor para el contenido del botón */}
-        {icon} {/* Renderiza el ícono si se proporciona */}
-        <Text style={[styles.text, textStyle]}>{title}</Text> {/* Texto del botón con estilos personalizados */}
+    <TouchableOpacity onPress={onPress} style={[styles.button, style]}>
+      <View style={styles.content}>
+        {icon}
+        <Text style={[styles.text, textStyle]}>{title}</Text>
       </View>
     </TouchableOpacity>
   );

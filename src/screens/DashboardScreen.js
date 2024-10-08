@@ -70,11 +70,11 @@ const DashboardScreen = ({ navigation }) => {
         ))}
       </View>
       <LogOut
-        title="Cerrar Sesión" // Título del botón de cerrar sesión
+        title="" // Título del botón de cerrar sesión
         onPress={handleLogout} // Función para manejar el cierre de sesión
         style={styles.logoutButton} // Estilo del botón de cerrar sesión
         textStyle={{ color: '#7f7f7f' }} // Estilo del texto del botón
-        icon={<Ionicons name="lock-closed" size={24} color="black" />}  // Ícono del botón de cerrar sesión
+        icon={<Ionicons name="log-out-outline" size={24} color="black" />}  // Ícono del botón de cerrar sesión
       />
     </ScrollView>
   );

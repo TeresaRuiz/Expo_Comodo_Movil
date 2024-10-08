@@ -1,14 +1,13 @@
 // LogOut.js
-import React from 'react'; // Importa React
-import { TouchableOpacity, StyleSheet, View } from 'react-native'; // Importa componentes de React Native
-import { Ionicons } from '@expo/vector-icons'; // Importa íconos de Ionicons
+import React from 'react';
+import { TouchableOpacity, Text, StyleSheet, View } from 'react-native';
 
-// Componente para el botón de cerrar sesión
-const LogOut = ({ onPress, style }) => {
+const LogOut = ({ title, onPress, style, textStyle, icon }) => {
   return (
-    <TouchableOpacity style={[styles.button, style]} onPress={onPress}> {/* Botón que ejecuta onPress al ser presionado */}
-      <View style={styles.content}> {/* Contenedor para el ícono */}
-        <Ionicons name="log-out-outline" size={30} color="#000" /> {/* Ícono de cerrar sesión */}
+    <TouchableOpacity onPress={onPress} style={[styles.button, style]}>
+      <View style={styles.content}>
+        {icon}
+        <Text style={[styles.text, textStyle]}>{title}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -29,6 +28,11 @@ const styles = StyleSheet.create({
   content: {
     flexDirection: 'row', // Dispone el contenido en fila
     alignItems: 'center', // Alinea los elementos al centro
+  },
+  text: {
+    marginLeft: 10, // Espacio entre el ícono y el texto
+    fontSize: 16, // Tamaño del texto
+    color: '#000', // Color del texto
   },
 });
 

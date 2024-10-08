@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Animated, Easing, Alert } from 'react-native';
+import React, { useState, useEffect, useRef  } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet,AppState, Animated, Easing, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; // Import Ionicons
 import styles from '../estilos/LoginScreenStyles'; // Import styles from an external file
 import Button3 from '../componets/Buttons/Button3';
 import LogOut from '../componets/Buttons/LogOut';
-import * as Constantes from '../utils/constantes'; // Import constants, assuming you have IP in a constants file
+import * as Constantes from '../utils/constantes'; 
+import { useInactividadSesion } from '../componets/Hooks/inactividad.js';// Import constants, assuming you have IP in a constants file
 
 const LoginScreen = ({ navigation }) => {
   const ip = Constantes.IP; // Define API IP
@@ -12,6 +13,10 @@ const LoginScreen = ({ navigation }) => {
   const [password, setPassword] = useState(''); // State for password
   const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
   const animatedValue = new Animated.Value(0); // State for logo animation
+  const { panHandlers, handleLogout } = useInactividadSesion(); // Hook para manejar inactividad y logout
+  const [currentImageIndex, setCurrentImageIndex] = useState(0); // Estado para el índice de la imagen actual
+  const appState = useRef(AppState.currentState); // Referencia al estado de la aplicación
+
 
   useEffect(() => {
     // Looping animation configuration
@@ -93,29 +98,7 @@ const LoginScreen = ({ navigation }) => {
     navigation.navigate('PasswordRecovery');
   };
 
-  // Function to handle logout
-  const handleLogout = async () => {
-    try {
-      const url = `${ip}/Expo_Comodo/api/services/public/cliente.php?action=logOut`;
-      console.log('URL solicitada:', url); // Verify the URL in the console
-
-      const response = await fetch(url, {
-        method: 'GET',
-      });
-
-      const data = await response.json();
-
-      if (data.status) {
-        Alert.alert('Sesión cerrada exitosamente');
-        navigation.navigate('Login');
-      } else {
-        Alert.alert('Error', data.error);
-      }
-    } catch (error) {
-      console.error('Error al cerrar sesión:', error);
-      Alert.alert('Error', 'Ocurrió un error al cerrar sesión');
-    }
-  };
+ 
 
   // Function to show login error alert
   const showLoginErrorAlert = () => {

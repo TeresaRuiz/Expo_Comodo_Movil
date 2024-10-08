@@ -228,11 +228,12 @@ const MiPerfilScreen = ({ navigation }) => {
         <TouchableOpacity style={styles.backIcon} onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" size={30} color="black" />
         </TouchableOpacity>
-
+        <Text style={styles.titulo}></Text>
+        <Text style={styles.titulo}></Text>
         {/* Foto de perfil */}
         <View style={styles.imageContainer}>
           <Image
-            source={require('../assets/icon.png')}
+            source={require('../../assets/icon.png')}
             style={styles.profileImage}
           />
         </View>
