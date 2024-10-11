@@ -11,18 +11,37 @@ const OfertasScreen = ({ navigation }) => {
   const [searchText, setSearchText] = useState('');
   const [ofertas, setOfertas] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false); // Estado para manejar el refresco manual
+  const [refreshing, setRefreshing] = useState(false);
   const { panHandlers, handleLogout } = useInactividadSesion();
   
   const ip = Constantes.IP;
 
-  // Función para obtener las ofertas desde la API
   const fetchOfertas = async () => {
     try {
       const response = await fetch(`${ip}/Expo_Comodo/api/services/public/producto.php?action=getProductosConDescuento`);
       const data = await response.json();
       if (data.status) {
-        setOfertas(data.dataset);
+        // Agrupar ofertas por id_producto
+        const groupedOfertas = data.dataset.reduce((acc, oferta) => {
+          if (!acc[oferta.id_producto]) {
+            acc[oferta.id_producto] = {
+              ...oferta,
+              detalles: [{
+                id_detalle: oferta.id_detalle_producto,
+                color: oferta.color,
+                talla: oferta.talla
+              }]
+            };
+          } else {
+            acc[oferta.id_producto].detalles.push({
+              id_detalle: oferta.id_detalle_producto,
+              color: oferta.color,
+              talla: oferta.talla
+            });
+          }
+          return acc;
+        }, {});
+        setOfertas(Object.values(groupedOfertas));
       } else {
         Alert.alert('Error', data.message);
       }
@@ -30,46 +49,36 @@ const OfertasScreen = ({ navigation }) => {
       Alert.alert('Error', 'Ocurrió un error al obtener las ofertas');
     } finally {
       setLoading(false);
-      setRefreshing(false); // Oculta el indicador de refresh
+      setRefreshing(false);
     }
   };
 
-  // Efecto para cargar las ofertas al montar el componente
   useEffect(() => {
     fetchOfertas();
   }, []);
 
-  // Función para manejar el refresh manual de las ofertas
   const handleRefresh = () => {
     setRefreshing(true);
     fetchOfertas();
   };
 
-  // Filtrar y eliminar duplicados de las ofertas basándose en el texto de búsqueda
-  const filteredOfertas = ofertas
-    .filter(oferta =>
-      oferta.nombre_descuento.toLowerCase().includes(searchText.toLowerCase())
-    )
-    .reduce((unique, o) => {
-      if (!unique.some(of => of.id_producto === o.id_producto)) {
-        unique.push(o);
-      }
-      return unique;
-    }, []);
+  const filteredOfertas = ofertas.filter(oferta =>
+    oferta.nombre_descuento.toLowerCase().includes(searchText.toLowerCase())
+  );
 
-  // Función para renderizar cada item de oferta
   const renderOfertaItem = ({ item }) => (
     <CardOferta 
       oferta={item}
-      onPress={() => navigation.navigate('DetallesProducto', { idProducto: item.id_producto, id_detalle: item.id_detalle_producto})}
+      onPress={() => navigation.navigate('DetallesProducto', { 
+        idProducto: item.id_producto, 
+        detalles: item.detalles 
+      })}
     />
   );
 
   return (
     <View style={styles.container}>
-      {/* Imagen promocional */}
       <Image source={PromoImage} style={styles.promoImage} />
-      {/* Barra de búsqueda */}
       <View style={styles.searchContainer}>
         <Ionicons name="search" size={24} color="#000" style={styles.searchIcon} />
         <TextInput
@@ -79,7 +88,6 @@ const OfertasScreen = ({ navigation }) => {
           onChangeText={setSearchText}
         />
       </View>
-      {/* Renderizado condicional basado en el estado de carga y las ofertas disponibles */}
       {loading ? (
         <ActivityIndicator size="large" color="#0000ff" />
       ) : filteredOfertas.length === 0 ? (
@@ -88,7 +96,7 @@ const OfertasScreen = ({ navigation }) => {
         <FlatList
           data={filteredOfertas}
           renderItem={renderOfertaItem}
-          keyExtractor={item => `${item.id_producto}_${item.nombre_producto}`} // Asegurando unicidad
+          keyExtractor={item => `${item.id_producto}_${item.nombre_producto}`}
           contentContainerStyle={styles.listContainer}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
