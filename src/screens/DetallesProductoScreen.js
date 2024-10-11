@@ -5,171 +5,242 @@ import { useRoute, useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from '../estilos/DetallesProductosScreen';
 import * as Constantes from '../utils/constantes';
+import { getColorValue, getFontColorForBackground } from '../utils/colorUtils';
 import { useInactividadSesion } from '../componets/Hooks/inactividad.js';
 
-// Componente funcional para mostrar los detalles del producto
 const DetallesProductoScreen = () => {
   const { panHandlers, handleLogout } = useInactividadSesion();
-  const navigation = useNavigation(); // Hook para manejar la navegación
-  const route = useRoute(); // Hook para obtener la ruta actual y sus parámetros
-  const { idProducto, id_detalle } = route.params; // Extraer el id del producto de los parámetros de la ruta
-  console.log(id_detalle);
-  const [producto, setProducto] = useState(null); // Estado para almacenar los detalles del producto
-  const [loading, setLoading] = useState(true); // Estado para controlar la animación de carga
-  const [cantidadProducto, setCantidadProducto] = useState(''); // Estado para almacenar la cantidad del producto que se va a agregar al carrito
+  const navigation = useNavigation();
+  const route = useRoute();
+  const { idProducto, detalles } = route.params;
+  const [producto, setProducto] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [selectedColor, setSelectedColor] = useState(null);
+  const [cantidadProducto, setCantidadProducto] = useState('');
+  const [selectedDetail, setSelectedDetail] = useState(null);
 
-  const ip = Constantes.IP; // IP del servidor obtenida de las constantes
+  const ip = Constantes.IP;
 
-  // Función para obtener los detalles del producto desde la API
+  // Agrupar detalles por color
+  const colorGroups = detalles.reduce((acc, detalle) => {
+    if (!acc[detalle.color]) {
+      acc[detalle.color] = [];
+    }
+    acc[detalle.color].push(detalle);
+    return acc;
+  }, {});
+
   const fetchProducto = async () => {
     try {
-      const formData = new FormData(); // Crear un objeto FormData para enviar el id del producto
-      formData.append('idProducto', idProducto); // Añadir el idProducto al FormData
+      const formData = new FormData();
+      formData.append('idProducto', idProducto);
       const response = await fetch(`${ip}/Expo_Comodo/api/services/public/producto.php?action=readOne`, {
-        method: 'POST', // Usar el método POST para la solicitud
-        body: formData, // Enviar el FormData en el cuerpo de la solicitud
+        method: 'POST',
+        body: formData,
       });
-      const data = await response.json(); // Convertir la respuesta a formato JSON
+      const data = await response.json();
       if (data.status) {
-        setProducto(data.dataset); // Si la respuesta es exitosa, actualizar el estado con los datos del producto
+        setProducto(data.dataset);
       } else {
-        Alert.alert('Error', data.message); // Si hay un error, mostrar una alerta con el mensaje
+        Alert.alert('Error', data.message);
       }
     } catch (error) {
-      Alert.alert('Error', 'Ocurrió un error al obtener los detalles del producto'); // Manejar errores en la solicitud
+      Alert.alert('Error', 'Ocurrió un error al obtener los detalles del producto');
     } finally {
-      setLoading(false); // Finalizar la animación de carga
+      setLoading(false);
     }
   };
 
-  // useEffect para ejecutar fetchProducto cuando el componente se monta
   useEffect(() => {
-    fetchProducto(); // Llamar a la función para obtener los detalles del producto
-  }, []); // La dependencia vacía asegura que esto solo se ejecute una vez cuando el componente se monta
+    fetchProducto();
+  }, []);
 
-  // Función para agregar el producto al carrito
+  const handleColorSelect = (color) => {
+    setSelectedColor(color);
+    setSelectedDetail(null);
+  };
+
+  const handleTallaSelect = (detalle) => {
+    setSelectedDetail(detalle);
+  };
+
   const agregarAlCarrito = async () => {
-    const cantidadNumerica = parseInt(cantidadProducto, 10); // Convertir la cantidad a un número entero
+    if (!selectedDetail) {
+      Alert.alert('Error', 'Por favor, selecciona un color y talla');
+      return;
+    }
+
+    const cantidadNumerica = parseInt(cantidadProducto, 10);
     
-    // Validar que la cantidad ingresada sea un número positivo y no mayor a 5
     if (isNaN(cantidadNumerica) || cantidadNumerica <= 0 || cantidadNumerica > 5) {
-        Alert.alert('Error', 'Por favor, ingresa una cantidad válida (máximo 5)'); // Mostrar error si la cantidad no es válida
-        return;
+      Alert.alert('Error', 'Por favor, ingresa una cantidad válida (máximo 5)');
+      return;
     }
 
     try {
-        const formData = new FormData(); // Crear un objeto FormData para enviar los datos
-        formData.append('idProducto', id_detalle); // Añadir el id del producto al FormData
-        formData.append('cantidadProducto', cantidadNumerica); // Añadir la cantidad del producto al FormData
+      const formData = new FormData();
+      formData.append('idProducto', selectedDetail.id_detalle);
+      formData.append('cantidadProducto', cantidadNumerica);
 
-        const response = await fetch(`${ip}/Expo_Comodo/api/services/public/pedido.php?action=createDetail`, {
-            method: 'POST', // Usar el método POST para la solicitud
-            body: formData, // Enviar el FormData en el cuerpo de la solicitud
+      const response = await fetch(`${ip}/Expo_Comodo/api/services/public/pedido.php?action=createDetail`, {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (data.status) {
+        const carritoData = await AsyncStorage.getItem('@carrito');
+        let carrito = carritoData ? JSON.parse(carritoData) : [];
+        carrito.push({ 
+          idProducto: selectedDetail.id_detalle, 
+          cantidad: cantidadNumerica 
         });
+        await AsyncStorage.setItem('@carrito', JSON.stringify(carrito));
 
-        const data = await response.json(); // Convertir la respuesta a formato JSON
-
-        // Verificar la respuesta del servidor
-        if (data.status) {
-            // Actualiza el carrito en AsyncStorage
-            const carritoData = await AsyncStorage.getItem('@carrito'); // Obtener el carrito almacenado en AsyncStorage
-            let carrito = carritoData ? JSON.parse(carritoData) : []; // Si existe, convertirlo a objeto, sino, crear un nuevo array
-            carrito.push({ idProducto, cantidad: cantidadNumerica }); // Añadir el producto al carrito
-            await AsyncStorage.setItem('@carrito', JSON.stringify(carrito)); // Guardar el carrito actualizado en AsyncStorage
-
-            // Mostrar mensaje de éxito y navegar al carrito
-            Alert.alert('Éxito', 'Producto añadido al carrito', [
-                { text: 'OK', onPress: () => navigation.navigate('Carrito') }, // Navegar al carrito si el usuario presiona "OK"
-            ]);
-        } else {
-            // Si la respuesta indica un error, muestra el mensaje de error
-            Alert.alert('Error', data.error || 'La cantidad ingresada sobrepasa la disponibilidad del producto'); // Mostrar mensaje de error
-        }
+        Alert.alert('Éxito', 'Producto añadido al carrito', [
+          { text: 'OK', onPress: () => navigation.navigate('Carrito') },
+        ]);
+      } else {
+        Alert.alert('Error', data.error || 'La cantidad ingresada sobrepasa la disponibilidad del producto');
+      }
     } catch (error) {
-        console.error(error); // Mostrar el error en la consola
-        Alert.alert('Error', 'Ocurrió un error al agregar el producto al carrito'); // Mostrar una alerta en caso de error
+      console.error(error);
+      Alert.alert('Error', 'Ocurrió un error al agregar el producto al carrito');
     }
   };
 
-  // Mostrar un indicador de carga mientras los datos del producto se están cargando
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#0000ff" /> 
+        <ActivityIndicator size="large" color="#0000ff" />
       </View>
     );
   }
 
-  // Si no se encuentran detalles del producto, mostrar un mensaje de error
   if (!producto) {
     return (
       <View style={styles.errorContainer}>
-        <Text style={styles.errorText}>No se encontraron detalles del producto</Text> 
+        <Text style={styles.errorText}>No se encontraron detalles del producto</Text>
       </View>
     );
   }
 
-  // Renderizar la interfaz de usuario con los detalles del producto
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}> 
-        <Ionicons name="arrow-back" size={24} color="#000" /> 
+      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+        <Ionicons name="arrow-back" size={24} color="#000" />
       </TouchableOpacity>
-      <Image source={{ uri: `${ip}/Expo_Comodo/api/images/productos/${producto.imagen}` }} style={styles.image} /> 
-      <Text style={styles.title}>{producto.nombre_producto}</Text> 
-      <Text style={styles.description}>{producto.descripcion_detalle}</Text> 
+      
+      <Image 
+        source={{ 
+          uri: selectedDetail 
+            ? `${ip}/Expo_Comodo/api/images/productos/${selectedDetail.imagen || producto.imagen}`
+            : `${ip}/Expo_Comodo/api/images/productos/${producto.imagen}` 
+        }} 
+        style={styles.image} 
+      />
+      
+      <Text style={styles.title}>{producto.nombre_producto}</Text>
+      <Text style={styles.description}>{producto.descripcion_detalle}</Text>
+      
       <View style={styles.detailsContainer}>
+        <Text style={styles.sectionTitle}>Colores disponibles:</Text>
+        <View style={styles.colorContainer}>
+          {Object.keys(colorGroups).map((colorName) => {
+            const backgroundColor = getColorValue(colorName);
+            const textColor = getFontColorForBackground(backgroundColor);
+            
+            return (
+              <TouchableOpacity
+                key={colorName}
+                onPress={() => handleColorSelect(colorName)}
+                style={[
+                  styles.colorCircle,
+                  { backgroundColor },
+                  selectedColor === colorName && styles.selectedColorCircle
+                ]}
+              >
+                <Text style={[styles.colorText, { color: textColor }]}>
+                  {colorName}
+                </Text>
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+
+        {selectedColor && (
+          <>
+            <Text style={styles.sectionTitle}>Tallas disponibles:</Text>
+            <View style={styles.tallasContainer}>
+              {colorGroups[selectedColor].map((detalle) => (
+                <TouchableOpacity
+                  key={detalle.id_detalle}
+                  style={[
+                    styles.tallaButton,
+                    selectedDetail?.id_detalle === detalle.id_detalle && styles.selectedTallaButton
+                  ]}
+                  onPress={() => handleTallaSelect(detalle)}
+                >
+                  <Text style={[
+                    styles.tallaText,
+                    selectedDetail?.id_detalle === detalle.id_detalle && styles.selectedTallaText
+                  ]}>
+                    {detalle.talla}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </>
+        )}
+
         <View style={styles.detailsRow}>
           <Text style={styles.detailsLabel}>Marca:</Text>
-          <Text style={styles.detailsValue}>{producto.nombre_marca}</Text> 
+          <Text style={styles.detailsValue}>{producto.nombre_marca}</Text>
         </View>
         <View style={styles.detailsRow}>
-          <Text style={styles.detailsLabel}>Código del zapato:</Text>
-          <Text style={styles.detailsValue}>{producto.codigo_interno}</Text> 
+          <Text style={styles.detailsLabel}>Código:</Text>
+          <Text style={styles.detailsValue}>{producto.codigo_interno}</Text>
         </View>
         <View style={styles.detailsRow}>
-          <Text style={styles.detailsLabel}>Género del zapato:</Text>
-          <Text style={styles.detailsValue}>{producto.nombre_genero}</Text> 
+          <Text style={styles.detailsLabel}>Género:</Text>
+          <Text style={styles.detailsValue}>{producto.nombre_genero}</Text>
         </View>
         <View style={styles.detailsRow}>
           <Text style={styles.detailsLabel}>Material:</Text>
-          <Text style={styles.detailsValue}>{producto.nombre_material}</Text> 
-        </View>
-        <View style={styles.detailsRow}>
-          <Text style={styles.detailsLabel}>Talla:</Text>
-          <Text style={styles.detailsValue}>{producto.nombre_talla}</Text> 
-        </View>
-        <View style={styles.detailsRow}>
-          <Text style={styles.detailsLabel}>Color:</Text>
-          <Text style={styles.detailsValue}>{producto.color}</Text> 
+          <Text style={styles.detailsValue}>{producto.nombre_material}</Text>
         </View>
       </View>
+
       <View style={styles.pricingInfoContainer}>
         <View style={styles.pricingInfoRow}>
           <Text style={styles.pricingInfoLabel}>Precio unitario (US$):</Text>
-          <Text style={styles.pricingInfoValue}>{producto.precio}</Text> 
-        </View>
-        <View style={styles.pricingInfoRow}>
-          <Text style={styles.pricingInfoLabel}>Existencias:</Text>
-          <Text style={styles.pricingInfoValue}>{producto.existencias}</Text> 
+          <Text style={styles.pricingInfoValue}>{producto.precio}</Text>
         </View>
         <View style={styles.pricingInfoRow}>
           <Text style={styles.pricingInfoLabel}>Descuento %:</Text>
-          <Text style={styles.pricingInfoValue}>{producto.porcentaje_descuento}</Text> 
+          <Text style={styles.pricingInfoValue}>{producto.porcentaje_descuento}</Text>
         </View>
         <View style={styles.inputContainer}>
           <Text style={styles.label}>Cantidad</Text>
           <TextInput
             style={styles.input}
-            placeholder=""
+            placeholder="Máximo 5"
             keyboardType="numeric"
-            onChangeText={setCantidadProducto} // Actualizar la cantidad de producto en el estado
-            value={cantidadProducto.toString()} // Mostrar el valor actual de cantidadProducto
+            onChangeText={setCantidadProducto}
+            value={cantidadProducto.toString()}
           />
         </View>
       </View>
-      <TouchableOpacity style={styles.addButton} onPress={agregarAlCarrito}> 
-        <Text style={styles.addButtonText}>Agregar al carrito</Text> 
+
+      <TouchableOpacity 
+        style={[styles.addButton, !selectedDetail && styles.disabledButton]} 
+        onPress={agregarAlCarrito}
+        disabled={!selectedDetail}
+      >
+        <Text style={styles.addButtonText}>
+          {selectedDetail ? 'Agregar al carrito' : 'Selecciona color y talla'}
+        </Text>
       </TouchableOpacity>
     </ScrollView>
   );

@@ -2,26 +2,23 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, TextInput, ActivityIndicator, RefreshControl, Alert } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRoute, useNavigation } from '@react-navigation/native';
-import styles from '../estilos/ProductoScreenStyles'; 
-import Cards1 from '../componets/Cards/Cards3'; 
+import styles from '../estilos/ProductoScreenStyles';
+import Cards1 from '../componets/Cards/Cards3';
 import * as Constantes from '../utils/constantes';
 import { useInactividadSesion } from '../componets/Hooks/inactividad.js';
 
 const ProductoScreen = () => {
-  // Hooks de navegación y ruta
   const navigation = useNavigation();
   const route = useRoute();
   const { idCategoria } = route.params;
-  // Estados
   const [searchText, setSearchText] = useState('');
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const { panHandlers, handleLogout } = useInactividadSesion();
   
-// Obtener la IP de las constantes
   const ip = Constantes.IP;
-// Función para obtener los productos de la API
+
   const fetchProducts = async () => {
     try {
       const formData = new FormData();
@@ -32,7 +29,27 @@ const ProductoScreen = () => {
       });
       const data = await response.json();
       if (data.status) {
-        setProducts(data.dataset);
+        // Agrupar productos por id_producto
+        const groupedProducts = data.dataset.reduce((acc, product) => {
+          if (!acc[product.id_producto]) {
+            acc[product.id_producto] = {
+              ...product,
+              detalles: [{
+                id_detalle: product.id_detalle_producto,
+                color: product.color,
+                talla: product.nombre_talla
+              }]
+            };
+          } else {
+            acc[product.id_producto].detalles.push({
+              id_detalle: product.id_detalle_producto,
+              color: product.color,
+              talla: product.nombre_talla
+            });
+          }
+          return acc;
+        }, {});
+        setProducts(Object.values(groupedProducts));
       } else {
         Alert.alert('Error', data.message);
       }
@@ -43,22 +60,25 @@ const ProductoScreen = () => {
       setRefreshing(false);
     }
   };
-// Efecto para cargar los productos al montar el componente
+
   useEffect(() => {
     fetchProducts();
   }, []);
-// Función para manejar la actualización al hacer pull-to-refresh
+
   const handleRefresh = () => {
     setRefreshing(true);
     fetchProducts();
   };
-// Filtrar productos basados en el texto de búsqueda
+
   const filteredProducts = products.filter(product =>
     product.nombre_producto.toLowerCase().includes(searchText.toLowerCase())
   );
-// Función para navegar a los detalles del producto
+
   const handleVerMas = (product) => {
-    navigation.navigate('DetallesProducto', { idProducto: product.id_producto, id_detalle: product.id_detalle_producto });
+    navigation.navigate('DetallesProducto', { 
+      idProducto: product.id_producto, 
+      detalles: product.detalles 
+    });
   };
 
   return (
@@ -68,7 +88,6 @@ const ProductoScreen = () => {
         <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
       }
     >
-       {/* Encabezado con botón de retroceso y barra de búsqueda */}
       <View style={styles.headerContainer}>
         <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" size={24} color="#000" />
@@ -83,17 +102,17 @@ const ProductoScreen = () => {
           />
         </View>
       </View>
-{/* Renderizado condicional: mostrar indicador de carga o lista de productos */}
+
       {loading ? (
         <ActivityIndicator size="large" color="#0000ff" />
       ) : (
         <View style={styles.grid}>
-          {filteredProducts.map((product, index) => (
+          {filteredProducts.map((product) => (
             <Cards1
-              key={index}
+              key={product.id_producto}
               item={{
                 title: product.nombre_producto,
-                description: product.nombre_genero,
+                description: `${product.detalles.length} variaciones disponibles`,
                 image: `${ip}/Expo_Comodo/api/images/productos/${product.imagen}`,
               }}
               onPress={() => handleVerMas(product)}

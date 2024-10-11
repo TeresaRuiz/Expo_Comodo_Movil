@@ -128,6 +128,75 @@ const styles = StyleSheet.create({
     shadowRadius: 4, // Difuminado de la sombra
     elevation: 3, // Elevación para dispositivos Android
   },
+  colorContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginBottom: 15,
+  },
+  colorCircle: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    marginRight: 10,
+    marginBottom: 10,
+    borderWidth: 2,
+    borderColor: '#ddd',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  selectedColorCircle: {
+    borderColor: '#007AFF',
+    borderWidth: 2,
+  },
+  checkmarkContainer: {
+    backgroundColor: 'rgba(0, 0, 0, 0.3)',
+    borderRadius: 12,
+    padding: 2,
+  },
+
+  // Estilos para las tallas
+  tallasContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginBottom: 15,
+  },
+  tallaButton: {
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    marginRight: 10,
+    marginBottom: 10,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    backgroundColor: '#f5f5f5',
+  },
+  selectedTallaButton: {
+    backgroundColor: '#007AFF',
+    borderColor: '#007AFF',
+  },
+  tallaText: {
+    fontSize: 16,
+    color: '#333',
+  },
+  selectedTallaText: {
+    color: '#fff',
+  },
+
+  // Estilos para los títulos de sección
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginTop: 15,
+    marginBottom: 10,
+  },
+
+  // Actualizar estilos existentes si es necesario
+  image: {
+    width: '100%',
+    height: 300,
+    resizeMode: 'contain',
+    marginBottom: 15,
+  },
 });
 
 export default styles;
