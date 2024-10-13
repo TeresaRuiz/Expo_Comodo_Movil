@@ -5,7 +5,6 @@ import { useRoute, useNavigation } from '@react-navigation/native';
 import styles from '../estilos/ProductoScreenStyles';
 import Cards1 from '../componets/Cards/Cards3';
 import * as Constantes from '../utils/constantes';
-import { useInactividadSesion } from '../componets/Hooks/inactividad.js';
 
 const ProductoScreen = () => {
   const navigation = useNavigation();
@@ -15,8 +14,7 @@ const ProductoScreen = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  const { panHandlers, handleLogout } = useInactividadSesion();
-  
+ 
   const ip = Constantes.IP;
 
   const fetchProducts = async () => {

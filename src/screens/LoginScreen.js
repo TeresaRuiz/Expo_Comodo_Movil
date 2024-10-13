@@ -5,7 +5,6 @@ import styles from '../estilos/LoginScreenStyles'; // Import styles from an exte
 import Button3 from '../componets/Buttons/Button3';
 import LogOut from '../componets/Buttons/LogOut';
 import * as Constantes from '../utils/constantes'; 
-import { useInactividadSesion } from '../componets/Hooks/inactividad.js';// Import constants, assuming you have IP in a constants file
 
 const LoginScreen = ({ navigation }) => {
   const ip = Constantes.IP; // Define API IP
@@ -13,8 +12,7 @@ const LoginScreen = ({ navigation }) => {
   const [password, setPassword] = useState(''); // State for password
   const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
   const animatedValue = new Animated.Value(0); // State for logo animation
-  const { panHandlers, handleLogout } = useInactividadSesion(); // Hook para manejar inactividad y logout
-  const [currentImageIndex, setCurrentImageIndex] = useState(0); // Estado para el índice de la imagen actual
+ const [currentImageIndex, setCurrentImageIndex] = useState(0); // Estado para el índice de la imagen actual
   const appState = useRef(AppState.currentState); // Referencia al estado de la aplicación
 
 
@@ -120,12 +118,14 @@ const LoginScreen = ({ navigation }) => {
   };
 
   return (
+    //<TouchableOpacity onPress={resetInactivityTimer} activeOpacity={1}  style={{ flex: 1}}>
     <View style={styles.container}>
       <Animated.Image
         source={require('../img/calentamiento.png')}
         style={[styles.logo, { transform: [{ translateY }] }]}
       />
       <Text style={styles.title}>Inicio de sesión</Text>
+  
       <TextInput
         style={styles.input}
         placeholder="Nombre de usuario"
@@ -157,6 +157,7 @@ const LoginScreen = ({ navigation }) => {
         <Text style={styles.forgotPasswordText}>¿Olvidaste tu contraseña?</Text>
       </TouchableOpacity>
     </View>
+    //</TouchableOpacity>
   );
 };
 

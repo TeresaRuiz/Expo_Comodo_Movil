@@ -6,11 +6,9 @@ import styles from '../estilos/DashboardScreenStyles'; // Importa los estilos pa
 import LogOut from '../componets/Buttons/LogOut'; // Importa el componente de cerrar sesión
 import Button from '../componets/Buttons/Button';  // Importa el componente de botón personalizado
 import * as Constantes from '../utils/constantes'; // Importa las constantes, como la IP
-import { useInactividadSesion } from '../componets/Hooks/inactividad.js'; // Hook para manejar inactividad de sesión
 
 const DashboardScreen = ({ navigation }) => {
   const ip = Constantes.IP; // Obtiene la IP desde las constantes
-  const { panHandlers, handleLogout } = useInactividadSesion(); // Hook para manejar inactividad y logout
   const [currentImageIndex, setCurrentImageIndex] = useState(0); // Estado para el índice de la imagen actual
   const appState = useRef(AppState.currentState); // Referencia al estado de la aplicación
 
@@ -29,6 +27,15 @@ const DashboardScreen = ({ navigation }) => {
     { title: 'Historial', icon: 'time-outline', screen: 'Historial' } // Navega a la pantalla de historial
   ];
 
+  // Función para manejar el cierre de sesión
+  const handleLogout = () => {
+    // Aquí puedes realizar cualquier acción adicional, como limpiar el estado o cerrar la sesión en tu backend
+    Alert.alert('Sesión cerrada', 'Has cerrado sesión correctamente.');
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'Login' }], // Redirige a la pantalla de login
+    });
+  };
 
   useFocusEffect(
     React.useCallback(() => {

@@ -6,11 +6,9 @@ import styles from '../estilos/MiPerfilScreenStyles'; // Importa estilos persona
 import * as Constantes from '../utils/constantes'; // Importa constantes
 import InputMiPerfil from '../componets/Inputs/InputMiPerfil'; // Componente de entrada personalizado
 import axios from 'axios'; // Axios para realizar peticiones HTTP
-import { useInactividadSesion } from '../componets/Hooks/inactividad.js'; // Hook personalizado para manejo de inactividad
 
 const MiPerfilScreen = ({ navigation }) => {
   const ip = Constantes.IP; // IP del servidor desde las constantes
-  const { panHandlers, handleLogout } = useInactividadSesion(); // Destructura las funciones del hook de inactividad
 
   // Función para formatear el número de teléfono
   const formatPhoneNumber = (value) => {

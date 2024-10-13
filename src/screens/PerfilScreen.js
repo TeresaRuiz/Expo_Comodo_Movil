@@ -5,10 +5,8 @@ import { FontAwesome } from '@expo/vector-icons'; // Importa FontAwesome desde E
 import { useNavigation } from '@react-navigation/native'; // Importa useNavigation desde react-navigation
 import styles from '../estilos/PerfilScreenStyles'; // Importa estilos desde un archivo externo
 import * as Constantes from '../utils/constantes'; // Importa constantes, como la URL de la API
-import { useInactividadSesion } from '../componets/Hooks/inactividad.js';
 
 const PerfilScreen = () => {
-  const { panHandlers, handleLogout } = useInactividadSesion();
   const [nombre, setNombre] = useState('');
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);

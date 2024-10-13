@@ -5,15 +5,13 @@ import styles from '../estilos/OfertasScreenStyles';
 import PromoImage from '../img/ofertas.png';
 import * as Constantes from '../utils/constantes';
 import CardOferta from '../componets/Cards/CardOferta'; 
-import { useInactividadSesion } from '../componets/Hooks/inactividad.js';
 
 const OfertasScreen = ({ navigation }) => {
   const [searchText, setSearchText] = useState('');
   const [ofertas, setOfertas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  const { panHandlers, handleLogout } = useInactividadSesion();
-  
+
   const ip = Constantes.IP;
 
   const fetchOfertas = async () => {

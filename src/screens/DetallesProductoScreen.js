@@ -6,10 +6,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from '../estilos/DetallesProductosScreen';
 import * as Constantes from '../utils/constantes';
 import { getColorValue, getFontColorForBackground } from '../utils/colorUtils';
-import { useInactividadSesion } from '../componets/Hooks/inactividad.js';
 
 const DetallesProductoScreen = () => {
-  const { panHandlers, handleLogout } = useInactividadSesion();
   const navigation = useNavigation();
   const route = useRoute();
   const { idProducto, detalles } = route.params;
