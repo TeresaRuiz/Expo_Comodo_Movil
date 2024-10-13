@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef  } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet,AppState, Animated, Easing, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, AppState, Animated, Easing, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; // Import Ionicons
 import styles from '../estilos/LoginScreenStyles'; // Import styles from an external file
 import Button3 from '../componets/Buttons/Button3';
@@ -12,12 +12,35 @@ const LoginScreen = ({ navigation }) => {
   const [password, setPassword] = useState(''); // State for password
   const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
   const animatedValue = new Animated.Value(0); // State for logo animation
- const [currentImageIndex, setCurrentImageIndex] = useState(0); // Estado para el índice de la imagen actual
   const appState = useRef(AppState.currentState); // Referencia al estado de la aplicación
+  
+  useEffect(() => {
+    validarSesion(); // Verificar si hay sesión activa al cargar la pantalla
+  }, []);
 
+  // Función para validar si hay sesión activa
+  const validarSesion = async () => {
+    try {
+      const response = await fetch(`${ip}/Expo_Comodo/api/services/public/cliente.php?action=getUser`, {
+        method: 'GET'
+      });
+  
+      const data = await response.json();
+  
+      if (data.status === 1) {
+        navigation.navigate('DashboardTabs');
+        console.log("Se ingresa con la sesión activa")
+      } else {
+        console.log("No hay sesión activa")
+        return;
+      }
+    } catch (error) {
+      console.error(error);
+      Alert.alert('Error', 'Ocurrió un error al validar la sesión');
+    }
+  };
 
   useEffect(() => {
-    // Looping animation configuration
     const animation = Animated.loop(
       Animated.timing(animatedValue, {
         toValue: 1,
@@ -27,24 +50,20 @@ const LoginScreen = ({ navigation }) => {
       })
     );
 
-    // Start the animation
     animation.start();
 
-    // Clean up the animation when the component unmounts
     return () => {
       animation.stop();
     };
   }, []);
 
-  // Interpolation for vertical translation animation of the logo
   const translateY = animatedValue.interpolate({
     inputRange: [0, 0.5, 1],
     outputRange: [0, 20, 0],
   });
 
-  // Function to handle login
+  // Función para manejar el inicio de sesión
   const handleLogin = async () => {
-    // Check if username or password is empty
     if (!username.trim() || !password.trim()) {
       Alert.alert('Error', 'Por favor, complete los campos de usuario y contraseña');
       return;
@@ -52,29 +71,27 @@ const LoginScreen = ({ navigation }) => {
 
     try {
       const formData = new FormData();
-      formData.append('UsuarioCliente', username); // Add username to form data
-      formData.append('clave', password); // Add password to form data
+      formData.append('UsuarioCliente', username);
+      formData.append('clave', password);
       
-      const url = `${ip}/Expo_Comodo/api/services/public/cliente.php?action=logIn`; // URL for the request
-      console.log('URL solicitada:', url); // To verify the URL
+      const url = `${ip}/Expo_Comodo/api/services/public/cliente.php?action=logIn`;
+      console.log('URL solicitada:', url);
 
-      // Make the API request
       const response = await fetch(url, {
         method: 'POST',
         body: formData,
       });
 
-      const responseText = await response.text(); // Get the response as text
+      const responseText = await response.text();
 
       try {
-        const data = JSON.parse(responseText); // Try to parse the response as JSON
+        const data = JSON.parse(responseText);
         if (data.status) {
-          // Clear the input fields after successful login
           setUsername('');
           setPassword('');
-          navigation.navigate('DashboardTabs'); // Navigate to the dashboard tabs screen
+          navigation.navigate('DashboardTabs');
         } else {
-          showLoginErrorAlert(); // Show a custom alert in case of an error
+          showLoginErrorAlert();
         }
       } catch (jsonError) {
         console.error('Error al parsear JSON:', jsonError);
@@ -86,19 +103,14 @@ const LoginScreen = ({ navigation }) => {
     }
   };
 
-  // Function to redirect to the registration screen
   const handleRegisterRedirect = () => {
     navigation.navigate('Register');
   };
 
-  // Function to redirect to the password recovery screen
   const handleForgotPasswordRedirect = () => {
     navigation.navigate('PasswordRecovery');
   };
 
- 
-
-  // Function to show login error alert
   const showLoginErrorAlert = () => {
     Alert.alert(
       'Error de inicio de sesión',
@@ -118,7 +130,6 @@ const LoginScreen = ({ navigation }) => {
   };
 
   return (
-    //<TouchableOpacity onPress={resetInactivityTimer} activeOpacity={1}  style={{ flex: 1}}>
     <View style={styles.container}>
       <Animated.Image
         source={require('../img/calentamiento.png')}
@@ -138,7 +149,7 @@ const LoginScreen = ({ navigation }) => {
           placeholder="Contraseña"
           onChangeText={text => setPassword(text)}
           value={password}
-          secureTextEntry={!showPassword} // Ensure the password is secure
+          secureTextEntry={!showPassword}
         />
         <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeIcon}>
           <Ionicons name={showPassword ? "eye" : "eye-off"} size={20} color="gray" />
@@ -157,7 +168,6 @@ const LoginScreen = ({ navigation }) => {
         <Text style={styles.forgotPasswordText}>¿Olvidaste tu contraseña?</Text>
       </TouchableOpacity>
     </View>
-    //</TouchableOpacity>
   );
 };
 

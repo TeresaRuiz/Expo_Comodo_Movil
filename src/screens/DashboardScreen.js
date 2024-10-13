@@ -28,14 +28,23 @@ const DashboardScreen = ({ navigation }) => {
   ];
 
   // Función para manejar el cierre de sesión
-  const handleLogout = () => {
-    // Aquí puedes realizar cualquier acción adicional, como limpiar el estado o cerrar la sesión en tu backend
-    Alert.alert('Sesión cerrada', 'Has cerrado sesión correctamente.');
-    navigation.reset({
-      index: 0,
-      routes: [{ name: 'Login' }], // Redirige a la pantalla de login
-    });
+  const handleLogout = async () => {
+    try {
+      const response = await fetch(`${ip}/Expo_Comodo/api/services/public/cliente.php?action=logOut`, {
+        method: 'GET'
+      });
+      const data = await response.json();
+      if (data.status) {
+        Alert.alert('Sesión cerrada', 'Has cerrado sesión exitosamente');
+        navigation.navigate('Login');
+      } else {
+        Alert.alert('Error', data.error);
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Ocurrió un error al cerrar la sesión');
+    }
   };
+  
 
   useFocusEffect(
     React.useCallback(() => {
