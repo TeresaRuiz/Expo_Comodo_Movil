@@ -255,7 +255,7 @@ const MiPerfilScreen = ({ navigation }) => {
           inputRef={usernameRef}
         />
         <InputMiPerfil
-          label="Correo Electrónico"
+          label="Correo electrónico"
           value={correo}
           editable={editando}
           onChangeText={setCorreo}
@@ -277,35 +277,39 @@ const MiPerfilScreen = ({ navigation }) => {
         />
 
         {/* Mapa para seleccionar ubicación */}
-        <MapView
-          style={styles.map}
-          region={region}
-          onPress={handleMapPress}
-        >
-          <Marker coordinate={region} />
-        </MapView>
+        <View style={styles.mapContainer}>
+          <MapView
+            style={styles.map}
+            region={region}
+            onPress={handleMapPress}
+          >
+            <Marker coordinate={region} />
+          </MapView>
+        </View>
+
 
         {/* Botones para editar/actualizar/cancelar */}
         {!editando ? (
           <TouchableOpacity
-            style={styles.botonEditar}
+            style={styles.button}  // Usamos el estilo general de botón
             onPress={() => setEditando(true)}
           >
-            <Text style={styles.textoBoton}>Editar</Text>
+            <Text style={styles.buttonText}>Editar</Text>
           </TouchableOpacity>
         ) : (
           <>
             <TouchableOpacity
-              style={styles.botonActualizar}
+              style={[styles.button, styles.updateButton]}  // Añadido margen derecho
               onPress={handleUpdate}
             >
-              <Text style={styles.textoBoton}>Actualizar</Text>
+              <Text style={[styles.updateButtonText, styles.buttonText]}>Actualizar</Text>
             </TouchableOpacity>
+            <Text style={[styles.updateButtonText, styles.buttonText]}></Text>
             <TouchableOpacity
-              style={styles.botonCancelar}
+              style={[styles.button, styles.deleteButton]}  // Estilo general más el rojo
               onPress={handleDelete}
             >
-              <Text style={styles.textoBoton}>Cancelar</Text>
+              <Text style={[styles.deleteButtonText, styles.buttonText]}>Cancelar</Text>
             </TouchableOpacity>
           </>
         )}

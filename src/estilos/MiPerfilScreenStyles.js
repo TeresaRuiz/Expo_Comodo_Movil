@@ -17,15 +17,15 @@ const styles = StyleSheet.create({
       color: '#333',
     },
     mapContainer: {
-      width: '100%',  // Ajusta el ancho al 100% para ocupar todo el contenedor
-      height: 300,    // Ajusta la altura según tus preferencias
-      marginTop: 20,  // Añade un margen superior si es necesario
-      marginBottom: 20, // Puedes ajustar el margen inferior según tu diseño
-      alignItems: 'center', // Centra horizontalmente el mapa
+      flex: 1,               // Usa flex para adaptarse al tamaño de la pantalla
+      width: '100%',          // Ocupa todo el ancho del contenedor
+      height: 300,            // Mantén o ajusta esta altura
+      marginTop: 20,          // Margen superior
+      marginBottom: 20,       // Margen inferior
     },
     map: {
-      width: '100%',   // Ajusta el ancho del mapa al 100% del contenedor
-      height: '100%',  // Ajusta la altura del mapa al 100% del contenedor
+      width: '100%',          // Ancho del mapa al 100%
+      height: '100%',         // Altura del mapa al 100%
     },
     profileImageContainer: {
       position: 'relative',
@@ -63,16 +63,17 @@ const styles = StyleSheet.create({
     },
     buttonContainer: {
       flexDirection: 'row',
-      justifyContent: 'space-between',
-      width: '100%',
+      justifyContent: 'space-between',  // Espacio entre botones
+      width: '50%',
+      marginTop: 20,                    // Ajusta margen superior
     },
     button: {
-      width: '48%',
+      width: '48%',                     // Ancho relativo del 48%
       borderRadius: 25,
       paddingVertical: 15,
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: '#283AE2', // Color base para los botones
+      backgroundColor: '#283AE2',
       shadowColor: '#000',
       shadowOffset: { width: 0, height: 4 },
       shadowOpacity: 0.3,
@@ -86,10 +87,10 @@ const styles = StyleSheet.create({
       textAlign: 'center',
     },
     updateButton: {
-      backgroundColor: '#009929', // Color verde para botón "Actualizar"
+      backgroundColor: '#009929', // Verde para botón "Actualizar"
     },
     deleteButton: {
-      backgroundColor: '#ca0b0b', // Color rojo para botón "Cancelar"
+      backgroundColor: '#ca0b0b', // Rojo para botón "Cancelar"
     },
     updateButtonText: {
       color: '#fff',
@@ -103,6 +104,6 @@ const styles = StyleSheet.create({
       left: 25,
       zIndex: 10, // Asegura que esté encima de otros elementos
     },
-  });
+});
 
-  export default styles;  
+export default styles;
