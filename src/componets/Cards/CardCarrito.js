@@ -36,7 +36,7 @@ const CardCarrito = ({ item, onIncrease, onDecrease, onDelete }) => {
             style={styles.deleteButton}
             onPress={() => onDelete(item.id_detalle_reserva)}
           >
-            <Text style={styles.deleteButtonText}>Eliminar</Text>
+            <Text style={styles.quantityButtonText}>Eliminar</Text>
           </TouchableOpacity>
         </View>
       </View>

@@ -145,27 +145,24 @@ const DetallesProductoScreen = () => {
       <View style={styles.detailsContainer}>
         <Text style={styles.sectionTitle}>Colores disponibles:</Text>
         <View style={styles.colorContainer}>
-          {Object.keys(colorGroups).map((colorName) => {
-            const backgroundColor = getColorValue(colorName);
-            const textColor = getFontColorForBackground(backgroundColor);
-            
-            return (
-              <TouchableOpacity
-                key={colorName}
-                onPress={() => handleColorSelect(colorName)}
-                style={[
-                  styles.colorCircle,
-                  { backgroundColor },
-                  selectedColor === colorName && styles.selectedColorCircle
-                ]}
-              >
-                <Text style={[styles.colorText, { color: textColor }]}>
-                  {colorName}
-                </Text>
-              </TouchableOpacity>
-            );
-          })}
-        </View>
+  {Object.keys(colorGroups).map((colorName) => {
+    const backgroundColor = getColorValue(colorName);
+    
+    return (
+      <TouchableOpacity
+        key={colorName}
+        onPress={() => handleColorSelect(colorName)}
+        style={[
+          styles.colorCircle,
+          { backgroundColor },
+          selectedColor === colorName && styles.selectedColorCircle
+        ]}
+      >
+        {/* Elimina el componente de texto para que solo quede el círculo */}
+      </TouchableOpacity>
+    );
+  })}
+</View>
 
         {selectedColor && (
           <>
@@ -214,6 +211,10 @@ const DetallesProductoScreen = () => {
         <View style={styles.pricingInfoRow}>
           <Text style={styles.pricingInfoLabel}>Precio unitario (US$):</Text>
           <Text style={styles.pricingInfoValue}>{producto.precio}</Text>
+        </View>
+        <View style={styles.pricingInfoRow}>
+          <Text style={styles.pricingInfoLabel}>Existencias:</Text>
+          <Text style={styles.pricingInfoValue}>{producto.existencias}</Text> 
         </View>
         <View style={styles.pricingInfoRow}>
           <Text style={styles.pricingInfoLabel}>Descuento %:</Text>
