@@ -105,18 +105,18 @@ const ProductoScreen = () => {
         <ActivityIndicator size="large" color="#0000ff" />
       ) : (
         <View style={styles.grid}>
-          {filteredProducts.map((product) => (
-            <Cards1
-              key={product.id_producto}
-              item={{
-                title: product.nombre_producto,
-                description: `${product.detalles.length} variaciones disponibles`,
-                image: `${ip}/Expo_Comodo/api/images/productos/${product.imagen}`,
-              }}
-              onPress={() => handleVerMas(product)}
-            />
-          ))}
-        </View>
+  {filteredProducts.map((product) => (
+    <Cards1
+      key={product.id_producto}
+      item={{
+        title: product.nombre_producto,
+        description: `${product.detalles.length} Estilos disponibles - Género: ${product.nombre_genero}`,
+        image: `${ip}/Expo_Comodo/api/images/productos/${product.imagen}`,
+      }}
+      onPress={() => handleVerMas(product)}
+    />
+  ))}
+</View>
       )}
     </ScrollView>
   );
