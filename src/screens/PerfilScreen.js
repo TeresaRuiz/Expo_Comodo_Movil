@@ -49,6 +49,11 @@ const PerfilScreen = () => {
   const abrirIg = () => {
     Linking.openURL('https://www.instagram.com/comodos.sv?igsh=MXZieG5lMnd5Mm5uNQ==');
   };
+   // Función para abrir enlace de Facebook
+   const abrirWhatsapp = () => {
+    Linking.openURL('https://api.whatsapp.com/send/?phone=50379513264&text&type=phone_number&app_absent=0');
+  };
+
 
 
   // Función para navegar a la pantalla 'MiPerfil'
@@ -109,7 +114,7 @@ const PerfilScreen = () => {
           <TouchableOpacity onPress={abrirIg}>
             <FontAwesome name="instagram" size={30} color="#000000" />
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={abrirWhatsapp}>
             <FontAwesome name="whatsapp" size={30} color="#000000" />
           </TouchableOpacity>
         </View>
