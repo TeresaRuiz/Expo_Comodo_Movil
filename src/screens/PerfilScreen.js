@@ -35,6 +35,7 @@ const PerfilScreen = () => {
       setRefreshing(false);
     }
   };
+  
 
   useEffect(() => {
     fetchProfile(); // Llama a la función para obtener el perfil del usuario cuando se monta el componente
@@ -42,8 +43,13 @@ const PerfilScreen = () => {
 
   // Función para abrir enlace de Facebook
   const abrirFacebook = () => {
-    Linking.openURL('');
+    Linking.openURL('https://www.facebook.com/share/14Aeusm5Yt/');
   };
+  // Función para abrir enlace de Facebook
+  const abrirIg = () => {
+    Linking.openURL('https://www.instagram.com/comodos.sv?igsh=MXZieG5lMnd5Mm5uNQ==');
+  };
+
 
   // Función para navegar a la pantalla 'MiPerfil'
   const handleMiPerfilPress = () => {
@@ -68,6 +74,7 @@ const PerfilScreen = () => {
       </View>
     );
   }
+  
 
   return (
     <ScrollView
@@ -99,7 +106,7 @@ const PerfilScreen = () => {
           <TouchableOpacity onPress={abrirFacebook}>
             <FontAwesome name="facebook" size={30} color="#000000" />
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={abrirIg}>
             <FontAwesome name="instagram" size={30} color="#000000" />
           </TouchableOpacity>
           <TouchableOpacity>
